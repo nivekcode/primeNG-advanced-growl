@@ -8,6 +8,7 @@ import {AdvMessagesService} from './adv-growl-messages.service';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/never';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
 import {AdvPrimeMessage} from './adv-growl-message.model';
 
 describe('Message Component', () => {

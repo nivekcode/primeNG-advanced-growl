@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AdvMessagesService} from '../../messages/adv-growl-messages.service';
+import {AdvMessagesService} from '../messages/adv-growl-messages.service';
 
 @Component({
     selector: 'app-root',
