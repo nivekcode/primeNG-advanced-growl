@@ -3,7 +3,15 @@
     <h1>
         Test of the advanced growl messages
     </h1>
-    <adv-growl-messages></adv-growl-messages>
+    <adv-growl-messages [life]="2500"></adv-growl-messages>
+    <button pButton type="button" (click)="createSuccessMessage()"
+            class="ui-button-success" label="Create success message"></button>
     <button pButton type="button" (click)="createInfoMessage()"
             class="ui-button-info" label="Create info message"></button>
+    <button pButton type="button" (click)="createWarningMessage()"
+            class="ui-button-warning" label="Create warning message"></button>
+    <button pButton type="button" (click)="createErrorMessage()"
+            class="ui-button-danger" label="Create error message"></button>
+    <button pButton type="button" (click)="clearMessages()"
+            class="ui-button-default" label="Clear all messages"></button>
 </div>
