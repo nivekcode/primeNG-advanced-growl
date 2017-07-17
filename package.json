@@ -7,7 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "lint": "ng lint",
+    "lint": "ng lint --type-check",
     "e2e": "ng e2e"
   },
   "private": true,
@@ -21,7 +21,9 @@
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
+    "angular2-uuid": "^1.1.1",
     "core-js": "^2.4.1",
+    "primeng": "^4.1.0-rc.3",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"
   },
