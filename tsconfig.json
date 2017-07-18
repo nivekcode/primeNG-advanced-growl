@@ -2,7 +2,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
-    "baseUrl": "test",
+    "module": "es2015",
+    "baseUrl": "lib",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
