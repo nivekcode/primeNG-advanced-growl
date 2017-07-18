@@ -5,7 +5,7 @@
   },
   "apps": [
     {
-      "root": "src",
+      "root": "test",
       "outDir": "dist",
       "assets": [
         "assets",
@@ -15,7 +15,7 @@
       "main": "main.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
-      "tsconfig": "tsconfig.app.json",
+      "tsconfig": "../tsconfig.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
@@ -32,25 +32,17 @@
       }
     }
   ],
-  "e2e": {
-    "protractor": {
-      "config": "./protractor.conf.js"
-    }
-  },
   "lint": [
     {
-      "project": "src/tsconfig.app.json"
+      "project": "./tsconfig.json"
     },
     {
       "project": "src/tsconfig.spec.json"
-    },
-    {
-      "project": "e2e/tsconfig.e2e.json"
     }
   ],
   "test": {
     "karma": {
-      "config": "./karma.conf.js"
+      "config": "./test/karma.conf.js"
     }
   },
   "defaults": {
