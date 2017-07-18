@@ -21,4 +21,5 @@ install:
 script:
   - npm run lint
 after_success:
-  - npm run test
+  - npm run test-coverage
+  - npm run report-coverage

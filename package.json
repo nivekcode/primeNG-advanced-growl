@@ -7,6 +7,8 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
+    "test-coverage": "ng test --code-coverage",
+    "report-coverage": "cat ./coverage/lcov.info | codecov",
     "lint": "ng lint --type-check"
   },
   "private": true,
@@ -33,6 +35,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "angular2-uuid": "^1.1.1",
+    "codecov": "^2.2.0",
     "codelyzer": "~3.0.1",
     "font-awesome": "^4.7.0",
     "jasmine-core": "~2.6.2",
