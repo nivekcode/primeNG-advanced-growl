@@ -14,24 +14,27 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# messages modul
+# AdvGrowlModul
 
-The message module is a wrapper around the growl module from PrimeNG. Unfortunatelly the
-PrimeNG module does not offer a central service to create growl messages. The PrimeNG message
-modul strongly couples the template and the component. You need to include the growl component in
-each template. It would be great to include the growl component only once and then create growl messages
-with the help of a service.
+The AdvGrowlModule is a wrapper around the growl module from PrimeNG. This wrapper was created
+because PrimeNG is missing some features.
 
-PrimeNG growl offers us to define a sticky property to remove the messages. When we set the lifetime
+## What is missing on PrimeNG?
+- PrimeNG module does not offer a central service to
+create growl messages. The PrimeNG message modul strongly couples the template and the component.
+You need to include the growl component in each template.
+- PrimeNG growl offers us to define a sticky property to remove the messages. When we set the lifetime
 of the messages to 3 seconds all messages will be removed after the specified time. The problem comes
 when a message gets created 2 seconds after the first message. This message will not be removed after
 the specified 3 seconds. This message will be removed 1 seconds after creation. This is the point where
 the 3 seconds from the first message have passed.
 
-The PrimeNG module provides you the sticky feature with a unique lifetime for each message. The specified
+## What does the AdvGrowlModule is offering?
+- The AdvGrowlModule provides you the sticky feature with a unique lifetime for each message. The specified
 lifetime is unique for each message. The growl message will only disappear after the given time has elapsed
-or you pressed the cancel button on the growl message. Furthermore the PrimeNGAdvancedGrowl module provides u
-a messageservice. With the help of this service you have a central way to create growl messages.
+or you pressed the cancel button on the growl message.
+- The PrimeNGAdvancedGrowl module provides you a messageservice.
+With the help of this service you have a central way to create growl messages.
 
 ## How do you use PrimeNGAdvancedGrowl?
 ### installation
@@ -41,8 +44,7 @@ are required.
 npm install --save TODO
 ```
 
-To use the AdvGrowlMessagesService and the AdvGrowlMessagesComponent you need to import the AdvGrowlMessagesModul
-in your appliction.
+To use the AdvGrowlService and the AdvGrowlComponent you need to import the AdvGrowlModul in your appliction.
 ```javascript
 TODO
 import {MessagesModule} from 'esta-webjs-extensions';
@@ -56,7 +58,6 @@ import {MessagesModule} from 'esta-webjs-extensions';
 
 
 ### AdvGrowlComponent
-
 The AdvGrowlModule exports a component named AdvGrowlComponent. You need to include this component
 once in your app.component.html. With the help of this component the advanced PrimeNG growl messages
 can be displayed.
