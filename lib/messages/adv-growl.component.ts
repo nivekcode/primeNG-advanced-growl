@@ -15,7 +15,7 @@ import {AdvGrowlService} from './adv-growl.service';
 const DEFAULT_LIFETIME = 0;
 
 @Component({
-    selector: 'adv-growl-messages',
+    selector: 'adv-growl',
     templateUrl: './adv-growl.component.html'
 })
 export class AdvGrowlComponent {

@@ -43,17 +43,16 @@ With the help of this service you have a central way to create growl messages.
 PrimeNGAdvancedGrowl is an node_module and therefore it is provided over npm. To install it node and npm
 are required.
 ```
-npm install --save TODO
+npm install --save prime-ng-advanced-growl
 ```
 
 To use the AdvGrowlService and the AdvGrowlComponent you need to import the AdvGrowlModul in your appliction.
 ```javascript
-TODO
-import {MessagesModule} from 'esta-webjs-extensions';
+import {AdvGrowlModule} from 'prime-ng-advanced-growl';
 
 @NgModule({
     declarations: [AppComponent],
-    imports: [MessagesModul]
+    imports: [AdvGrowlModule]
 })
 ...
 ```
@@ -64,9 +63,8 @@ The AdvGrowlModule exports a component named AdvGrowlComponent. You need to incl
 once in your app.component.html. With the help of this component the advanced PrimeNG growl messages
 can be displayed.
 ```html
-TODO
 <app-navbar></app-navbar>
-<esta-messages></esta-messages>
+<adv-growl></adv-growl>
 <div class="container">
     <router-outlet></router-outlet>
 </div>
@@ -91,8 +89,7 @@ The AdvGrowlService allows you to create and delete messages. The AdvGrowlServic
 can be accessed over dependency injection inside your component.
 
 ```javascript
-TODO
-import {MessagesService} from 'esta-webjs-extensions';
+import {AdvGrowlService} from 'prime-ng-advanced-growl';
 
 @Component({
     selector: ...,
@@ -100,7 +97,7 @@ import {MessagesService} from 'esta-webjs-extensions';
 })
 export class SampleComponent{
 
-    constructor(private messagesService: MessagesService){
+    constructor(private advGrowlService: AdvGrowlService){
     }
 }
 ```
