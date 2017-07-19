@@ -4,13 +4,15 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Messages Modul](#messages-modul)
-  - [Wie verwendet man das ESTA-Messages Modul?](#wie-verwendet-man-das-esta-messages-modul)
-    - [Installation](#installation)
-    - [Message Komponente](#message-komponente)
+- [AdvGrowlModul](#advgrowlmodul)
+  - [What is missing on PrimeNG?](#what-is-missing-on-primeng)
+  - [What does the AdvGrowlModule is offering?](#what-does-the-advgrowlmodule-is-offering)
+  - [How do you use PrimeNGAdvancedGrowl?](#how-do-you-use-primengadvancedgrowl)
+    - [installation](#installation)
+    - [AdvGrowlComponent](#advgrowlcomponent)
       - [Input](#input)
       - [Output](#output)
-    - [MessageService](#messageservice)
+    - [AdvGrowlService](#advgrowlservice)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
