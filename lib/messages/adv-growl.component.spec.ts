@@ -3,30 +3,30 @@
  */
 import {TestBed, inject, ComponentFixture} from '@angular/core/testing';
 import {GrowlModule, Message} from 'primeng/primeng';
-import {AdvGrowlMessagesComponent} from './adv-growl-message.component';
-import {AdvMessagesService} from './adv-growl-messages.service';
+import {AdvGrowlComponent} from './adv-growl.component';
+import {AdvGrowlService} from './adv-growl.service';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/never';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
-import {AdvPrimeMessage} from './adv-growl-message.model';
+import {AdvPrimeMessage} from './adv-growl.model';
 
 describe('Message Component', () => {
 
-    let component: AdvGrowlMessagesComponent;
-    let fixture: ComponentFixture<AdvGrowlMessagesComponent>;
+    let component: AdvGrowlComponent;
+    let fixture: ComponentFixture<AdvGrowlComponent>;
 
     beforeEach(async () => {
         TestBed.configureTestingModule({
             imports: [GrowlModule],
-            declarations: [AdvGrowlMessagesComponent],
-            providers: [AdvMessagesService]
+            declarations: [AdvGrowlComponent],
+            providers: [AdvGrowlService]
         })
             .compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(AdvGrowlMessagesComponent);
+        fixture = TestBed.createComponent(AdvGrowlComponent);
         component = fixture.componentInstance;
     });
 
@@ -38,7 +38,7 @@ describe('Message Component', () => {
 
         it(`should add all arriving messages and not emit a new value which indicates that
             none of the messages should be removed`,
-            inject([AdvMessagesService], (messagesService: AdvMessagesService) => {
+            inject([AdvGrowlService], (messagesService: AdvGrowlService) => {
                 // given
                 const expectedMessages: Array<AdvPrimeMessage> = [
                     createMessage('1', 'success', 'awesome message', 'awesome detail'),
@@ -82,7 +82,7 @@ describe('Message Component', () => {
         });
 
         it('it should call removeMessage in subscribe when a message is cleared',
-            inject([AdvMessagesService], (messagesService: AdvMessagesService) => {
+            inject([AdvGrowlService], (messagesService: AdvGrowlService) => {
                 // given
                 const expectedMessages: Array<Message> = [
                     createMessage('1', 'success', 'awesome message', 'awesome detail'),
@@ -106,7 +106,7 @@ describe('Message Component', () => {
 
         it(`it should call unshift in subscribe until the clearStream emits a value,
             in this case it should automatically resubscribe to the messagestream`,
-            inject([AdvMessagesService], (messagesService: AdvMessagesService) => {
+            inject([AdvGrowlService], (messagesService: AdvGrowlService) => {
                 // given
                 let numberOfCalls = 0;
                 const expectedMessages = [
@@ -163,7 +163,7 @@ describe('Message Component', () => {
         });
 
         it('should throw an error when an error occures',
-            inject([AdvMessagesService], (messagesService: AdvMessagesService) => {
+            inject([AdvGrowlService], (messagesService: AdvGrowlService) => {
                 // given
                 const errorMessage = 'Awful error';
                 const messages$ = Observable.throw(new Error(errorMessage));

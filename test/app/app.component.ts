@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AdvMessagesService} from '../../lib/messages/adv-growl-messages.service';
+import {AdvGrowlService} from '../../lib/messages/adv-growl.service';
 
 @Component({
     selector: 'app-root',
@@ -7,7 +7,7 @@ import {AdvMessagesService} from '../../lib/messages/adv-growl-messages.service'
 })
 export class AppComponent {
 
-    constructor(private advMessagesService: AdvMessagesService) {
+    constructor(private advMessagesService: AdvGrowlService) {
     }
 
     public createInfoMessage(): void {

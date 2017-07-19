@@ -9,16 +9,16 @@ import 'rxjs/add/operator/mapTo';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/takeUntil';
 import {Observable} from 'rxjs/Observable';
-import {AdvPrimeMessage} from './adv-growl-message.model';
-import {AdvMessagesService} from './adv-growl-messages.service';
+import {AdvPrimeMessage} from './adv-growl.model';
+import {AdvGrowlService} from './adv-growl.service';
 
 const DEFAULT_LIFETIME = 0;
 
 @Component({
     selector: 'adv-growl-messages',
-    templateUrl: './adv-growl-message.component.html'
+    templateUrl: './adv-growl.component.html'
 })
-export class AdvGrowlMessagesComponent {
+export class AdvGrowlComponent {
 
     public messages: Array<AdvPrimeMessage> = [];
     @Input() style: any;
@@ -26,7 +26,7 @@ export class AdvGrowlMessagesComponent {
     @Input() life = DEFAULT_LIFETIME;
     @Output() onClose = new EventEmitter<any>();
 
-    constructor(private messageService: AdvMessagesService) {
+    constructor(private messageService: AdvGrowlService) {
         this.subscribeForMessages();
     }
 

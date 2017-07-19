@@ -10,7 +10,7 @@
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {Injectable} from '@angular/core';
-import {AdvPrimeMessage} from './adv-growl-message.model';
+import {AdvPrimeMessage} from './adv-growl.model';
 import {UUID} from 'angular2-uuid';
 
 const MessageSeverities = {
@@ -21,7 +21,7 @@ const MessageSeverities = {
 };
 
 @Injectable()
-export class AdvMessagesService {
+export class AdvGrowlService {
 
     private message$: Subject<AdvPrimeMessage> = new Subject<AdvPrimeMessage>();
     private cancel$: Subject<any> = new Subject<any>();
