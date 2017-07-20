@@ -17,7 +17,6 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # AdvGrowlModul
-
 The AdvGrowlModule is a wrapper around the growl module from PrimeNG. This wrapper was created
 because PrimeNG is missing some features.
 
@@ -44,6 +43,13 @@ PrimeNGAdvancedGrowl is an node_module and therefore it is provided over npm. To
 are required.
 ```
 npm install --save prime-ng-advanced-growl
+```
+
+To have all the primeNG styles available you need to import the following stylesheets in your application:
+```
+"../node_modules/font-awesome/scss/font-awesome.scss",
+"../node_modules/primeng/resources/primeng.css",
+"../node_modules/primeng/resources/themes/omega/theme.scss"
 ```
 
 To use the AdvGrowlService and the AdvGrowlComponent you need to import the AdvGrowlModul in your appliction.
