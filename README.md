@@ -17,7 +17,6 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # AdvGrowlModul
-
 The AdvGrowlModule is a wrapper around the growl module from PrimeNG. This wrapper was created
 because PrimeNG is missing some features.
 
