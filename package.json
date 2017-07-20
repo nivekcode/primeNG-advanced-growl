@@ -1,13 +1,13 @@
 {
   "name": "primeng-advanced-growl",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "test-coverage": "ng test --code-coverachge",
+    "test-coverage": "ng test --code-coverage",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
     "lint": "ng lint --type-check"
   },
