@@ -1,20 +1,20 @@
 import {TestBed} from '@angular/core/testing';
 import {UUID} from 'angular2-uuid';
 import {GrowlModule} from 'primeng/primeng';
-import {AdvMessagesService} from './adv-growl-messages.service';
+import {AdvGrowlService} from './adv-growl.service';
 
 describe('Message Service', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [GrowlModule],
-            providers: [AdvMessagesService]
+            providers: [AdvGrowlService]
         });
     });
 
     it('should create a successmessage and stream it into the message subject', done => {
         // given
-        const sut = TestBed.get(AdvMessagesService);
+        const sut = TestBed.get(AdvGrowlService);
         const messageContent = 'Awesome Message';
         const messageSummary = 'Success';
         const id = 1;
@@ -36,7 +36,7 @@ describe('Message Service', () => {
 
     it('should create a errormessage and stream it into the message subject', done => {
         // given
-        const sut = TestBed.get(AdvMessagesService);
+        const sut = TestBed.get(AdvGrowlService);
         const messageContent = 'Awful Error';
         const messageSummary = 'Error';
         const id = 1;
@@ -58,7 +58,7 @@ describe('Message Service', () => {
 
     it('should create a infomessage and stream it into the message subject', done => {
         // given
-        const sut = TestBed.get(AdvMessagesService);
+        const sut = TestBed.get(AdvGrowlService);
         const messageContent = 'Super important information';
         const messageSummary = 'Information';
         const id = 1;
@@ -80,7 +80,7 @@ describe('Message Service', () => {
 
     it('should create a warningmessage and stream it into the message subject', done => {
         // given
-        const sut = TestBed.get(AdvMessagesService);
+        const sut = TestBed.get(AdvGrowlService);
         const messageContent = 'Super important warning';
         const messageSummary = 'Warning';
         const id = 1;
@@ -102,7 +102,7 @@ describe('Message Service', () => {
 
     it('should stream a new message in the clearStream when calling clearMessages', done => {
         // given
-        const sut = TestBed.get(AdvMessagesService);
+        const sut = TestBed.get(AdvGrowlService);
         sut.getCancelStream()
             .subscribe(e => done());
         // when

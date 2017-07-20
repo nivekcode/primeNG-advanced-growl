@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {ButtonModule} from 'primeng/primeng';
-import {AdvMessagesModule} from '../../lib/messages/adv-growl-messages.module';
+import {AdvGrowlModule} from '../../lib/messages/adv-growl.module';
 
 @NgModule({
     declarations: [
@@ -12,7 +12,7 @@ import {AdvMessagesModule} from '../../lib/messages/adv-growl-messages.module';
     imports: [
         BrowserModule,
         ButtonModule,
-        AdvMessagesModule
+        AdvGrowlModule
     ],
     providers: [],
     bootstrap: [AppComponent]
