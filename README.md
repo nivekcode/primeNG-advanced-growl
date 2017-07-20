@@ -46,6 +46,13 @@ are required.
 npm install --save prime-ng-advanced-growl
 ```
 
+To have all the primeNG styles available you need to import the following stylesheets in your application:
+```
+"../node_modules/font-awesome/scss/font-awesome.scss",
+"../node_modules/primeng/resources/primeng.css",
+"../node_modules/primeng/resources/themes/omega/theme.scss"
+```
+
 To use the AdvGrowlService and the AdvGrowlComponent you need to import the AdvGrowlModul in your appliction.
 ```javascript
 import {AdvGrowlModule} from 'prime-ng-advanced-growl';
