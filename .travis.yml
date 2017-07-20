@@ -28,4 +28,5 @@ deploy:
   email: kevin.kreuzer90@icloud.com
   api_key: ${NPM_KEY}
   on:
+    branch: master
     tags: true
