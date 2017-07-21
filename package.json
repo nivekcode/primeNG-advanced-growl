@@ -1,6 +1,6 @@
 {
   "name": "primeng-advanced-growl",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -11,7 +11,18 @@
     "report-coverage": "cat ./coverage/lcov.info | codecov",
     "lint": "ng lint --type-check"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kreuzerk/primeNG-advanced-growl.git"
+  },
   "peerDependencies": {
+    "@angular/core": "^4.2.4",
+    "angular2-uuid": "^1.1.1",
+    "font-awesome": "^4.7.0",
+    "primeng": "^4.1.1",
+    "rxjs": "^5.1.0"
+  },
+  "dependencies": {
     "@angular/core": "^4.2.4",
     "angular2-uuid": "^1.1.1",
     "font-awesome": "^4.7.0",

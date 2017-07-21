@@ -30,7 +30,7 @@ when a message gets created 2 seconds after the first message. This message will
 the specified 3 seconds. This message will be removed 1 seconds after creation. This is the point where
 the 3 seconds from the first message have passed.
 
-## What does the AdvGrowlModule is offering?
+## What is the AdvGrowlModule offering?
 - The AdvGrowlModule provides you the sticky feature with a unique lifetime for each message. The specified
 lifetime is unique for each message. The growl message will only disappear after the given time has elapsed
 or you pressed the cancel button on the growl message.
@@ -87,8 +87,8 @@ The advanced growl messages component has the following in- and outputs.
 
 #### Output
 
+| Event | Description |
 | onClose | Throws an event with the closed message |
-|---------|-----------------------------------------|
 
 ### AdvGrowlService
 The AdvGrowlService allows you to create and delete messages. The AdvGrowlService
