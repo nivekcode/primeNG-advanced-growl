@@ -42,7 +42,7 @@ With the help of this service you have a central way to create growl messages.
 PrimeNGAdvancedGrowl is an node_module and therefore it is provided over npm. To install it node and npm
 are required.
 ```
-npm install --save prime-ng-advanced-growl
+npm install --save primeng-advanced-growl
 ```
 
 To have all the primeNG styles available you need to import the following stylesheets in your application:
@@ -54,7 +54,7 @@ To have all the primeNG styles available you need to import the following styles
 
 To use the AdvGrowlService and the AdvGrowlComponent you need to import the AdvGrowlModul in your appliction.
 ```javascript
-import {AdvGrowlModule} from 'prime-ng-advanced-growl';
+import {AdvGrowlModule} from 'primeng-advanced-growl';
 
 @NgModule({
     declarations: [AppComponent],
@@ -88,6 +88,7 @@ The advanced growl messages component has the following in- and outputs.
 #### Output
 
 | Event | Description |
+|-------|-------------|
 | onClose | Throws an event with the closed message |
 
 ### AdvGrowlService
