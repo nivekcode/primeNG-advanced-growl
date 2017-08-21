@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {AdvGrowlService} from '../../lib/messages/adv-growl.service';
+import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
 
 @Component({
     selector: 'app-root',
@@ -28,5 +29,9 @@ export class AppComponent {
 
     public clearMessages(): void {
         this.advMessagesService.clearMessages();
+    }
+
+    public logMessage(message: AdvPrimeMessage) {
+        console.log('You clicked on message', message)
     }
 }
