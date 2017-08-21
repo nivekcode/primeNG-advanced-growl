@@ -31,11 +31,12 @@ describe('Message Component', () => {
         component = fixture.componentInstance;
     });
 
-    describe('Subscribe for messages', () => {
 
-        const createMessage = (id: string, severity: string, summary: string, detail: string): AdvPrimeMessage => (
-            {id, severity, summary, detail}
-        );
+    const createMessage = (id: string, severity: string, summary: string, detail: string): AdvPrimeMessage => (
+        {id, severity, summary, detail}
+    );
+
+    describe('Subscribe for messages', () => {
 
         it(`should add all arriving messages and not emit a new value which indicates that
             none of the messages should be removed`,
@@ -173,53 +174,53 @@ describe('Message Component', () => {
                 // when then
                 expect(() => component.subscribeForMessages()).toThrowError(errorMessage);
             }));
+    })
 
-        fdescribe('Emitting Clicks', () => {
+    describe('Emitting Clicks', () => {
 
-            it('should call the emitter when the event has a message', () => {
-                // given
-                const emitter = new EventEmitter<AdvPrimeMessage>();
-                spyOn(emitter, 'next')
-                const message = createMessage('1', 'succes', 'Summary', 'Super detail')
-                const $event = {message}
-                // when
-                component.emitMessage($event, emitter)
-                // then
-                expect(emitter.next).toHaveBeenCalledWith(message)
-            })
+        it('should call the emitter when the event has a message', () => {
+            // given
+            const emitter = new EventEmitter<AdvPrimeMessage>();
+            spyOn(emitter, 'next')
+            const message = createMessage('1', 'succes', 'Summary', 'Super detail')
+            const $event = {message}
+            // when
+            component.emitMessage($event, emitter)
+            // then
+            expect(emitter.next).toHaveBeenCalledWith(message)
+        })
 
-            it('should not call the emitter when the event does not contain a message', () => {
-                // given
-                const emitter = new EventEmitter<AdvPrimeMessage>();
-                spyOn(emitter, 'next')
-                const $event = {}
+        it('should not call the emitter when the event does not contain a message', () => {
+            // given
+            const emitter = new EventEmitter<AdvPrimeMessage>();
+            spyOn(emitter, 'next')
+            const $event = {}
 
-                // when
-                component.emitMessage($event, emitter)
+            // when
+            component.emitMessage($event, emitter)
 
-                // then
-                expect(emitter.next).not.toHaveBeenCalled()
-            })
+            // then
+            expect(emitter.next).not.toHaveBeenCalled()
+        })
 
-            it('should call emit with the event and the onClick emitter when a message is clicked', () => {
-                // given
-                const $event = {message: 'Sample Message'}
-                spyOn(component, 'emitMessage')
-                // when
-                component.messageClicked($event)
-                // then
-                expect(component.emitMessage).toHaveBeenCalledWith($event, component.onClick)
-            })
+        it('should call emit with the event and the onClick emitter when a message is clicked', () => {
+            // given
+            const $event = {message: 'Sample Message'}
+            spyOn(component, 'emitMessage')
+            // when
+            component.messageClicked($event)
+            // then
+            expect(component.emitMessage).toHaveBeenCalledWith($event, component.onClick)
+        })
 
-            it('should call emit with the event and the onClose emitter when a message is closed', () => {
-                // given
-                const $event = {message: 'Sample Message'}
-                spyOn(component, 'emitMessage')
-                // when
-                component.messageClicked($event)
-                // then
-                expect(component.emitMessage).toHaveBeenCalledWith($event, component.onClose)
-            })
+        it('should call emit with the event and the onClose emitter when a message is closed', () => {
+            // given
+            const $event = {message: 'Sample Message'}
+            spyOn(component, 'emitMessage')
+            // when
+            component.messageClicked($event)
+            // then
+            expect(component.emitMessage).toHaveBeenCalledWith($event, component.onClose)
         })
     })
 })
