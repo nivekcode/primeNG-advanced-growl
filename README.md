@@ -12,6 +12,7 @@
     - [AdvGrowlComponent](#advgrowlcomponent)
       - [Input](#input)
       - [Output](#output)
+    - [Models](#models)
     - [AdvGrowlService](#advgrowlservice)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -89,7 +90,18 @@ The advanced growl messages component has the following in- and outputs.
 
 | Event | Description |
 |-------|-------------|
-| onClose | Throws an event with the closed message |
+| onClose | Throws an event with the closed message. This message is from type AdvPrimeMessage. |
+| onClick | Throws an event with the message from the clicked element. This message is from type AdvPrimeMessage. |
+
+### Models
+```javascript
+export interface AdvPrimeMessage {
+    id: string;
+    severity: string;
+    summary: string;
+    detail: string;
+}
+```
 
 ### AdvGrowlService
 The AdvGrowlService allows you to create and delete messages. The AdvGrowlService

@@ -24,7 +24,8 @@ export class AdvGrowlComponent {
     @Input() style: any;
     @Input() styleClass: any;
     @Input() life = DEFAULT_LIFETIME;
-    @Output() onClose = new EventEmitter<any>();
+    @Output() onClose = new EventEmitter<AdvPrimeMessage>();
+    @Output() onClick = new EventEmitter<AdvPrimeMessage>();
 
     constructor(private messageService: AdvGrowlService) {
         this.subscribeForMessages();
@@ -61,6 +62,17 @@ export class AdvGrowlComponent {
     }
 
     public messageClosed($event) {
-        this.onClose.next($event);
+        this.emitMessage($event, this.onClose)
+    }
+
+    public messageClicked($event): void {
+        this.emitMessage($event, this.onClick)
+    }
+
+    emitMessage($event, emitter: EventEmitter<AdvPrimeMessage>) {
+        const message = $event.message
+        if (message) {
+            emitter.next(message)
+        }
     }
 }
