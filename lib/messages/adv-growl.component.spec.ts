@@ -170,7 +170,6 @@ describe('Message Component', () => {
                 const errorMessage = 'Awful error';
                 const messages$ = Observable.throw(new Error(errorMessage));
                 spyOn(messagesService, 'getMessageStream').and.returnValue(messages$);
-
                 // when then
                 expect(() => component.subscribeForMessages()).toThrowError(errorMessage);
             }));
@@ -195,10 +194,8 @@ describe('Message Component', () => {
             const emitter = new EventEmitter<AdvPrimeMessage>();
             spyOn(emitter, 'next')
             const $event = {}
-
             // when
             component.emitMessage($event, emitter)
-
             // then
             expect(emitter.next).not.toHaveBeenCalled()
         })
@@ -218,7 +215,7 @@ describe('Message Component', () => {
             const $event = {message: 'Sample Message'}
             spyOn(component, 'emitMessage')
             // when
-            component.messageClicked($event)
+            component.messageClosed($event)
             // then
             expect(component.emitMessage).toHaveBeenCalledWith($event, component.onClose)
         })
