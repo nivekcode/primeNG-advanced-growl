@@ -12,6 +12,7 @@
     - [AdvGrowlComponent](#advgrowlcomponent)
       - [Input](#input)
       - [Output](#output)
+    - [Models](#models)
     - [AdvGrowlService](#advgrowlservice)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
