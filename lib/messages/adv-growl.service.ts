@@ -29,24 +29,27 @@ export class AdvGrowlService {
     constructor() {
     }
 
-    public createSuccessMessage(messageContent: string, summary: string): void {
-        this.createMessage(MessageSeverities.SUCCESS, summary, messageContent);
+    public createSuccessMessage(messageContent: string, summary: string, extra?: any): void {
+        this.createMessage(MessageSeverities.SUCCESS, summary, messageContent, extra);
     }
 
-    public createInfoMessage(messageContent: string, summary: string): void {
-        this.createMessage(MessageSeverities.INFO, summary, messageContent);
+    public createInfoMessage(messageContent: string, summary: string, extra?: any): void {
+        this.createMessage(MessageSeverities.INFO, summary, messageContent, extra);
     }
 
-    public createWarningMessage(messageContent: string, summary: string): void {
-        this.createMessage(MessageSeverities.WARN, summary, messageContent);
+    public createWarningMessage(messageContent: string, summary: string, extra?: any): void {
+        this.createMessage(MessageSeverities.WARN, summary, messageContent, extra);
     }
 
-    public createErrorMessage(messageContent: string, summary: string): void {
-        this.createMessage(MessageSeverities.ERROR, summary, messageContent);
+    public createErrorMessage(messageContent: string, summary: string, extra?: any): void {
+        this.createMessage(MessageSeverities.ERROR, summary, messageContent, extra);
     }
 
-    private createMessage(severity: string, summary: string, detail: string): void {
-        this.message$.next({id: UUID.UUID(), severity, summary, detail});
+    private createMessage(severity: string, summary: string, detail: string, extra?: any): void {
+        if(extra)
+            this.message$.next({id: UUID.UUID(), severity, summary, detail, extra});
+        else
+            this.message$.next({id: UUID.UUID(), severity, summary, detail});
     }
 
     public clearMessages(): void {

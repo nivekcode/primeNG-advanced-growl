@@ -6,4 +6,5 @@ export interface AdvPrimeMessage {
     severity: string;
     summary: string;
     detail: string;
+    extra?: any;
 }
