@@ -90,8 +90,9 @@ The advanced growl messages component has the following in- and outputs.
 
 | Event | Description |
 |-------|-------------|
-| onClose | Throws an event with the closed message. This message is from type AdvPrimeMessage. |
-| onClick | Throws an event with the message from the clicked element. This message is from type AdvPrimeMessage. |
+| onClose: EventEmitter<AdvPrimeMessage>| Emits an event with the closed message. This message is from type AdvPrimeMessage. |
+| onClick: EventEmitter<AdvPrimeMessage>| Emits an event with the message from the clicked element. This message is from type AdvPrimeMessage. |
+|onMessagesChanges: EventEmitter<Array<AdvPrimeMessage>>|Each time a message is created or removed it emits an array of all messages shown on the screen. If you subscribe to this emitter you always know which messages are on the screen.|
 
 ### Models
 ```javascript
@@ -130,4 +131,48 @@ the message content and a message title.
 - createErrorMessage(messageContent: string, summary: string): void
 
 To clear all messages you can call the **clearMessages()** method from the AdvGrowlService.
+
+### Examples
+Inside the test folder you can find different examples how to use the library. Below we listed some code samples for common use cases.
+
+#### Avoid creating success messages with same Summary
+If we want to avoid the creation of multiple messages with the same summary or type we could do the following inside our component.
+```javascript
+import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
+
+@Component({
+    selector: 'sample-app',
+    template: `<adv-growl [life]="2500"
+                (onMessagesChanges)="onMessages($event)">
+               </adv-growl>
+               <button pButton type="button"
+                    (click)="createNonDuplicatedSuccessMessage()"
+                    class="ui-button-success"
+                    label="Create success message if none on screen">
+               </button>
+               `
+})
+export class AppComponent {
+
+    messages = [];
+
+    constructor(private advMessagesService: AdvGrowlService) {
+    }
+
+    public createSuccessMessage(): void {
+        this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success');
+    }
+
+    public onMessages(messages) {
+        this.messages = messages;
+    }
+
+    public createNonDuplicatedSuccessMessage(): void {
+        const index = this.messages.findIndex(message => message.summary === 'Awesome success');
+        if (index < 0) {
+            this.createSuccessMessage()
+        }
+    }
+}
+```
 

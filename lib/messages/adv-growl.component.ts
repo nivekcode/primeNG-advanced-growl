@@ -26,6 +26,8 @@ export class AdvGrowlComponent {
     @Input() life = DEFAULT_LIFETIME;
     @Output() onClose = new EventEmitter<AdvPrimeMessage>();
     @Output() onClick = new EventEmitter<AdvPrimeMessage>();
+    @Output() onMessagesChanges = new EventEmitter<Array<AdvPrimeMessage>>();
+
 
     constructor(private messageService: AdvGrowlService) {
         this.subscribeForMessages();
@@ -34,7 +36,10 @@ export class AdvGrowlComponent {
     public subscribeForMessages() {
         this.messages = [];
         this.messageService.getMessageStream()
-            .do(message => this.messages.push(message))
+            .do(message => {
+                this.messages.push(message);
+                this.onMessagesChanges.emit(this.messages);
+             })
             .mergeMap(message => this.getLifeTimeStream(message.id))
             .takeUntil(this.messageService.getCancelStream())
             .subscribe(
@@ -50,6 +55,7 @@ export class AdvGrowlComponent {
         const index = this.messages.findIndex(message => message.id === messageId);
         if (index >= 0) {
             this.messages.splice(index, 1);
+            this.onMessagesChanges.emit(this.messages);
         }
     }
 

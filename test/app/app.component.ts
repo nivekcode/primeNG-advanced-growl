@@ -8,6 +8,8 @@ import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
 })
 export class AppComponent {
 
+    messages = [];
+
     constructor(private advMessagesService: AdvGrowlService) {
     }
 
@@ -33,5 +35,20 @@ export class AppComponent {
 
     public logMessage(message: AdvPrimeMessage) {
         console.log('You clicked on message', message)
+    }
+
+    public logClose(message: AdvPrimeMessage) {
+        console.log('You closed message', message)
+    }
+
+    public onMessages(messages) {
+        this.messages = messages;
+    }
+
+    public createNonDuplicatedSuccessMessage(): void {
+        const index = this.messages.findIndex(message => message.summary === 'Awesome success');
+        if (index < 0) {
+            this.createSuccessMessage()
+        }
     }
 }
