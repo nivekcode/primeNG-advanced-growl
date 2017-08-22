@@ -101,6 +101,7 @@ export interface AdvPrimeMessage {
     severity: string;
     summary: string;
     detail: string;
+    extra?: any;
 }
 ```
 
@@ -109,7 +110,7 @@ The AdvGrowlService allows you to create and delete messages. The AdvGrowlServic
 can be accessed over dependency injection inside your component.
 
 ```javascript
-import {AdvGrowlService} from 'prime-ng-advanced-growl';
+import {AdvGrowlService} from 'primeng-advanced-growl';
 
 @Component({
     selector: ...,
@@ -125,10 +126,10 @@ export class SampleComponent{
 The AdvGrowlService provides the following methods to create messages. Each method expects
 the message content and a message title.
 
-- createSuccessMessage(messageContent: string, summary: string): void
-- createInfoMessage(messageContent: string, summary: string): void
-- createWarningMessage(messageContent: string, summary: string): void
-- createErrorMessage(messageContent: string, summary: string): void
+- createSuccessMessage(messageContent: string, summary: string, extra?: any): void
+- createInfoMessage(messageContent: string, summary: string, extra?: any): void
+- createWarningMessage(messageContent: string, summary: string, extra?: any): void
+- createErrorMessage(messageContent: string, summary: string, extra?: any): void
 
 To clear all messages you can call the **clearMessages()** method from the AdvGrowlService.
 
@@ -160,7 +161,9 @@ export class AppComponent {
     }
 
     public createSuccessMessage(): void {
-        this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success');
+        this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success', {
+          clickMessage: 'Awesome click'
+        });
     }
 
     public onMessages(messages) {
@@ -172,6 +175,13 @@ export class AppComponent {
         if (index < 0) {
             this.createSuccessMessage()
         }
+    }
+    
+    public logMessage(message: AdvPrimeMessage) {
+        if(message.extra){
+            console.log(message.extra.clickMessage)
+        }else
+            console.log('You clicked on message', message)
     }
 }
 ```
