@@ -29,27 +29,28 @@ export class AdvGrowlService {
     constructor() {
     }
 
-    public createSuccessMessage(messageContent: string, summary: string, extra?: any): void {
-        this.createMessage(MessageSeverities.SUCCESS, summary, messageContent, extra);
+    public createSuccessMessage(messageContent: string, summary: string, additionalProperties?: any): void {
+        this.createMessage(MessageSeverities.SUCCESS, summary, messageContent, additionalProperties);
     }
 
-    public createInfoMessage(messageContent: string, summary: string, extra?: any): void {
-        this.createMessage(MessageSeverities.INFO, summary, messageContent, extra);
+    public createInfoMessage(messageContent: string, summary: string, additionalProperties?: any): void {
+        this.createMessage(MessageSeverities.INFO, summary, messageContent, additionalProperties);
     }
 
-    public createWarningMessage(messageContent: string, summary: string, extra?: any): void {
-        this.createMessage(MessageSeverities.WARN, summary, messageContent, extra);
+    public createWarningMessage(messageContent: string, summary: string, additionalProperties?: any): void {
+        this.createMessage(MessageSeverities.WARN, summary, messageContent, additionalProperties);
     }
 
-    public createErrorMessage(messageContent: string, summary: string, extra?: any): void {
-        this.createMessage(MessageSeverities.ERROR, summary, messageContent, extra);
+    public createErrorMessage(messageContent: string, summary: string, additionalProperties?: any): void {
+        this.createMessage(MessageSeverities.ERROR, summary, messageContent, additionalProperties);
     }
 
-    private createMessage(severity: string, summary: string, detail: string, extra?: any): void {
-        if(extra)
-            this.message$.next({id: UUID.UUID(), severity, summary, detail, extra});
-        else
+    private createMessage(severity: string, summary: string, detail: string, additionalProperties?: any): void {
+        if (additionalProperties) {
+            this.message$.next({id: UUID.UUID(), severity, summary, detail, additionalProperties});
+        } else {
             this.message$.next({id: UUID.UUID(), severity, summary, detail});
+        }
     }
 
     public clearMessages(): void {
