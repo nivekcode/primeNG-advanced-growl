@@ -101,6 +101,7 @@ export interface AdvPrimeMessage {
     severity: string;
     summary: string;
     detail: string;
+    additionalProperties?: any;
 }
 ```
 
@@ -109,7 +110,7 @@ The AdvGrowlService allows you to create and delete messages. The AdvGrowlServic
 can be accessed over dependency injection inside your component.
 
 ```javascript
-import {AdvGrowlService} from 'prime-ng-advanced-growl';
+import {AdvGrowlService} from 'primeng-advanced-growl';
 
 @Component({
     selector: ...,
@@ -125,10 +126,10 @@ export class SampleComponent{
 The AdvGrowlService provides the following methods to create messages. Each method expects
 the message content and a message title.
 
-- createSuccessMessage(messageContent: string, summary: string): void
-- createInfoMessage(messageContent: string, summary: string): void
-- createWarningMessage(messageContent: string, summary: string): void
-- createErrorMessage(messageContent: string, summary: string): void
+- createSuccessMessage(messageContent: string, summary: string, additionalProperties?: any): void
+- createInfoMessage(messageContent: string, summary: string, additionalProperties?: any): void
+- createWarningMessage(messageContent: string, summary: string, additionalProperties?: any): void
+- createErrorMessage(messageContent: string, summary: string, additionalProperties?: any): void
 
 To clear all messages you can call the **clearMessages()** method from the AdvGrowlService.
 
@@ -160,7 +161,9 @@ export class AppComponent {
     }
 
     public createSuccessMessage(): void {
-        this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success');
+        this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success', {
+          clickMessage: 'Awesome click'
+        });
     }
 
     public onMessages(messages) {
@@ -176,3 +179,45 @@ export class AppComponent {
 }
 ```
 
+#### Passing additional properties to the message
+If you want to pass some additional informations to your message you can do this by passing those as last
+optional parameter to the success, warning, info or error method. When you click on your message the event
+will then contain your additionalProperties.
+```javascript
+import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
+
+@Component({
+    selector: 'sample-app',
+    template: `<adv-growl [life]="2500"
+                (onMessagesChanges)="onMessages($event)"
+                (onClick)="logMessage($event)">
+               </adv-growl>
+               <button pButton type="button"
+                    (click)="createSuccessMessageWithAdditionalInfos()"
+                    class="ui-button-success"
+                    label="Create success message with additional properties">
+               </button>
+               `
+})
+export class AppComponent {
+
+    messages = [];
+
+    constructor(private advMessagesService: AdvGrowlService) {
+    }
+
+    public createSuccessMessageWithAdditionalInfos(): void {
+        this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success', {
+          clickMessage: 'Awesome click'
+        });
+    }
+
+    public logMessage(message: AdvPrimeMessage) {
+        if (message.additionalProperties) {
+            console.log(message.additionalProperties.clickMessage)
+        } else {
+            console.log('You clicked on message', message)
+        }
+    }
+}
+```

@@ -21,6 +21,12 @@ export class AppComponent {
         this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success');
     }
 
+    public createSuccessMessageWithAdditionalInfos(): void {
+        this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success', {
+            clickMessage: 'Awesome click'
+        });
+    }
+
     public createWarningMessage(): void {
         this.advMessagesService.createWarningMessage('Important warning content', 'Important warning');
     }
@@ -34,7 +40,11 @@ export class AppComponent {
     }
 
     public logMessage(message: AdvPrimeMessage) {
-        console.log('You clicked on message', message)
+        if (message.additionalProperties) {
+            console.log(message.additionalProperties.clickMessage)
+        } else {
+            console.log('You clicked on message', message)
+        }
     }
 
     public logClose(message: AdvPrimeMessage) {
