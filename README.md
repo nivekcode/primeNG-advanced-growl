@@ -193,9 +193,9 @@ import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
                 (onClick)="logMessage($event)">
                </adv-growl>
                <button pButton type="button"
-                    (click)="createNonDuplicatedSuccessMessage()"
+                    (click)="createSuccessMessageWithAdditionalInfos()"
                     class="ui-button-success"
-                    label="Create success message if none on screen">
+                    label="Create success message with additional properties">
                </button>
                `
 })
