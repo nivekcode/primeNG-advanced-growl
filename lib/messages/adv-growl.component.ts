@@ -28,7 +28,6 @@ export class AdvGrowlComponent {
     @Output() onClick = new EventEmitter<AdvPrimeMessage>();
     @Output() onMessagesChanges = new EventEmitter<Array<AdvPrimeMessage>>();
 
-
     constructor(private messageService: AdvGrowlService) {
         this.subscribeForMessages();
     }

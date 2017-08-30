@@ -14,6 +14,7 @@
       - [Output](#output)
     - [Models](#models)
     - [AdvGrowlService](#advgrowlservice)
+    - [Examples](#examples)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
