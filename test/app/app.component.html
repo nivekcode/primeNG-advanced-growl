@@ -2,7 +2,8 @@
     <h1>
         Test of the advanced growl messages
     </h1>
-    <adv-growl [life]="2500" (onClick)="logMessage($event)" (onClose)="logClose($event)" (onMessagesChanges)="onMessages($event)"></adv-growl>
+    <adv-growl [life]="2500" (onClick)="logMessage($event)" (onClose)="logClose($event)"
+               (onMessagesChanges)="onMessages($event)"></adv-growl>
     <button pButton type="button" (click)="createSuccessMessage()"
             class="ui-button-success" label="Create success message"></button>
     <button pButton type="button" (click)="createInfoMessage()"
@@ -15,5 +16,7 @@
             class="ui-button-default" label="Clear all messages"></button>
     <button pButton type="button" (click)="createNonDuplicatedSuccessMessage()"
             class="ui-button-success" label="Create success message if none on screen"></button>
+    <button pButton type="button" (click)="createSuccessMessageWithAdditionalInfos()"
+            class="ui-button-success" label="Create success message with additional click infos"></button>
 </div>
 
