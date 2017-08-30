@@ -6,7 +6,7 @@
 
 - [AdvGrowlModul](#advgrowlmodul)
   - [What is missing on PrimeNG?](#what-is-missing-on-primeng)
-  - [What does the AdvGrowlModule is offering?](#what-does-the-advgrowlmodule-is-offering)
+  - [What is the AdvGrowlModule offering?](#what-is-the-advgrowlmodule-offering)
   - [How do you use PrimeNGAdvancedGrowl?](#how-do-you-use-primengadvancedgrowl)
     - [installation](#installation)
     - [AdvGrowlComponent](#advgrowlcomponent)
@@ -15,6 +15,8 @@
     - [Models](#models)
     - [AdvGrowlService](#advgrowlservice)
     - [Examples](#examples)
+      - [Avoid creating success messages with same Summary](#avoid-creating-success-messages-with-same-summary)
+      - [Passing additional properties to the message](#passing-additional-properties-to-the-message)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
