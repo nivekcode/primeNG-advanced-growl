@@ -1,16 +1,19 @@
 /**
  * Created by kevinkreuzer on 08.07.17.
  */
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import 'rxjs/add/observable/empty';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/mapTo';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/observable/never';
 import {Observable} from 'rxjs/Observable';
 import {AdvPrimeMessage} from './adv-growl.model';
 import {AdvGrowlService} from './adv-growl.service';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 const DEFAULT_LIFETIME = 0;
 
@@ -18,9 +21,8 @@ const DEFAULT_LIFETIME = 0;
     selector: 'adv-growl',
     templateUrl: './adv-growl.component.html'
 })
-export class AdvGrowlComponent {
+export class AdvGrowlComponent implements OnInit {
 
-    public messages: Array<AdvPrimeMessage> = [];
     @Input() style: any;
     @Input() styleClass: any;
     @Input() life = DEFAULT_LIFETIME;
@@ -28,8 +30,24 @@ export class AdvGrowlComponent {
     @Output() onClick = new EventEmitter<AdvPrimeMessage>();
     @Output() onMessagesChanges = new EventEmitter<Array<AdvPrimeMessage>>();
 
+    @ViewChild('growlMessage', {read: ElementRef}) growlMessage;
+
+    public messages: Array<AdvPrimeMessage> = [];
+    private scheduler = new BehaviorSubject<boolean>(false)
+
     constructor(private messageService: AdvGrowlService) {
-        this.subscribeForMessages();
+    }
+
+    ngOnInit(): void {
+        this.setupStreams()
+        this.subscribeForMessages()
+    }
+
+    private setupStreams() {
+        Observable.fromEvent(this.growlMessage.nativeElement, 'mouseenter')
+            .subscribe(e => this.scheduler.next(true))
+        Observable.fromEvent(this.growlMessage.nativeElement, 'mouseleave')
+            .subscribe(e => this.scheduler.next(false))
     }
 
     public subscribeForMessages() {
@@ -38,7 +56,7 @@ export class AdvGrowlComponent {
             .do(message => {
                 this.messages.push(message);
                 this.onMessagesChanges.emit(this.messages);
-             })
+            })
             .mergeMap(message => this.getLifeTimeStream(message.id))
             .takeUntil(this.messageService.getCancelStream())
             .subscribe(
@@ -60,10 +78,11 @@ export class AdvGrowlComponent {
 
     public getLifeTimeStream(messageId: string): Observable<any> {
         if (this.life > DEFAULT_LIFETIME) {
-            return Observable.timer(this.life)
+            return this.scheduler
+                .switchMap(pause => pause ? Observable.never() : Observable.timer(this.life))
                 .mapTo(messageId);
         }
-        return Observable.empty();
+        return Observable.never();
     }
 
     public messageClosed($event) {
