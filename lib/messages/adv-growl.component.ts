@@ -15,7 +15,8 @@ import {AdvPrimeMessage} from './adv-growl.model';
 import {AdvGrowlService} from './adv-growl.service';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
-const DEFAULT_LIFETIME = 0;
+const DEFAULT_LIFETIME = 0
+const FREEZE_MESSAGES_DEFAULT = false
 
 @Component({
     selector: 'adv-growl',
@@ -26,7 +27,7 @@ export class AdvGrowlComponent implements OnInit {
     @Input() style: any;
     @Input() styleClass: any;
     @Input() life = DEFAULT_LIFETIME;
-    @Input() freezeMessagesOnHover = false;
+    @Input() freezeMessagesOnHover = FREEZE_MESSAGES_DEFAULT;
     @Output() onClose = new EventEmitter<AdvPrimeMessage>();
     @Output() onClick = new EventEmitter<AdvPrimeMessage>();
     @Output() onMessagesChanges = new EventEmitter<Array<AdvPrimeMessage>>();
