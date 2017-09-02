@@ -26,6 +26,7 @@ export class AdvGrowlComponent implements OnInit {
     @Input() style: any;
     @Input() styleClass: any;
     @Input() life = DEFAULT_LIFETIME;
+    @Input() freezeMessagesOnHover = false;
     @Output() onClose = new EventEmitter<AdvPrimeMessage>();
     @Output() onClick = new EventEmitter<AdvPrimeMessage>();
     @Output() onMessagesChanges = new EventEmitter<Array<AdvPrimeMessage>>();
@@ -78,11 +79,22 @@ export class AdvGrowlComponent implements OnInit {
 
     public getLifeTimeStream(messageId: string): Observable<any> {
         if (this.life > DEFAULT_LIFETIME) {
-            return this.scheduler
-                .switchMap(pause => pause ? Observable.never() : Observable.timer(this.life))
+            const lifetimeStream = this.freezeMessagesOnHover ? this.getSchedueLifeTimeStream()
+                : this.getUnscheduledLifeTimeStream()
+            return lifetimeStream
                 .mapTo(messageId);
+
         }
         return Observable.never();
+    }
+
+    private getSchedueLifeTimeStream() {
+        return this.scheduler
+            .switchMap(pause => pause ? Observable.never() : Observable.timer(this.life))
+    }
+
+    private getUnscheduledLifeTimeStream() {
+        return Observable.timer(this.life)
     }
 
     public messageClosed($event) {

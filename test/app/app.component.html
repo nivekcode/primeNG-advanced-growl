@@ -2,7 +2,7 @@
     <h1>
         Test of the advanced growl messages
     </h1>
-    <adv-growl [life]="2500" (onClick)="logMessage($event)" (onClose)="logClose($event)"
+    <adv-growl [life]="2500" [freezeMessagesOnHover]="true" (onClick)="logMessage($event)" (onClose)="logClose($event)"
                (onMessagesChanges)="onMessages($event)"></adv-growl>
     <button pButton type="button" (click)="createSuccessMessage()"
             class="ui-button-success" label="Create success message"></button>
