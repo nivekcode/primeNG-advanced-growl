@@ -38,6 +38,17 @@ describe('Message Component', () => {
 
     describe('Setup and initialization', () => {
 
+        it('should setup the streams and subscribe for messages on init', () => {
+            // given
+            spyOn(component, 'setupStreams')
+            spyOn(component, 'subscribeForMessages')
+            // when
+            component.ngOnInit()
+            // then
+            expect(component.setupStreams)
+            expect(component.subscribeForMessages)
+        })
+
         it('should call the scheduler with true when a mouseenter event occures', () => {
             // given
             spyOn(Observable, 'fromEvent').and.returnValues(Observable.of(1), Observable.never())
