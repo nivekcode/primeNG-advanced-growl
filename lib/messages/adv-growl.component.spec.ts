@@ -130,7 +130,7 @@ describe('Message Component', () => {
         );
 
         it(`it should call unshift in subscribe until the clearStream emits a value,
- in this case it should automatically resubscribe to the messagestream`,
+            in this case it should automatically resubscribe to the messagestream`,
             inject([AdvGrowlService], (messagesService: AdvGrowlService) => {
                 // given
                 let numberOfCalls = 0;
@@ -199,6 +199,31 @@ describe('Message Component', () => {
     })
 
     describe('Get Life time streams', () => {
+
+        it('should get the scheduled life time stream when freezeMessagesOnHover is set to true', () => {
+            // given
+            const messageId = 'Awesome Id'
+            component.life = 2000
+            component.freezeMessagesOnHover = true
+            spyOn(component, 'getSchedueLifeTimeStream').and.returnValue(Observable.of(1))
+            // when
+            component.getLifeTimeStream(messageId)
+            // then
+            expect(component.getSchedueLifeTimeStream).toHaveBeenCalled()
+        })
+
+        it('should get the unscheduled life time stream when freezeMessagesOnHover is set to false', () => {
+            // given
+            const messageId = 'Awesome Id'
+            component.life = 2000
+            component.freezeMessagesOnHover = false
+            spyOn(component, 'getUnscheduledLifeTimeStream').and.returnValue(Observable.of(1))
+            // when
+            component.getLifeTimeStream(messageId)
+            // then
+            expect(component.getUnscheduledLifeTimeStream).toHaveBeenCalled()
+        })
+
 
         it('should return a stream that emits after a given lifetime', () => {
             // given
