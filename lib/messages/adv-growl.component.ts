@@ -34,7 +34,7 @@ export class AdvGrowlComponent implements OnInit {
     @ViewChild('growlMessage', {read: ElementRef}) growlMessage;
 
     public messages: Array<AdvPrimeMessage> = [];
-    private scheduler = new BehaviorSubject<boolean>(false)
+    scheduler = new BehaviorSubject<boolean>(false)
 
     constructor(private messageService: AdvGrowlService) {
     }
@@ -44,7 +44,7 @@ export class AdvGrowlComponent implements OnInit {
         this.subscribeForMessages()
     }
 
-    private setupStreams() {
+    setupStreams() {
         Observable.fromEvent(this.growlMessage.nativeElement, 'mouseenter')
             .subscribe(e => this.scheduler.next(true))
         Observable.fromEvent(this.growlMessage.nativeElement, 'mouseleave')
@@ -88,12 +88,12 @@ export class AdvGrowlComponent implements OnInit {
         return Observable.never();
     }
 
-    private getSchedueLifeTimeStream() {
+    getSchedueLifeTimeStream() {
         return this.scheduler
             .switchMap(pause => pause ? Observable.never() : Observable.timer(this.life))
     }
 
-    private getUnscheduledLifeTimeStream() {
+    getUnscheduledLifeTimeStream() {
         return Observable.timer(this.life)
     }
 
