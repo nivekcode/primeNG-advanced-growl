@@ -1,22 +1,48 @@
-<div style="text-align:center">
-    <h1>
-        Test of the advanced growl messages
-    </h1>
-    <adv-growl [life]="2500" (onClick)="logMessage($event)" (onClose)="logClose($event)"
-               (onMessagesChanges)="onMessages($event)"></adv-growl>
-    <button pButton type="button" (click)="createSuccessMessage()"
-            class="ui-button-success" label="Create success message"></button>
-    <button pButton type="button" (click)="createInfoMessage()"
-            class="ui-button-info" label="Create info message"></button>
-    <button pButton type="button" (click)="createWarningMessage()"
-            class="ui-button-warning" label="Create warning message"></button>
-    <button pButton type="button" (click)="createErrorMessage()"
-            class="ui-button-danger" label="Create error message"></button>
-    <button pButton type="button" (click)="clearMessages()"
-            class="ui-button-default" label="Clear all messages"></button>
-    <button pButton type="button" (click)="createNonDuplicatedSuccessMessage()"
-            class="ui-button-success" label="Create success message if none on screen"></button>
-    <button pButton type="button" (click)="createSuccessMessageWithAdditionalInfos()"
-            class="ui-button-success" label="Create success message with additional click infos"></button>
-</div>
+<div class="container-fluid">
+    <div class="col-md-6">
+        <h1>
+            PrimeNG advanced growl
+        </h1>
 
+        <div class="jumbotron">
+            <h3>1. Choose a lifetime</h3>
+            <p>Choose a number that represents the lifetime of each growl message. If set to 3000 each message will be
+                disappear after 3 seconds. If no life param is passed to the components the default life time of 0 will
+                be used. This means that the growl messages are sticky and do not disappear until you call clearMessages
+                or click on the cancel x on a message</p>
+            <p>
+            <div class="form-group">
+                <label class="control-label" for="lifeTimeInput">Lifetime</label>
+                <input class="form-control" id="lifeTimeInput" type="number" value="0">
+            </div>
+        </div>
+
+        <div class="jumbotron">
+            <h3>2. Lets create some messages</h3>
+            <p>Next let's create some messages. The AdvGrowlService provides the following methods to create messages.
+                Each method expects the message content and a message title.
+            </p>
+            <button class="col-md-6 btn btn-success" (click)="createSuccessMessage()">Create success message</button>
+            <button class="col-md-6 btn btn-info" (click)="createInfoMessage()">Create info message</button>
+            <button class="col-md-6 btn btn-warning" (click)="createWarningMessage()">Create warning message</button>
+            <button class="col-md-6 btn btn-danger" (click)="createErrorMessage()">Create error message</button>
+        </div>
+
+        <adv-growl [life]="2500" (onClick)="logMessage($event)" (onClose)="logClose($event)"
+                   (onMessagesChanges)="onMessages($event)"></adv-growl>
+        <button pButton type="button" (click)="createSuccessMessage()"
+                class="ui-button-success" label="Create success message"></button>
+        <button pButton type="button" (click)="createInfoMessage()"
+                class="ui-button-info" label="Create info message"></button>
+        <button pButton type="button" (click)="createWarningMessage()"
+                class="ui-button-warning" label="Create warning message"></button>
+        <button pButton type="button" (click)="createErrorMessage()"
+                class="ui-button-danger" label="Create error message"></button>
+        <button pButton type="button" (click)="clearMessages()"
+                class="ui-button-default" label="Clear all messages"></button>
+        <button pButton type="button" (click)="createNonDuplicatedSuccessMessage()"
+                class="ui-button-success" label="Create success message if none on screen"></button>
+        <button pButton type="button" (click)="createSuccessMessageWithAdditionalInfos()"
+                class="ui-button-success" label="Create success message with additional click infos"></button>
+    </div>
+</div>
