@@ -10,6 +10,12 @@
     font-size: 30px !important;
 }
 
-.jumbotron {
-    opacity: 0.9;
+.nav-image {
+    max-width: 70px;
+    max-height: 40px;
+}
+
+.logo {
+    max-height: 50px;
+    max-width: 400px;
 }
