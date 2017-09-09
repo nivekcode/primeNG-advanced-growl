@@ -11,7 +11,7 @@
 </nav>
 <div class="container-fluid">
 
-    <adv-growl [life]="2500" (onClick)="logMessage($event)" (onClose)="logClose($event)"
+    <adv-growl [life]="lifeTime" (onClick)="logMessage($event)" (onClose)="logClose($event)"
                (onMessagesChanges)="onMessages($event)"></adv-growl>
 
     <div class="col-md-6">
@@ -23,8 +23,8 @@
                 or click on the cancel x on a message</p>
             <p>
             <div class="form-group">
-                <label class="control-label" for="lifeTimeInput">Lifetime</label>
-                <input class="form-control" id="lifeTimeInput" type="number" value="0">
+                <label class="control-label" for="lifeTimeInput">Lifetime (in milliseconds)</label>
+                <input [(ngModel)]="lifeTime" class="form-control" id="lifeTimeInput" type="number" value="0">
             </div>
         </div>
 

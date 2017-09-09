@@ -10,6 +10,7 @@ import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
 export class AppComponent {
 
     messages = [];
+    lifeTime = 0;
 
     constructor(private advMessagesService: AdvGrowlService) {
     }
