@@ -11,6 +11,7 @@ export class AppComponent {
 
     messages = [];
     lifeTime = 0;
+    version = require('../../package.json').version;
 
     constructor(private advMessagesService: AdvGrowlService) {
     }

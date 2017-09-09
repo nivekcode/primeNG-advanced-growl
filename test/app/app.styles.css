@@ -19,3 +19,10 @@
     max-height: 50px;
     max-width: 400px;
 }
+
+.version {
+    margin-top: 40px;
+    color: slategray;
+    font-style: italic;
+    font-weight: bold;
+}
