@@ -1,0 +1,15 @@
+.full-width-button {
+    width: 100%;
+}
+
+.top-margin {
+    margin-top: 10px;
+}
+
+.title {
+    font-size: 30px !important;
+}
+
+.jumbotron {
+    opacity: 0.9;
+}

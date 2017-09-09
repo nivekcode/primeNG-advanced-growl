@@ -4,7 +4,8 @@ import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
 
 @Component({
     selector: 'app-root',
-    templateUrl: './app.component.html'
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.styles.css']
 })
 export class AppComponent {
 

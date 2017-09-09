@@ -19,6 +19,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "./style.css",
         "./style/css/bootswatch-paper.css",
         "../node_modules/font-awesome/scss/font-awesome.scss",
         "../node_modules/primeng/resources/primeng.css",
