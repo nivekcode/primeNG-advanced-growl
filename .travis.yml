@@ -35,5 +35,5 @@ deploy:
   token:
     secure: ${FIREBASE_TOKEN}
   on:
-    branch: feature/optimizeTestPage
+    tags: true
   skip_cleanup: true
