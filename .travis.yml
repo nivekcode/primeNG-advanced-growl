@@ -29,3 +29,6 @@ deploy:
   api_key: ${NPM_KEY}
   on:
     tags: true
+  provider: firebase
+  token:
+    secure: ${FIREBASE_TOKEN}
