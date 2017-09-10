@@ -10,6 +10,11 @@
     font-size: 30px !important;
 }
 
+nav {
+    min-height: 80px;
+    background-color: white;
+}
+
 .nav-image {
     max-width: 70px;
     max-height: 40px;
