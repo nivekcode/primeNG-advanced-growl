@@ -20,10 +20,10 @@ install:
   - npm install
 script:
   - npm run lint
+  - npm run build
 after_success:
   - npm run test-coverage
   - npm run report-coverage
-  - npm run build
 deploy:
   provider: npm
   email: kevin.kreuzer90@icloud.com
