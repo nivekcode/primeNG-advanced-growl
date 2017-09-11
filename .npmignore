@@ -2,6 +2,9 @@
 node_modules/*
 npm-debug.log
 
+# Community Files
+CODE_OF_CONDUCT.md
+
 # JetBrains
 .idea
 .project
