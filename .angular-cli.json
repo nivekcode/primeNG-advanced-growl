@@ -20,7 +20,7 @@
       "prefix": "app",
       "styles": [
         "./style.css",
-        "./bootstrap/bootswatch-yeti.css",
+        "./bootstrap/style/bootswatch-flatly.css",
         "../node_modules/font-awesome/scss/font-awesome.scss",
         "../node_modules/primeng/resources/primeng.css",
         "../node_modules/primeng/resources/themes/omega/theme.scss"

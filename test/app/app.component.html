@@ -12,29 +12,65 @@
 </nav>
 <div class="container-fluid">
 
-    <adv-growl [life]="lifeTime" (onClick)="logMessage($event)" (onClose)="logClose($event)"
+    <adv-growl [life]="lifeTime" [freezeMessagesOnHover]="freezeMessagesOnHover" (onClick)="logMessage($event)"
+               (onClose)="logClose($event)"
                (onMessagesChanges)="onMessages($event)"></adv-growl>
 
     <div class="col-md-6">
         <div class="jumbotron">
             <h3>1. Choose a lifetime</h3>
-            <p>Choose a number that represents the lifetime of each growl message. If set to 3000 each message will be
-                disappear after 3 seconds. If no life param is passed to the components the default life time of 0 will
-                be used. This means that the growl messages are sticky and do not disappear until you call clearMessages
-                or click on the cancel x on a message</p>
-            <p>
-            <div class="form-group">
+            <hr/>
+            <blockquote>
+                <p>Choose a number that represents the lifetime of each growl message.</p>
+                <small>If set to 3000 each message will be
+                    disappear after 3 seconds. If no life param is passed to the components the default life time of 0
+                    will
+                    be used. This means that the growl messages are sticky and do not disappear until you call
+                    clearMessages
+                    or click on the cancel x on a message
+                </small>
+            </blockquote>
+            <div class="form-group top-margin">
                 <label class="control-label" for="lifeTimeInput">Lifetime (in milliseconds)</label>
                 <input [(ngModel)]="lifeTime" class="form-control" id="lifeTimeInput" type="number" value="0">
             </div>
         </div>
 
         <div class="jumbotron">
-            <h3>2. Lets create some messages</h3>
-            <p>Next let's create some messages. The AdvGrowlService provides the following methods to create messages.
-                Each method expects the message content and a message title.
-            </p>
-            <div class="row">
+            <h3>2. Choose if you want to freeze messages on hover</h3>
+            <hr/>
+            <blockquote>
+                <p>Choose if you want to freeze messages on hover</p>
+                <small>This flag is only useful if you also pass a life time. When you pass this property to the
+                    component all
+                    messages are freezed when you hover over a message.After you leave the messages all messages will
+                    disappear after the
+                    lifetime you specified.
+                </small>
+            </blockquote>
+            <div class="form-group top-margin">
+                <button class="btn btn-primary full-width-button" *ngIf="freezeMessagesOnHover"
+                        (click)="toggleFreeze()">
+                    FreezeMessages on hover: On
+                </button>
+                <button class="btn btn-danger full-width-button" *ngIf="!freezeMessagesOnHover"
+                        (click)="toggleFreeze()">
+                    FreezeMessages on hover: Off
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="jumbotron">
+            <h3>3. Lets create some messages</h3>
+            <hr/>
+            <blockquote>
+                <p>Next let's create some messages.</p>
+                <small>The AdvGrowlService provides the following methods to create messages.
+                    Each method expects the message content and a message title.
+                </small>
+            </blockquote>
+            <div class="row top-margin">
                 <div class="col-md-6">
                     <button class="full-width-button col-md-6 btn btn-success" (click)="createSuccessMessage()">
                         Create success message
@@ -61,29 +97,32 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-6">
         <div class="jumbotron">
-            <h3>3. More Options</h3>
-            <p>The advanced growl module also provides some extra functionalities</p>
+            <h3>4. More Options - Extra functionalities</h3>
             <hr/>
             <div class="row top-margin">
-                <p>
-                    If you want to clear all messages on the screen you can use the clearMessages() method from the
-                    AdvGrowlService
-                </p>
+                <blockquote>
+                    <p>Clear messages</p>
+                    <small>If you want to clear all messages on the screen you can use the clearMessages() method from
+                        the
+                        AdvGrowlService
+                    </small>
+                </blockquote>
                 <button class="full-width-button btn btn-info" (click)="clearMessages()">
                     Clear messages
                 </button>
             </div>
             <hr/>
             <div class="row top-margin">
-                <p>
-                    If you want to pass some additional informations to your message you can do this by passing
-                    those as
-                    last optional parameter to the success, warning, info or error method. When you click on your
-                    message the event will then contain your additionalProperties.
-                </p>
+                <blockquote>
+                    <p>Pass additional informations</p>
+                    <small>
+                        If you want to pass some additional informations to your message you can do this by passing
+                        those as
+                        last optional parameter to the success, warning, info or error method. When you click on your
+                        message the event will then contain your additionalProperties.
+                    </small>
+                </blockquote>
                 <button class="full-width-button btn btn-success"
                         (click)="createSuccessMessageWithAdditionalInfos()">
                     Create success message with additional click infos
@@ -91,7 +130,12 @@
             </div>
             <hr/>
             <div class="row top-margin">
-                <p>We can avoid the creation of multiple messages with the same summary or type.</p>
+                <blockquote>
+                    <p>Avoid the creation of same messages</p>
+                    <small>
+                        We can avoid the creation of multiple messages with the same summary or type.
+                    </small>
+                </blockquote>
                 <button class="btn btn-success full-width-button" (click)="createNonDuplicatedSuccessMessage()">
                     Create success message if none on screen
                 </button>

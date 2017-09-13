@@ -11,9 +11,14 @@ export class AppComponent {
 
     messages = [];
     lifeTime = 0;
+    freezeMessagesOnHover = false;
     version = require('../../package.json').version;
 
     constructor(private advMessagesService: AdvGrowlService) {
+    }
+
+    public toggleFreeze() {
+        this.freezeMessagesOnHover = !this.freezeMessagesOnHover;
     }
 
     public createInfoMessage(): void {
