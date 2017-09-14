@@ -4,13 +4,21 @@ import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
 
 @Component({
     selector: 'app-root',
-    templateUrl: './app.component.html'
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.styles.css']
 })
 export class AppComponent {
 
     messages = [];
+    lifeTime = 0;
+    freezeMessagesOnHover = false;
+    version = require('../../package.json').version;
 
     constructor(private advMessagesService: AdvGrowlService) {
+    }
+
+    public toggleFreeze() {
+        this.freezeMessagesOnHover = !this.freezeMessagesOnHover;
     }
 
     public createInfoMessage(): void {

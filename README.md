@@ -5,6 +5,7 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [AdvGrowlModul](#advgrowlmodul)
+  - [Demo](#demo)
   - [What is missing on PrimeNG?](#what-is-missing-on-primeng)
   - [What is the AdvGrowlModule offering?](#what-is-the-advgrowlmodule-offering)
   - [How do you use PrimeNGAdvancedGrowl?](#how-do-you-use-primengadvancedgrowl)
@@ -23,6 +24,9 @@
 # AdvGrowlModul
 The AdvGrowlModule is a wrapper around the growl module from PrimeNG. This wrapper was created
 because PrimeNG is missing some features.
+
+## Demo
+You can find a working demo of the growl module on the following link: https://primeng-advanced-growl.firebaseapp.com/
 
 ## What is missing on PrimeNG?
 - PrimeNG module does not offer a central service to
@@ -87,7 +91,8 @@ The advanced growl messages component has the following in- and outputs.
 |--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | style        | Inline styles that should be applied to the growl component of PrimeNG                                                                                                                                                                                                                         |
 | styleClass   | Style class for the growl component of PrimeNG                                                                                                                                                                                                                                                 |
-| life: number | A number that represents the lifetime of each growl message. If set to 3000 each message will be disappear after 3 seconds. If no life param is passed to the components the growl messages are sticky and do not disappear until you call clearMessages or click on the cancel x on a message |
+| life: number (default = 0) | A number that represents the lifetime of each growl message. If set to 3000 each message will be disappear after 3 seconds. If no life param is passed to the components the growl messages are sticky and do not disappear until you call clearMessages or click on the cancel x on a message |
+|freezeMessagesOnHover: boolean (default: false)| This flag is only useful if you also pass a life time. When you pass this property to the component all messages are freezed when you hover over a message. Let's say you have for example 3 messages all with a lifetime of 3 seconds. When you hover after 2 seconds over the second message all messages on the screen are freezed and do not disappear. After you leave the messages all messages will disappear after the lifetime you specified. This means if you hover after 2 seconds over a mesage that has a lifetime of 3 seconds the message will be freezed as long as your cursor is over a message. When you leave the message with your mouse the message will stay there for the specified lifetime (in this case 3 seconds) and will then disapear.|
 
 #### Output
 
