@@ -31,3 +31,8 @@ nav {
     font-style: italic;
     font-weight: bold;
 }
+
+small {
+    font-size: 15px;
+    color: darkslategrey;
+}
