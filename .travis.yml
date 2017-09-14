@@ -20,6 +20,7 @@ install:
   - npm install
 script:
   - npm run lint
+  - npm run build
 after_success:
   - npm run test-coverage
   - npm run report-coverage
@@ -29,3 +30,10 @@ deploy:
   api_key: ${NPM_KEY}
   on:
     tags: true
+  skip_cleanup: true
+  provider: firebase
+  token:
+    secure: ${FIREBASE_TOKEN}
+  on:
+    tags: true
+  skip_cleanup: true

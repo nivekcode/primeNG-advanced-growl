@@ -1,22 +1,101 @@
-<div style="text-align:center">
-    <h1>
-        Test of the advanced growl messages
-    </h1>
-    <adv-growl [life]="2500" [freezeMessagesOnHover]="true" (onClick)="logMessage($event)" (onClose)="logClose($event)"
-               (onMessagesChanges)="onMessages($event)"></adv-growl>
-    <button pButton type="button" (click)="createSuccessMessage()"
-            class="ui-button-success" label="Create success message"></button>
-    <button pButton type="button" (click)="createInfoMessage()"
-            class="ui-button-info" label="Create info message"></button>
-    <button pButton type="button" (click)="createWarningMessage()"
-            class="ui-button-warning" label="Create warning message"></button>
-    <button pButton type="button" (click)="createErrorMessage()"
-            class="ui-button-danger" label="Create error message"></button>
-    <button pButton type="button" (click)="clearMessages()"
-            class="ui-button-default" label="Clear all messages"></button>
-    <button pButton type="button" (click)="createNonDuplicatedSuccessMessage()"
-            class="ui-button-success" label="Create success message if none on screen"></button>
-    <button pButton type="button" (click)="createSuccessMessageWithAdditionalInfos()"
-            class="ui-button-success" label="Create success message with additional click infos"></button>
-</div>
+<nav class="navbar navbar-inverse">
+    <a class="navbar-brand pull-left">
+        <img class="logo" src="../assets/images/logo.png">
+    </a>
+    <small class="version pull-left">Version {{version}}</small>
+    <a class="navbar-brand pull-right" target="_blank" href="https://www.npmjs.com/package/primeng-advanced-growl">
+        <img src="../assets/images/npm.png" class="nav-image" style="margin-top: 8px">
+    </a>
+    <a class="navbar-brand pull-right" target="_blank" href="https://github.com/kreuzerk/primeNG-advanced-growl">
+        <img src="../assets/images/github.png" class="nav-image">
+    </a>
+</nav>
+<div class="container-fluid">
 
+    <adv-growl [life]="lifeTime" (onClick)="logMessage($event)" (onClose)="logClose($event)"
+               (onMessagesChanges)="onMessages($event)"></adv-growl>
+
+    <div class="col-md-6">
+        <div class="jumbotron">
+            <h3>1. Choose a lifetime</h3>
+            <p>Choose a number that represents the lifetime of each growl message. If set to 3000 each message will be
+                disappear after 3 seconds. If no life param is passed to the components the default life time of 0 will
+                be used. This means that the growl messages are sticky and do not disappear until you call clearMessages
+                or click on the cancel x on a message</p>
+            <p>
+            <div class="form-group">
+                <label class="control-label" for="lifeTimeInput">Lifetime (in milliseconds)</label>
+                <input [(ngModel)]="lifeTime" class="form-control" id="lifeTimeInput" type="number" value="0">
+            </div>
+        </div>
+
+        <div class="jumbotron">
+            <h3>2. Lets create some messages</h3>
+            <p>Next let's create some messages. The AdvGrowlService provides the following methods to create messages.
+                Each method expects the message content and a message title.
+            </p>
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="full-width-button col-md-6 btn btn-success" (click)="createSuccessMessage()">
+                        Create success message
+                    </button>
+                </div>
+
+                <div class="col-md-6">
+                    <button class="full-width-button col-md-6 btn btn-info" (click)="createInfoMessage()">
+                        Create info message
+                    </button>
+
+                </div>
+            </div>
+            <div class="row top-margin">
+                <div class="col-md-6">
+                    <button class="full-width-button col-md-6 btn btn-warning" (click)="createWarningMessage()">
+                        Create warning message
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <button class="full-width-button col-md-6 btn btn-danger" (click)="createErrorMessage()">
+                        Create error message
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="jumbotron">
+            <h3>3. More Options</h3>
+            <p>The advanced growl module also provides some extra functionalities</p>
+            <hr/>
+            <div class="row top-margin">
+                <p>
+                    If you want to clear all messages on the screen you can use the clearMessages() method from the
+                    AdvGrowlService
+                </p>
+                <button class="full-width-button btn btn-info" (click)="clearMessages()">
+                    Clear messages
+                </button>
+            </div>
+            <hr/>
+            <div class="row top-margin">
+                <p>
+                    If you want to pass some additional informations to your message you can do this by passing
+                    those as
+                    last optional parameter to the success, warning, info or error method. When you click on your
+                    message the event will then contain your additionalProperties.
+                </p>
+                <button class="full-width-button btn btn-success"
+                        (click)="createSuccessMessageWithAdditionalInfos()">
+                    Create success message with additional click infos
+                </button>
+            </div>
+            <hr/>
+            <div class="row top-margin">
+                <p>We can avoid the creation of multiple messages with the same summary or type.</p>
+                <button class="btn btn-success full-width-button" (click)="createNonDuplicatedSuccessMessage()">
+                    Create success message if none on screen
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -19,7 +19,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css",
+        "./style.css",
+        "./bootstrap/bootswatch-yeti.css",
         "../node_modules/font-awesome/scss/font-awesome.scss",
         "../node_modules/primeng/resources/primeng.css",
         "../node_modules/primeng/resources/themes/omega/theme.scss"

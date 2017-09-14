@@ -1,0 +1,33 @@
+.full-width-button {
+    width: 100%;
+}
+
+.top-margin {
+    margin-top: 10px;
+}
+
+.title {
+    font-size: 30px !important;
+}
+
+nav {
+    min-height: 80px;
+    background-color: white;
+}
+
+.nav-image {
+    max-width: 70px;
+    max-height: 40px;
+}
+
+.logo {
+    max-height: 50px;
+    max-width: 400px;
+}
+
+.version {
+    margin-top: 40px;
+    color: slategray;
+    font-style: italic;
+    font-weight: bold;
+}

@@ -5,6 +5,7 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [AdvGrowlModul](#advgrowlmodul)
+  - [Demo](#demo)
   - [What is missing on PrimeNG?](#what-is-missing-on-primeng)
   - [What is the AdvGrowlModule offering?](#what-is-the-advgrowlmodule-offering)
   - [How do you use PrimeNGAdvancedGrowl?](#how-do-you-use-primengadvancedgrowl)
@@ -23,6 +24,9 @@
 # AdvGrowlModul
 The AdvGrowlModule is a wrapper around the growl module from PrimeNG. This wrapper was created
 because PrimeNG is missing some features.
+
+## Demo
+You can find a working demo of the growl module on the following link: https://primeng-advanced-growl.firebaseapp.com/
 
 ## What is missing on PrimeNG?
 - PrimeNG module does not offer a central service to
