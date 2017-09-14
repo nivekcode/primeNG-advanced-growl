@@ -36,6 +36,40 @@ describe('Message Component', () => {
         {id, severity, summary, detail}
     );
 
+    describe('Setup and initialization', () => {
+
+        it('should setup the streams and subscribe for messages on init', () => {
+            // given
+            spyOn(component, 'setupStreams')
+            spyOn(component, 'subscribeForMessages')
+            // when
+            component.ngOnInit()
+            // then
+            expect(component.setupStreams)
+            expect(component.subscribeForMessages)
+        })
+
+        it('should call the scheduler with true when a mouseenter event occures', () => {
+            // given
+            spyOn(Observable, 'fromEvent').and.returnValues(Observable.of(1), Observable.never())
+            // when
+            component.setupStreams()
+            // then
+            expect(Observable.fromEvent).toHaveBeenCalledWith(component.growlMessage.nativeElement, 'mouseenter')
+            component.scheduler.subscribe(isPaused => expect(isPaused).toBeTruthy())
+        })
+
+        it('should call the scheduler with false when mouseleave event occures', () => {
+            // given
+            spyOn(Observable, 'fromEvent').and.returnValues(Observable.never(), Observable.of(1))
+            // when
+            component.setupStreams()
+            // then
+            expect(Observable.fromEvent).toHaveBeenCalledWith(component.growlMessage.nativeElement, 'mouseleave')
+            component.scheduler.subscribe(isPaused => expect(isPaused).toBeFalsy())
+        })
+    })
+
     describe('Subscribe for messages', () => {
 
         it(`should add all arriving messages and not emit a new value which indicates that
@@ -62,12 +96,12 @@ describe('Message Component', () => {
 
         it('should return an empty observable when no lifetime is set', () => {
             // given
-            spyOn(Observable, 'empty');
+            spyOn(Observable, 'never');
             const messageId = '123456789';
             // when
             component.getLifeTimeStream(messageId);
             // then
-            expect(Observable.empty).toHaveBeenCalled();
+            expect(Observable.never).toHaveBeenCalled();
         });
 
         it('should return an observable that emits the messageId after the lifetime has passed', () => {
@@ -127,7 +161,7 @@ describe('Message Component', () => {
                         numberOfCalls++;
                         return Observable.of(1);
                     }
-                    return Observable.empty();
+                    return Observable.never();
                 });
                 spyOn(component, 'getLifeTimeStream').and.returnValue(Observable.of(1));
                 spyOn(Array.prototype, 'shift');
@@ -173,6 +207,73 @@ describe('Message Component', () => {
                 // when then
                 expect(() => component.subscribeForMessages()).toThrowError(errorMessage);
             }));
+    })
+
+    describe('Get Life time streams', () => {
+
+        it('should get the scheduled life time stream when freezeMessagesOnHover is set to true', () => {
+            // given
+            const messageId = 'Awesome Id'
+            component.life = 2000
+            component.freezeMessagesOnHover = true
+            spyOn(component, 'getSchedueLifeTimeStream').and.returnValue(Observable.of(1))
+            // when
+            component.getLifeTimeStream(messageId)
+            // then
+            expect(component.getSchedueLifeTimeStream).toHaveBeenCalled()
+        })
+
+        it('should get the unscheduled life time stream when freezeMessagesOnHover is set to false', () => {
+            // given
+            const messageId = 'Awesome Id'
+            component.life = 2000
+            component.freezeMessagesOnHover = false
+            spyOn(component, 'getUnscheduledLifeTimeStream').and.returnValue(Observable.of(1))
+            // when
+            component.getLifeTimeStream(messageId)
+            // then
+            expect(component.getUnscheduledLifeTimeStream).toHaveBeenCalled()
+        })
+
+
+        it('should return a stream that emits after a given lifetime', () => {
+            // given
+            const timedMessage = 'Timed value arrived'
+            const lifeTimeInMillis = 2000
+            spyOn(Observable, 'timer').and.returnValue(Observable.of(timedMessage))
+            component.life = lifeTimeInMillis
+            // when
+            const lifeTime$ = component.getUnscheduledLifeTimeStream()
+            // then
+            expect(Observable.timer).toHaveBeenCalledWith(lifeTimeInMillis)
+            lifeTime$.subscribe(message => expect(message).toBe(timedMessage))
+        })
+
+        it('should return a stream that never emits when we pause', () => {
+            // given
+            spyOn(Observable, 'never').and.returnValue(Observable.of(1))
+            spyOn(Observable, 'timer').and.returnValue(Observable.of(1))
+            // when
+            const lifeTimeStream$ = component.getSchedueLifeTimeStream()
+            lifeTimeStream$.subscribe()
+            component.scheduler.next(true)
+            // then
+            expect(Observable.never).toHaveBeenCalled()
+        })
+
+        it('should return a stream that emits after a given lifetime when we stop the pause', () => {
+            // given
+            const timedMessage = 'Timed value arrived'
+            const lifeTimeInMillis = 2000
+            spyOn(Observable, 'timer').and.returnValue(Observable.of(timedMessage))
+            component.life = lifeTimeInMillis
+            // when
+            const lifeTime$ = component.getSchedueLifeTimeStream()
+            lifeTime$.subscribe()
+            // then
+            expect(Observable.timer).toHaveBeenCalledWith(lifeTimeInMillis)
+            lifeTime$.subscribe(message => expect(message).toBe(timedMessage))
+        })
     })
 
     describe('Emitting Clicks', () => {
