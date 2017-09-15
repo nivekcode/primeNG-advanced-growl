@@ -30,3 +30,10 @@ deploy:
   api_key: ${NPM_KEY}
   on:
     tags: true
+  skip_cleanup: true
+  provider: firebase
+  token:
+    secure: ${FIREBASE_TOKEN}
+  on:
+    tags: true
+  skip_cleanup: true
