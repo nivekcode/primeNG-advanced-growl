@@ -31,9 +31,3 @@ deploy:
   on:
     tags: true
   skip_cleanup: true
-  provider: firebase
-  token:
-    secure: ${FIREBASE_TOKEN}
-  on:
-    tags: true
-  skip_cleanup: true
