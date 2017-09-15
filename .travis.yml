@@ -25,6 +25,12 @@ after_success:
   - npm run test-coverage
   - npm run report-coverage
 deploy:
+  provider: firebase
+  token:
+    secure: ${FIREBASE_TOKEN}
+  on:
+    tags: true
+  skip_cleanup: true
   provider: npm
   email: kevin.kreuzer90@icloud.com
   api_key: ${NPM_KEY}
