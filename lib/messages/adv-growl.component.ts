@@ -13,7 +13,8 @@ import 'rxjs/add/observable/never';
 import {Observable} from 'rxjs/Observable';
 import {AdvPrimeMessage} from './adv-growl.model';
 import {AdvGrowlService} from './adv-growl.service';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Subject} from 'rxjs/Subject';
+import {AdvGrowlHoverHelper} from './adv-growl.hoverHelper';
 
 const DEFAULT_LIFETIME = 0
 const FREEZE_MESSAGES_DEFAULT = false
@@ -24,32 +25,27 @@ const FREEZE_MESSAGES_DEFAULT = false
 })
 export class AdvGrowlComponent implements OnInit {
 
-    @Input() style: any;
-    @Input() styleClass: any;
-    @Input() life = DEFAULT_LIFETIME;
-    @Input() freezeMessagesOnHover = FREEZE_MESSAGES_DEFAULT;
-    @Output() onClose = new EventEmitter<AdvPrimeMessage>();
-    @Output() onClick = new EventEmitter<AdvPrimeMessage>();
-    @Output() onMessagesChanges = new EventEmitter<Array<AdvPrimeMessage>>();
+    @Input() style: any
+    @Input() styleClass: any
+    @Input() life = DEFAULT_LIFETIME
+    @Input() freezeMessagesOnHover = FREEZE_MESSAGES_DEFAULT
+    @Output() onClose = new EventEmitter<AdvPrimeMessage>()
+    @Output() onClick = new EventEmitter<AdvPrimeMessage>()
+    @Output() onMessagesChanges = new EventEmitter<Array<AdvPrimeMessage>>()
 
-    @ViewChild('growlMessage', {read: ElementRef}) growlMessage;
+    @ViewChild('growlMessage', {read: ElementRef}) growlMessage
 
-    public messages: Array<AdvPrimeMessage> = [];
-    scheduler = new BehaviorSubject<boolean>(false)
+    public messages: Array<AdvPrimeMessage> = []
+    private messageEnter$ = new Subject<string>()
+    private hoverHelper;
 
     constructor(private messageService: AdvGrowlService) {
     }
 
     ngOnInit(): void {
-        this.setupStreams()
+        const mouseLeave$ = Observable.fromEvent(this.growlMessage.nativeElement, 'mouseleave')
+        this.hoverHelper = new AdvGrowlHoverHelper(this.messageEnter$, mouseLeave$)
         this.subscribeForMessages()
-    }
-
-    setupStreams() {
-        Observable.fromEvent(this.growlMessage.nativeElement, 'mouseenter')
-            .subscribe(e => this.scheduler.next(true))
-        Observable.fromEvent(this.growlMessage.nativeElement, 'mouseleave')
-            .subscribe(e => this.scheduler.next(false))
     }
 
     public subscribeForMessages() {
@@ -79,22 +75,31 @@ export class AdvGrowlComponent implements OnInit {
     }
 
     public getLifeTimeStream(messageId: string): Observable<any> {
-        if (this.life > DEFAULT_LIFETIME) {
-            const lifetimeStream = this.freezeMessagesOnHover ? this.getSchedueLifeTimeStream()
-                : this.getUnscheduledLifeTimeStream()
-            return lifetimeStream
-                .mapTo(messageId);
-
+        if (this.hasLifeTime()) {
+            return this.getFinitStream(messageId)
         }
+        return this.getInifiniteStream();
+    }
+
+    private hasLifeTime(): boolean {
+        return this.life > DEFAULT_LIFETIME
+    }
+
+    private getInifiniteStream(): Observable<any> {
         return Observable.never();
     }
 
-    getSchedueLifeTimeStream() {
-        return this.scheduler
-            .switchMap(pause => pause ? Observable.never() : Observable.timer(this.life))
+    private getFinitStream(messageId: string): Observable<string> {
+        let finitStream: Observable<any>
+        if (this.freezeMessagesOnHover) {
+            finitStream = this.hoverHelper.getPausableMessageStream(messageId, this.life)
+        } else {
+            finitStream = this.getUnPausableMessageStream()
+        }
+        return finitStream.mapTo(messageId)
     }
 
-    getUnscheduledLifeTimeStream() {
+    getUnPausableMessageStream() {
         return Observable.timer(this.life)
     }
 
@@ -102,8 +107,13 @@ export class AdvGrowlComponent implements OnInit {
         this.emitMessage($event, this.onClose)
     }
 
-    public messageClicked($event): void {
+    public messageClicked($event) {
         this.emitMessage($event, this.onClick)
+    }
+
+    public messageEntered($event) {
+        const message: AdvPrimeMessage = $event.message
+        this.messageEnter$.next(message.id)
     }
 
     emitMessage($event, emitter: EventEmitter<AdvPrimeMessage>) {

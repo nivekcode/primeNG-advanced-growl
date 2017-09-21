@@ -10,8 +10,8 @@ import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
 export class AppComponent {
 
     messages = [];
-    lifeTime = 0;
-    freezeMessagesOnHover = false;
+    lifeTime = 3000;
+    freezeMessagesOnHover = true;
     version = require('../../package.json').version;
 
     constructor(private advMessagesService: AdvGrowlService) {
