@@ -10,12 +10,15 @@ import 'rxjs/add/operator/dematerialize'
 import 'rxjs/add/operator/startWith'
 import 'rxjs/add/operator/takeWhile'
 import 'rxjs/add/operator/last'
+import 'rxjs/add/operator/mapTo'
+import 'rxjs/add/operator/do'
+import 'rxjs/add/operator/switchMap'
 
 import 'rxjs/add/observable/merge'
 import 'rxjs/add/observable/empty'
 import 'rxjs/add/observable/interval'
 
-const MOUSE_LEFT = 'MOUSE_LEFT';
+export const MOUSE_LEFT_ID = 'MOUSE_LEFT_ID';
 const STEP_TIME_UNIT = 100;
 
 export class AdvGrowlHoverHelper {
@@ -24,12 +27,13 @@ export class AdvGrowlHoverHelper {
 
     constructor(mouseenter$: Observable<string>, mouseleave$: Observable<string>) {
         this.messageHover$ = Observable.merge(
-            mouseenter$, mouseleave$.mapTo(MOUSE_LEFT)
+            mouseenter$, mouseleave$.mapTo(MOUSE_LEFT_ID)
         )
-            .startWith(MOUSE_LEFT)
+            .startWith(MOUSE_LEFT_ID)
     }
 
     public getPausableMessageStream(messageId: string, lifeTime: number) {
+
         return this.messageHover$.switchMap((hoveredMessageId: string) => {
                 if (hoveredMessageId === messageId) {
                     return Observable.empty()
