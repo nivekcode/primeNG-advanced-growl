@@ -2,8 +2,6 @@ import {AdvGrowlHoverHelper, MOUSE_LEFT_ID} from './adv-growl.hoverHelper';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 
-import 'rxjs/add/observable/of'
-
 describe('AdvGrowlHoverHelper', () => {
 
     let sut
@@ -48,8 +46,10 @@ describe('AdvGrowlHoverHelper', () => {
             const messageId = '42'
             const hoveredMessageId = '42'
             const lifeTime = 2000
-            spyOn(Observable, 'empty').and.returnValue(Observable.create(function(){
+            spyOn(Observable, 'interval').and.returnValue(Observable.create(function(observer){
+                observer.next(MOUSE_LEFT_ID)
             }))
+            spyOn(Observable, 'empty').and.returnValue(Observable.create(function(){}))
 
             // when
             sut.getPausableMessageStream(messageId, lifeTime)
@@ -58,6 +58,7 @@ describe('AdvGrowlHoverHelper', () => {
             mouseenter$.next(hoveredMessageId)
 
             // then
+            expect(Observable.interval).toHaveBeenCalled()
             expect(Observable.empty).toHaveBeenCalled()
         })
     })

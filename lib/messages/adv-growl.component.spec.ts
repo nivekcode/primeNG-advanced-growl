@@ -1,7 +1,6 @@
 /**
  * Created by kevinkreuzer on 08.07.17.
  */
-/*
 import {TestBed, inject, ComponentFixture} from '@angular/core/testing';
 import {GrowlModule, Message} from 'primeng/primeng';
 import {AdvGrowlComponent} from './adv-growl.component';
@@ -41,33 +40,21 @@ describe('Message Component', () => {
 
         it('should setup the streams and subscribe for messages on init', () => {
             // given
-            spyOn(component, 'setupStreams')
             spyOn(component, 'subscribeForMessages')
             // when
             component.ngOnInit()
             // then
-            expect(component.setupStreams)
             expect(component.subscribeForMessages)
+            expect(component.hoverHelper).toBeDefined()
         })
 
-        it('should call the scheduler with true when a mouseenter event occures', () => {
-            // given
-            spyOn(Observable, 'fromEvent').and.returnValues(Observable.of(1), Observable.never())
-            // when
-            component.setupStreams()
-            // then
-            expect(Observable.fromEvent).toHaveBeenCalledWith(component.growlMessage.nativeElement, 'mouseenter')
-            component.scheduler.subscribe(isPaused => expect(isPaused).toBeTruthy())
-        })
-
-        it('should call the scheduler with false when mouseleave event occures', () => {
+        it('should create a mousleave stream that emits when a mouseleave event occures', () => {
             // given
             spyOn(Observable, 'fromEvent').and.returnValues(Observable.never(), Observable.of(1))
             // when
-            component.setupStreams()
+            component.ngOnInit()
             // then
             expect(Observable.fromEvent).toHaveBeenCalledWith(component.growlMessage.nativeElement, 'mouseleave')
-            component.scheduler.subscribe(isPaused => expect(isPaused).toBeFalsy())
         })
     })
 
@@ -76,47 +63,25 @@ describe('Message Component', () => {
         it(`should add all arriving messages and not emit a new value which indicates that
             none of the messages should be removed`,
             inject([AdvGrowlService], (messagesService: AdvGrowlService) => {
-                // given
-                const expectedMessages: Array<AdvPrimeMessage> = [
-                    createMessage('1', 'success', 'awesome message', 'awesome detail'),
-                    createMessage('2', 'wanring', 'awesome message', 'awesome detail'),
-                    createMessage('3', 'error', 'awesome message', 'awesome detail')
-                ];
-                const messages$ = Observable.create(observer => {
-                    expectedMessages.forEach(message => {
-                        observer.next(message);
+                    // given
+                    const expectedMessages: Array<AdvPrimeMessage> = [
+                        createMessage('1', 'success', 'awesome message', 'awesome detail'),
+                        createMessage('2', 'wanring', 'awesome message', 'awesome detail'),
+                        createMessage('3', 'error', 'awesome message', 'awesome detail')
+                    ];
+                    const messages$ = Observable.create(observer => {
+                        expectedMessages.forEach(message => {
+                            observer.next(message);
+                        });
                     });
-                });
-                spyOn(messagesService, 'getMessageStream').and.returnValue(messages$);
-                spyOn(messagesService, 'getCancelStream').and.returnValue(Observable.never());
-                // when
-                component.subscribeForMessages();
-                // then
-                expect(component.messages).toEqual(expectedMessages);
-            }));
-
-        it('should return an empty observable when no lifetime is set', () => {
-            // given
-            spyOn(Observable, 'never');
-            const messageId = '123456789';
-            // when
-            component.getLifeTimeStream(messageId);
-            // then
-            expect(Observable.never).toHaveBeenCalled();
-        });
-
-        it('should return an observable that emits the messageId after the lifetime has passed', () => {
-            // given
-            spyOn(Observable, 'timer').and.returnValue(Observable.of(1));
-            spyOn(Observable.prototype, 'mapTo');
-            component.life = 3000;
-            const messageId = '12345678';
-            // when
-            component.getLifeTimeStream(messageId);
-            // then
-            expect(Observable.timer).toHaveBeenCalledWith(3000);
-            expect(Observable.prototype.mapTo).toHaveBeenCalledWith(messageId);
-        });
+                    spyOn(messagesService, 'getMessageStream').and.returnValue(messages$);
+                    spyOn(messagesService, 'getCancelStream').and.returnValue(Observable.never());
+                    // when
+                    component.subscribeForMessages();
+                    // then
+                    expect(component.messages).toEqual(expectedMessages);
+                }
+            ));
 
         it('it should call removeMessage in subscribe when a message is cleared',
             inject([AdvGrowlService], (messagesService: AdvGrowlService) => {
@@ -175,7 +140,7 @@ describe('Message Component', () => {
 
         it('should remove the message with the matching messageId', () => {
             // given
-            const messageId = '1';
+            const messageId = '1'
             const message1 = createMessage('1', 'success', 'awesome message', 'awesome detail');
             const message2 = createMessage('2', 'wanring', 'awesome message', 'awesome detail');
             const message3 = createMessage('3', 'error', 'awesome message', 'awesome detail');
@@ -212,115 +177,162 @@ describe('Message Component', () => {
 
     describe('Get Life time streams', () => {
 
-        it('should get the scheduled life time stream when freezeMessagesOnHover is set to true', () => {
-            // given
-            const messageId = 'Awesome Id'
-            component.life = 2000
-            component.freezeMessagesOnHover = true
-            spyOn(component, 'getSchedueLifeTimeStream').and.returnValue(Observable.of(1))
-            // when
-            component.getLifeTimeStream(messageId)
-            // then
-            expect(component.getSchedueLifeTimeStream).toHaveBeenCalled()
+        describe('Life time detection', () => {
+
+            it('should have a lifeTime if the life property is bigger than the DEFAULT_LIFETIME', () => {
+                // given
+                component.life = 2000
+                // when
+                const hasLifeTime = component.hasLifeTime()
+                // then
+                expect(hasLifeTime).toBeTruthy()
+            })
+
+            it('should not have a lifeTime if the life property is small or equal to the DEFAULT_LIFETIME', () => {
+                // given
+                component.life = 0
+                // when
+                const hasLifeTime = component.hasLifeTime()
+                // then
+                expect(hasLifeTime).toBeFalsy()
+            })
         })
 
-        it('should get the unscheduled life time stream when freezeMessagesOnHover is set to false', () => {
-            // given
-            const messageId = 'Awesome Id'
-            component.life = 2000
-            component.freezeMessagesOnHover = false
-            spyOn(component, 'getUnPausableMessageStream').and.returnValue(Observable.of(1))
-            // when
-            component.getLifeTimeStream(messageId)
-            // then
-            expect(component.getUnPausableMessageStream).toHaveBeenCalled()
+        describe('Get LifeTime Stream', () => {
+
+            it('should get an finit stream if the message has a lifetime', () => {
+                // given
+                const messageId = '42'
+                spyOn(component, 'hasLifeTime').and.returnValue(true)
+                spyOn(component, 'getFinitStream')
+                // when
+                component.getLifeTimeStream(messageId)
+                // then
+                expect(component.getFinitStream).toHaveBeenCalled()
+            })
+
+            it('should get an infinit stream if the message has no lifetime', () => {
+                // given
+                const messageId = '42'
+                spyOn(component, 'hasLifeTime').and.returnValue(false)
+                spyOn(component, 'getInifiniteStream')
+                // when
+                component.getLifeTimeStream(messageId)
+                // then
+                expect(component.getInifiniteStream).toHaveBeenCalled()
+            })
         })
 
+        describe('Get finit stream', () => {
 
-        it('should return a stream that emits after a given lifetime', () => {
-            // given
-            const timedMessage = 'Timed value arrived'
-            const lifeTimeInMillis = 2000
-            spyOn(Observable, 'timer').and.returnValue(Observable.of(timedMessage))
-            component.life = lifeTimeInMillis
-            // when
-            const lifeTime$ = component.getUnPausableMessageStream()
-            // then
-            expect(Observable.timer).toHaveBeenCalledWith(lifeTimeInMillis)
-            lifeTime$.subscribe(message => expect(message).toBe(timedMessage))
-        })
+            it('should get a pausable stream if freezeMessagesOnHover is set to true', () => {
+                // given
+                const messageId = '42'
+                const freezeMessagesOnHover = true
+                const lifeTime = 2000
+                component.freezeMessagesOnHover = freezeMessagesOnHover
+                component.life = lifeTime
 
-        it('should return a stream that never emits when we pause', () => {
-            // given
-            spyOn(Observable, 'never').and.returnValue(Observable.of(1))
-            spyOn(Observable, 'timer').and.returnValue(Observable.of(1))
-            // when
-            const lifeTimeStream$ = component.getSchedueLifeTimeStream()
-            lifeTimeStream$.subscribe()
-            component.scheduler.next(true)
-            // then
-            expect(Observable.never).toHaveBeenCalled()
-        })
+                component.hoverHelper = {
+                    getPausableMessageStream: (param1, param2) => Observable.of(1)
+                } as any
+                spyOn(component.hoverHelper, 'getPausableMessageStream').and.returnValue(Observable.of(1))
 
-        it('should return a stream that emits after a given lifetime when we stop the pause', () => {
-            // given
-            const timedMessage = 'Timed value arrived'
-            const lifeTimeInMillis = 2000
-            spyOn(Observable, 'timer').and.returnValue(Observable.of(timedMessage))
-            component.life = lifeTimeInMillis
-            // when
-            const lifeTime$ = component.getSchedueLifeTimeStream()
-            lifeTime$.subscribe()
-            // then
-            expect(Observable.timer).toHaveBeenCalledWith(lifeTimeInMillis)
-            lifeTime$.subscribe(message => expect(message).toBe(timedMessage))
+                // when
+                const finitStream = component.getFinitStream(messageId)
+                // then
+                expect(component.hoverHelper.getPausableMessageStream).toHaveBeenCalledWith(messageId, lifeTime)
+                expect(finitStream.subscribe(hoveredMessageId => expect(hoveredMessageId).toBe(messageId)))
+            })
+
+            it('should get an unpausable stream if freezeMessagesOnHover is set to false', () => {
+                // given
+                const messageId = '42'
+                const freezeMessagesOnHover = false
+                component.freezeMessagesOnHover = freezeMessagesOnHover
+                spyOn(component, 'getUnPausableMessageStream').and.returnValue(Observable.of(1))
+                // when
+                const finitStream = component.getFinitStream(messageId)
+                // then
+                expect(component.getUnPausableMessageStream).toHaveBeenCalled()
+                expect(finitStream.subscribe(hoveredMessageId => expect(hoveredMessageId).toBe(messageId)))
+            })
+
+            it('should return a timed observable when we call getUnpausable message stream', () => {
+                // given
+                const lifeTime = 3000
+                component.life = lifeTime
+                spyOn(Observable, 'timer')
+                // when
+                component.getUnPausableMessageStream()
+                // then
+                expect(Observable.timer).toHaveBeenCalledWith(lifeTime)
+            })
         })
     })
 
-    describe('Emitting Clicks', () => {
+    describe('Emitting Events', () => {
 
-        it('should call the emitter when the event has a message', () => {
-            // given
-            const emitter = new EventEmitter<AdvPrimeMessage>();
-            spyOn(emitter, 'next')
-            const message = createMessage('1', 'succes', 'Summary', 'Super detail')
-            const $event = {message}
-            // when
-            component.emitMessage($event, emitter)
-            // then
-            expect(emitter.next).toHaveBeenCalledWith(message)
+        describe('Emitting Clicks', () => {
+            it('should call the emitter when the event has a message', () => {
+                // given
+                const emitter = new EventEmitter<AdvPrimeMessage>();
+                spyOn(emitter, 'next')
+                const message = createMessage('1', 'succes', 'Summary', 'Super detail')
+                const $event = {message}
+                // when
+                component.emitMessage($event, emitter)
+                // then
+                expect(emitter.next).toHaveBeenCalledWith(message)
+            })
+
+            it('should not call the emitter when the event does not contain a message', () => {
+                // given
+                const emitter = new EventEmitter<AdvPrimeMessage>();
+                spyOn(emitter, 'next')
+                const $event = {}
+                // when
+                component.emitMessage($event, emitter)
+                // then
+                expect(emitter.next).not.toHaveBeenCalled()
+            })
+
+            it('should call emit with the event and the onClick emitter when a message is clicked', () => {
+                // given
+                const $event = {message: 'Sample Message'}
+                spyOn(component, 'emitMessage')
+                // when
+                component.messageClicked($event)
+                // then
+                expect(component.emitMessage).toHaveBeenCalledWith($event, component.onClick)
+            })
+
+            it('should call emit with the event and the onClose emitter when a message is closed', () => {
+                // given
+                const $event = {message: 'Sample Message'}
+                spyOn(component, 'emitMessage')
+                // when
+                component.messageClosed($event)
+                // then
+                expect(component.emitMessage).toHaveBeenCalledWith($event, component.onClose)
+            })
         })
 
-        it('should not call the emitter when the event does not contain a message', () => {
-            // given
-            const emitter = new EventEmitter<AdvPrimeMessage>();
-            spyOn(emitter, 'next')
-            const $event = {}
-            // when
-            component.emitMessage($event, emitter)
-            // then
-            expect(emitter.next).not.toHaveBeenCalled()
-        })
+        describe('Emiting hover events', () => {
 
-        it('should call emit with the event and the onClick emitter when a message is clicked', () => {
-            // given
-            const $event = {message: 'Sample Message'}
-            spyOn(component, 'emitMessage')
-            // when
-            component.messageClicked($event)
-            // then
-            expect(component.emitMessage).toHaveBeenCalledWith($event, component.onClick)
-        })
-
-        it('should call emit with the event and the onClose emitter when a message is closed', () => {
-            // given
-            const $event = {message: 'Sample Message'}
-            spyOn(component, 'emitMessage')
-            // when
-            component.messageClosed($event)
-            // then
-            expect(component.emitMessage).toHaveBeenCalledWith($event, component.onClose)
+            it('should extract the messageId from the event and call on next on the messageEnter subject', () => {
+                // given
+                const messageId = '42'
+                const $event = {
+                    message: {
+                        id: messageId
+                    }
+                }
+                // when
+                component.messageEntered($event)
+                // then
+                component.messageEnter$.subscribe(enteredMesssageId => expect(enteredMesssageId).toBe(messageId))
+            })
         })
     })
 })
-*/

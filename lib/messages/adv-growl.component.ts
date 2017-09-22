@@ -35,8 +35,8 @@ export class AdvGrowlComponent implements OnInit {
     @ViewChild('growlMessage', {read: ElementRef}) growlMessage
 
     public messages: Array<AdvPrimeMessage> = []
-    private messageEnter$ = new Subject<string>()
-    private hoverHelper;
+    messageEnter$ = new Subject<string>()
+    hoverHelper: AdvGrowlHoverHelper;
 
     constructor(private messageService: AdvGrowlService) {
     }
@@ -65,7 +65,7 @@ export class AdvGrowlComponent implements OnInit {
             );
     }
 
-    public removeMessage(messageId: string) {
+    removeMessage(messageId: string) {
         const index = this.messages.findIndex(message => message.id === messageId);
         if (index >= 0) {
             this.messages.splice(index, 1);
@@ -73,22 +73,22 @@ export class AdvGrowlComponent implements OnInit {
         }
     }
 
-    public getLifeTimeStream(messageId: string): Observable<any> {
+    getLifeTimeStream(messageId: string): Observable<any> {
         if (this.hasLifeTime()) {
             return this.getFinitStream(messageId)
         }
         return this.getInifiniteStream();
     }
 
-    private hasLifeTime(): boolean {
+    hasLifeTime(): boolean {
         return this.life > DEFAULT_LIFETIME
     }
 
-    private getInifiniteStream(): Observable<any> {
+    getInifiniteStream(): Observable<any> {
         return Observable.never();
     }
 
-    private getFinitStream(messageId: string): Observable<string> {
+    getFinitStream(messageId: string): Observable<string> {
         let finitStream: Observable<any>
         if (this.freezeMessagesOnHover) {
             finitStream = this.hoverHelper.getPausableMessageStream(messageId, this.life)
