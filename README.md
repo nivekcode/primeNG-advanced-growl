@@ -3,10 +3,6 @@
 [![Travis build badge](https://img.shields.io/travis/kreuzerk/primeNG-advanced-growl.svg)](https://travis-ci.org/kreuzerk/primeNG-advanced-growl)
 [![codecov](https://codecov.io/gh/kreuzerk/primeNG-advanced-growl/branch/master/graph/badge.svg)](https://codecov.io/gh/kreuzerk/primeNG-advanced-growl)
 [![Greenkeeper badge](https://badges.greenkeeper.io/kreuzerk/primeNG-advanced-growl.svg)](https://greenkeeper.io/)
-
-[![npm](https://img.shields.io/npm/dw/primeng-advanced-growl.svg)]()
-[![npm](https://img.shields.io/npm/dm/primeng-advanced-growl.svg)]()
-[![npm](https://img.shields.io/npm/dy/primeng-advanced-growl.svg)]()
 [![npm](https://img.shields.io/npm/dt/primeng-advanced-growl.svg)]()
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
