@@ -1,8 +1,5 @@
 # PrimeNGAdvancedGrowl
 
-https://img.shields.io/travis/kreuzerk/primeNG-advanced-growl.svg
-https://img.shields.io/codecov/c/github/codecov/primeNG-advanced-growl.svg
-
 [![Travis build badge](https://img.shields.io/travis/kreuzerk/primeNG-advanced-growl.svg)](https://travis-ci.org/kreuzerk/primeNG-advanced-growl)
 [![Codecov badge](https://img.shields.io/codecov/c/github/codecov/primeNG-advanced-growl.svg)](https://codecov.io/gh/kreuzerk/primeNG-advanced-growl)
 [![Greenkeeper badge](https://badges.greenkeeper.io/kreuzerk/primeNG-advanced-growl.svg)](https://greenkeeper.io/)
