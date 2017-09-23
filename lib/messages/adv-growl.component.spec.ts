@@ -179,18 +179,18 @@ describe('Message Component', () => {
 
         describe('Life time detection', () => {
 
-            it('should have a lifeTime if the life property is bigger than the DEFAULT_LIFETIME', () => {
+            it('should have a lifeTime if the lifeTime property is bigger than the DEFAULT_LIFETIME', () => {
                 // given
-                component.life = 2000
+                component.lifeTime = 2000
                 // when
                 const hasLifeTime = component.hasLifeTime()
                 // then
                 expect(hasLifeTime).toBeTruthy()
             })
 
-            it('should not have a lifeTime if the life property is small or equal to the DEFAULT_LIFETIME', () => {
+            it('should not have a lifeTime if the lifeTime property is small or equal to the DEFAULT_LIFETIME', () => {
                 // given
-                component.life = 0
+                component.lifeTime = 0
                 // when
                 const hasLifeTime = component.hasLifeTime()
                 // then
@@ -231,7 +231,7 @@ describe('Message Component', () => {
                 const freezeMessagesOnHover = true
                 const lifeTime = 2000
                 component.freezeMessagesOnHover = freezeMessagesOnHover
-                component.life = lifeTime
+                component.lifeTime = lifeTime
 
                 component.hoverHelper = {
                     getPausableMessageStream: (param1, param2) => Observable.of(1)
@@ -261,7 +261,7 @@ describe('Message Component', () => {
             it('should return a timed observable when we call getUnpausable message stream', () => {
                 // given
                 const lifeTime = 3000
-                component.life = lifeTime
+                component.lifeTime = lifeTime
                 spyOn(Observable, 'timer')
                 // when
                 component.getUnPausableMessageStream()

@@ -26,7 +26,7 @@ export class AdvGrowlComponent implements OnInit {
 
     @Input() style: any
     @Input() styleClass: any
-    @Input() life = DEFAULT_LIFETIME
+    @Input('life') lifeTime = DEFAULT_LIFETIME
     @Input() freezeMessagesOnHover = FREEZE_MESSAGES_DEFAULT
     @Output() onClose = new EventEmitter<AdvPrimeMessage>()
     @Output() onClick = new EventEmitter<AdvPrimeMessage>()
@@ -81,7 +81,7 @@ export class AdvGrowlComponent implements OnInit {
     }
 
     hasLifeTime(): boolean {
-        return this.life > DEFAULT_LIFETIME
+        return this.lifeTime > DEFAULT_LIFETIME
     }
 
     getInifiniteStream(): Observable<any> {
@@ -91,7 +91,7 @@ export class AdvGrowlComponent implements OnInit {
     getFinitStream(messageId: string): Observable<string> {
         let finitStream: Observable<any>
         if (this.freezeMessagesOnHover) {
-            finitStream = this.hoverHelper.getPausableMessageStream(messageId, this.life)
+            finitStream = this.hoverHelper.getPausableMessageStream(messageId, this.lifeTime)
         } else {
             finitStream = this.getUnPausableMessageStream()
         }
@@ -99,7 +99,7 @@ export class AdvGrowlComponent implements OnInit {
     }
 
     getUnPausableMessageStream() {
-        return Observable.timer(this.life)
+        return Observable.timer(this.lifeTime)
     }
 
     public messageClosed($event) {
