@@ -40,19 +40,21 @@ describe('AdvGrowlHoverHelper', () => {
 
     describe('get pausable message stream', () => {
 
-        it(`should return an empty observable if the hoveredMessageId is the same
-            as the messageId of the currently displayed message`, () => {
+        it(`should return an empty observable if we only want to pause the hovered messageId and
+            the hoveredMessageId is the same as the messageId of the currently displayed message`, () => {
             // given
             const messageId = '42'
             const hoveredMessageId = '42'
             const lifeTime = 2000
-            spyOn(Observable, 'interval').and.returnValue(Observable.create(function(observer){
+            const pauseOnlyHovered = true
+            spyOn(Observable, 'interval').and.returnValue(Observable.create(function (observer) {
                 observer.next(MOUSE_LEFT_ID)
             }))
-            spyOn(Observable, 'empty').and.returnValue(Observable.create(function(){}))
+            spyOn(Observable, 'empty').and.returnValue(Observable.create(function () {
+            }))
 
             // when
-            sut.getPausableMessageStream(messageId, lifeTime)
+            sut.getPausableMessageStream(messageId, lifeTime, pauseOnlyHovered)
                 .subscribe(() => {
                 })
             mouseenter$.next(hoveredMessageId)
@@ -60,6 +62,50 @@ describe('AdvGrowlHoverHelper', () => {
             // then
             expect(Observable.interval).toHaveBeenCalled()
             expect(Observable.empty).toHaveBeenCalled()
+        })
+
+        it('should return an empty observable if want to pause all messages and we enter a message', () => {
+            // given
+            const messageId = '42'
+            const hoveredMessageId = '42'
+            const lifeTime = 2000
+            const pauseOnlyHovered = false
+            spyOn(Observable, 'interval').and.returnValue(Observable.create(function (observer) {
+                observer.next(MOUSE_LEFT_ID)
+            }))
+            spyOn(Observable, 'empty').and.returnValue(Observable.create(function () {
+            }))
+
+            // when
+            sut.getPausableMessageStream(messageId, lifeTime, pauseOnlyHovered)
+                .subscribe(() => {
+                })
+            mouseenter$.next(hoveredMessageId)
+
+            // then
+            expect(Observable.interval).toHaveBeenCalled()
+            expect(Observable.empty).toHaveBeenCalled()
+        })
+    })
+
+    describe('Detection if the message is entered', () => {
+
+        it('should detect that the MOUSE_LEFT_ID occurs when we leave a message', () => {
+            // given
+            const hoveredMessageId = MOUSE_LEFT_ID
+            // when
+            const isMessageEntered = sut.isMessageEntered(hoveredMessageId)
+            // then
+            expect(isMessageEntered).toBeFalsy()
+        })
+
+        it('should detect that the id 1 occurs when we enter a message', () => {
+            // given
+            const hoveredMessageId = 1
+            // when
+            const isMessageEntered = sut.isMessageEntered(hoveredMessageId)
+            // then
+            expect(isMessageEntered).toBeTruthy()
         })
     })
 })

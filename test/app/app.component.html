@@ -12,9 +12,12 @@
 </nav>
 <div class="container-fluid">
 
-    <adv-growl [life]="lifeTime" [freezeMessagesOnHover]="freezeMessagesOnHover" (onClick)="logMessage($event)"
+    <adv-growl [life]="lifeTime"
+               [freezeMessagesOnHover]="freezeMessagesOnHover"
+               (onClick)="logMessage($event)"
                (onClose)="logClose($event)"
-               (onMessagesChanges)="onMessages($event)"></adv-growl>
+               (onMessagesChanges)="onMessages($event)">
+    </adv-growl>
 
     <div class="col-md-6">
         <div class="jumbotron">

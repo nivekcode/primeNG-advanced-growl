@@ -32,9 +32,14 @@ export class AdvGrowlHoverHelper {
             .startWith(MOUSE_LEFT_ID)
     }
 
-    public getPausableMessageStream(messageId: string, lifeTime: number) {
+    public getPausableMessageStream(messageId: string, lifeTime: number, pauseOnlyHovered: boolean) {
 
         return this.messageHover$.switchMap((hoveredMessageId: string) => {
+
+                if (this.isMessageEntered(hoveredMessageId) && !pauseOnlyHovered) {
+                    return Observable.empty()
+                }
+
                 if (hoveredMessageId === messageId) {
                     return Observable.empty()
                 }
@@ -47,5 +52,9 @@ export class AdvGrowlHoverHelper {
         )
             .dematerialize()
             .last()
+    }
+
+    isMessageEntered(hoveredMessageId: string): boolean {
+        return hoveredMessageId !== MOUSE_LEFT_ID
     }
 }
