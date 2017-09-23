@@ -4,6 +4,11 @@
 [![codecov](https://codecov.io/gh/kreuzerk/primeNG-advanced-growl/branch/master/graph/badge.svg)](https://codecov.io/gh/kreuzerk/primeNG-advanced-growl)
 [![Greenkeeper badge](https://badges.greenkeeper.io/kreuzerk/primeNG-advanced-growl.svg)](https://greenkeeper.io/)
 
+[![npm](https://img.shields.io/npm/dw/primeng-advanced-growl.svg)]()
+[![npm](https://img.shields.io/npm/dm/primeng-advanced-growl.svg)]()
+[![npm](https://img.shields.io/npm/dy/primeng-advanced-growl.svg)]()
+[![npm](https://img.shields.io/npm/dt/primeng-advanced-growl.svg)]()
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
