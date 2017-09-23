@@ -4,5 +4,6 @@
          [styleClass]="styleClass"
          sticky="sticky"
          (onClick)="messageClicked($event)"
-         (onClose)="messageClosed($event)">
+         (onClose)="messageClosed($event)"
+         (onHover)="messageEntered($event)">
 </p-growl>
