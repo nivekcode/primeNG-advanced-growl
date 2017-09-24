@@ -7,16 +7,17 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/mapTo';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/observable/never';
 import {Observable} from 'rxjs/Observable';
 import {AdvPrimeMessage} from './adv-growl.model';
 import {AdvGrowlService} from './adv-growl.service';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Subject} from 'rxjs/Subject';
+import {AdvGrowlHoverHelper} from './adv-growl.hoverHelper';
 
 const DEFAULT_LIFETIME = 0
 const FREEZE_MESSAGES_DEFAULT = false
+const PAUSE_ONLY_HOVERED_DEFAULT = false
 
 @Component({
     selector: 'adv-growl',
@@ -24,32 +25,28 @@ const FREEZE_MESSAGES_DEFAULT = false
 })
 export class AdvGrowlComponent implements OnInit {
 
-    @Input() style: any;
-    @Input() styleClass: any;
-    @Input() life = DEFAULT_LIFETIME;
-    @Input() freezeMessagesOnHover = FREEZE_MESSAGES_DEFAULT;
-    @Output() onClose = new EventEmitter<AdvPrimeMessage>();
-    @Output() onClick = new EventEmitter<AdvPrimeMessage>();
-    @Output() onMessagesChanges = new EventEmitter<Array<AdvPrimeMessage>>();
+    @Input() style: any
+    @Input() styleClass: any
+    @Input('life') lifeTime = DEFAULT_LIFETIME
+    @Input() freezeMessagesOnHover = FREEZE_MESSAGES_DEFAULT
+    @Input() pauseOnlyHoveredMessage = PAUSE_ONLY_HOVERED_DEFAULT;
+    @Output() onClose = new EventEmitter<AdvPrimeMessage>()
+    @Output() onClick = new EventEmitter<AdvPrimeMessage>()
+    @Output() onMessagesChanges = new EventEmitter<Array<AdvPrimeMessage>>()
 
-    @ViewChild('growlMessage', {read: ElementRef}) growlMessage;
+    @ViewChild('growlMessage', {read: ElementRef}) growlMessage
 
-    public messages: Array<AdvPrimeMessage> = [];
-    scheduler = new BehaviorSubject<boolean>(false)
+    public messages: Array<AdvPrimeMessage> = []
+    messageEnter$ = new Subject<string>()
+    hoverHelper: AdvGrowlHoverHelper;
 
     constructor(private messageService: AdvGrowlService) {
     }
 
     ngOnInit(): void {
-        this.setupStreams()
+        const mouseLeave$ = Observable.fromEvent(this.growlMessage.nativeElement, 'mouseleave')
+        this.hoverHelper = new AdvGrowlHoverHelper(this.messageEnter$, mouseLeave$)
         this.subscribeForMessages()
-    }
-
-    setupStreams() {
-        Observable.fromEvent(this.growlMessage.nativeElement, 'mouseenter')
-            .subscribe(e => this.scheduler.next(true))
-        Observable.fromEvent(this.growlMessage.nativeElement, 'mouseleave')
-            .subscribe(e => this.scheduler.next(false))
     }
 
     public subscribeForMessages() {
@@ -70,7 +67,7 @@ export class AdvGrowlComponent implements OnInit {
             );
     }
 
-    public removeMessage(messageId: string) {
+    removeMessage(messageId: string) {
         const index = this.messages.findIndex(message => message.id === messageId);
         if (index >= 0) {
             this.messages.splice(index, 1);
@@ -78,32 +75,46 @@ export class AdvGrowlComponent implements OnInit {
         }
     }
 
-    public getLifeTimeStream(messageId: string): Observable<any> {
-        if (this.life > DEFAULT_LIFETIME) {
-            const lifetimeStream = this.freezeMessagesOnHover ? this.getSchedueLifeTimeStream()
-                : this.getUnscheduledLifeTimeStream()
-            return lifetimeStream
-                .mapTo(messageId);
-
+    getLifeTimeStream(messageId: string): Observable<any> {
+        if (this.hasLifeTime()) {
+            return this.getFinitStream(messageId)
         }
+        return this.getInifiniteStream();
+    }
+
+    hasLifeTime(): boolean {
+        return this.lifeTime > DEFAULT_LIFETIME
+    }
+
+    getInifiniteStream(): Observable<any> {
         return Observable.never();
     }
 
-    getSchedueLifeTimeStream() {
-        return this.scheduler
-            .switchMap(pause => pause ? Observable.never() : Observable.timer(this.life))
+    getFinitStream(messageId: string): Observable<string> {
+        let finitStream: Observable<any>
+        if (this.freezeMessagesOnHover) {
+            finitStream = this.hoverHelper.getPausableMessageStream(messageId, this.lifeTime, this.pauseOnlyHoveredMessage)
+        } else {
+            finitStream = this.getUnPausableMessageStream()
+        }
+        return finitStream.mapTo(messageId)
     }
 
-    getUnscheduledLifeTimeStream() {
-        return Observable.timer(this.life)
+    getUnPausableMessageStream() {
+        return Observable.timer(this.lifeTime)
     }
 
     public messageClosed($event) {
         this.emitMessage($event, this.onClose)
     }
 
-    public messageClicked($event): void {
+    public messageClicked($event) {
         this.emitMessage($event, this.onClick)
+    }
+
+    public messageEntered($event) {
+        const message: AdvPrimeMessage = $event.message
+        this.messageEnter$.next(message.id)
     }
 
     emitMessage($event, emitter: EventEmitter<AdvPrimeMessage>) {

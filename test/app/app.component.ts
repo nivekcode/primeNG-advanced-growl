@@ -9,16 +9,21 @@ import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
 })
 export class AppComponent {
 
-    messages = [];
-    lifeTime = 0;
-    freezeMessagesOnHover = false;
-    version = require('../../package.json').version;
+    messages = []
+    lifeTime = 0
+    freezeMessagesOnHover = false
+    pauseOnlyHoveredMessage = false
+    version = require('../../package.json').version
 
     constructor(private advMessagesService: AdvGrowlService) {
     }
 
     public toggleFreeze() {
-        this.freezeMessagesOnHover = !this.freezeMessagesOnHover;
+        this.freezeMessagesOnHover = !this.freezeMessagesOnHover
+    }
+
+    public togglePauseOnlyHovered() {
+        this.pauseOnlyHoveredMessage = !this.pauseOnlyHoveredMessage
     }
 
     public createInfoMessage(): void {

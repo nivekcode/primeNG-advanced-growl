@@ -12,13 +12,18 @@
 </nav>
 <div class="container-fluid">
 
-    <adv-growl [life]="lifeTime" [freezeMessagesOnHover]="freezeMessagesOnHover" (onClick)="logMessage($event)"
+    <adv-growl [life]="lifeTime"
+               [freezeMessagesOnHover]="freezeMessagesOnHover"
+               [pauseOnlyHoveredMessage]="pauseOnlyHoveredMessage"
+               (onClick)="logMessage($event)"
                (onClose)="logClose($event)"
-               (onMessagesChanges)="onMessages($event)"></adv-growl>
+               (onMessagesChanges)="onMessages($event)">
+    </adv-growl>
 
     <div class="col-md-6">
         <div class="jumbotron">
             <h3>1. Choose a lifetime</h3>
+            <small>(default: 0)</small>
             <hr/>
             <blockquote>
                 <p>Choose a number that represents the lifetime of each growl message.</p>
@@ -38,12 +43,12 @@
 
         <div class="jumbotron">
             <h3>2. Choose if you want to freeze messages on hover</h3>
+            <small>(default: false)</small>
             <hr/>
             <blockquote>
-                <p>Choose if you want to freeze messages on hover</p>
                 <small>This flag is only useful if you also pass a life time. When you pass this property to the
                     component all
-                    messages are freezed when you hover over a message.After you leave the messages all messages will
+                    messages are freezed when you hover over a message. After you leave the messages all messages will
                     disappear after the
                     lifetime you specified.
                 </small>
@@ -55,6 +60,29 @@
                 </button>
                 <button class="btn btn-danger full-width-button" *ngIf="!freezeMessagesOnHover"
                         (click)="toggleFreeze()">
+                    FreezeMessages on hover: Off
+                </button>
+            </div>
+        </div>
+
+        <div class="jumbotron">
+            <h3>3. Choose if you want to freeze only the hoverd message</h3>
+            <small>(default: false)</small>
+            <hr/>
+            <blockquote>
+                <small>This flag indicates if only the hovered message should be paused. If set to true only the hoverd
+                    message will be paused. If set to false all messages will be paused on hover. Notice that this flag
+                    is only useful if you set a lifetime that is bigger than 0 and you set the freezeMessagesOnHover
+                    flag to true
+                </small>
+            </blockquote>
+            <div class="form-group top-margin">
+                <button class="btn btn-primary full-width-button" *ngIf="pauseOnlyHoveredMessage"
+                        (click)="togglePauseOnlyHovered()">
+                    FreezeMessages on hover: On
+                </button>
+                <button class="btn btn-danger full-width-button" *ngIf="!pauseOnlyHoveredMessage"
+                        (click)="togglePauseOnlyHovered()">
                     FreezeMessages on hover: Off
                 </button>
             </div>

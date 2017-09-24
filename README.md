@@ -1,5 +1,10 @@
 # PrimeNGAdvancedGrowl
 
+[![Travis build badge](https://img.shields.io/travis/kreuzerk/primeNG-advanced-growl.svg)](https://travis-ci.org/kreuzerk/primeNG-advanced-growl)
+[![codecov](https://codecov.io/gh/kreuzerk/primeNG-advanced-growl/branch/master/graph/badge.svg)](https://codecov.io/gh/kreuzerk/primeNG-advanced-growl)
+[![Greenkeeper badge](https://badges.greenkeeper.io/kreuzerk/primeNG-advanced-growl.svg)](https://greenkeeper.io/)
+[![npm](https://img.shields.io/npm/dt/primeng-advanced-growl.svg)]()
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
@@ -92,7 +97,8 @@ The advanced growl messages component has the following in- and outputs.
 | style        | Inline styles that should be applied to the growl component of PrimeNG                                                                                                                                                                                                                         |
 | styleClass   | Style class for the growl component of PrimeNG                                                                                                                                                                                                                                                 |
 | life: number (default = 0) | A number that represents the lifetime of each growl message. If set to 3000 each message will be disappear after 3 seconds. If no life param is passed to the components the growl messages are sticky and do not disappear until you call clearMessages or click on the cancel x on a message |
-|freezeMessagesOnHover: boolean (default: false)| This flag is only useful if you also pass a life time. When you pass this property to the component all messages are freezed when you hover over a message. Let's say you have for example 3 messages all with a lifetime of 3 seconds. When you hover after 2 seconds over the second message all messages on the screen are freezed and do not disappear. After you leave the messages all messages will disappear after the lifetime you specified. This means if you hover after 2 seconds over a mesage that has a lifetime of 3 seconds the message will be freezed as long as your cursor is over a message. When you leave the message with your mouse the message will stay there for the specified lifetime (in this case 3 seconds) and will then disapear.|
+|freezeMessagesOnHover: boolean (default: false)| This flag is only useful if you also pass a life time. When you pass this property to the component messages are freezed when you hover over them. Let's say you have for example 3 messages all with a lifetime of 3 seconds. When you hover after 2 seconds over the second message all messages on the screen are freezed and do not disappear. After you leave the messages each message will disappear after the specified lifetime. With the pauseOnlyHoveredMessage you can control if you want all messages or only the hoverd message to disappear|
+|pauseOnlyHoveredMessage (default: false)| This flag indicates if only the hovered message should be paused. If set to true only the hoverd message will be paused. If set to false all messages will be paused on hover. Notice that this flag is only useful if you set a lifetime that is bigger than 0 and you set the freezeMessagesOnHover flag to true|
 
 #### Output
 
