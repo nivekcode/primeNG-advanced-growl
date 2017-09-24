@@ -230,8 +230,10 @@ describe('Message Component', () => {
                 const messageId = '42'
                 const freezeMessagesOnHover = true
                 const lifeTime = 2000
+                const pauseOnlyHovered = false
                 component.freezeMessagesOnHover = freezeMessagesOnHover
                 component.lifeTime = lifeTime
+                component.pauseOnlyHoveredMessage = pauseOnlyHovered
 
                 component.hoverHelper = {
                     getPausableMessageStream: (param1, param2) => Observable.of(1)
@@ -241,7 +243,7 @@ describe('Message Component', () => {
                 // when
                 const finitStream = component.getFinitStream(messageId)
                 // then
-                expect(component.hoverHelper.getPausableMessageStream).toHaveBeenCalledWith(messageId, lifeTime)
+                expect(component.hoverHelper.getPausableMessageStream).toHaveBeenCalledWith(messageId, lifeTime, pauseOnlyHovered)
                 expect(finitStream.subscribe(hoveredMessageId => expect(hoveredMessageId).toBe(messageId)))
             })
 

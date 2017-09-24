@@ -17,6 +17,7 @@ import {AdvGrowlHoverHelper} from './adv-growl.hoverHelper';
 
 const DEFAULT_LIFETIME = 0
 const FREEZE_MESSAGES_DEFAULT = false
+const PAUSE_ONLY_HOVERED_DEFAULT = false
 
 @Component({
     selector: 'adv-growl',
@@ -28,6 +29,7 @@ export class AdvGrowlComponent implements OnInit {
     @Input() styleClass: any
     @Input('life') lifeTime = DEFAULT_LIFETIME
     @Input() freezeMessagesOnHover = FREEZE_MESSAGES_DEFAULT
+    @Input() pauseOnlyHoveredMessage = PAUSE_ONLY_HOVERED_DEFAULT;
     @Output() onClose = new EventEmitter<AdvPrimeMessage>()
     @Output() onClick = new EventEmitter<AdvPrimeMessage>()
     @Output() onMessagesChanges = new EventEmitter<Array<AdvPrimeMessage>>()
@@ -91,7 +93,7 @@ export class AdvGrowlComponent implements OnInit {
     getFinitStream(messageId: string): Observable<string> {
         let finitStream: Observable<any>
         if (this.freezeMessagesOnHover) {
-            finitStream = this.hoverHelper.getPausableMessageStream(messageId, this.lifeTime)
+            finitStream = this.hoverHelper.getPausableMessageStream(messageId, this.lifeTime, this.pauseOnlyHoveredMessage)
         } else {
             finitStream = this.getUnPausableMessageStream()
         }
