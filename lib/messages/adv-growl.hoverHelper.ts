@@ -25,7 +25,7 @@ export class AdvGrowlHoverHelper {
 
     private messageHover$: Observable<string>
 
-    constructor(mouseenter$: Observable<string>, mouseleave$: Observable<string>) {
+    constructor(mouseenter$: Observable<string>, mouseleave$: Observable<any>) {
         this.messageHover$ = Observable.merge(
             mouseenter$, mouseleave$.mapTo(MOUSE_LEFT_ID)
         )
