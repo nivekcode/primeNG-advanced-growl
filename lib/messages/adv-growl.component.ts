@@ -14,6 +14,7 @@ import {AdvPrimeMessage} from './adv-growl.model';
 import {AdvGrowlService} from './adv-growl.service';
 import {Subject} from 'rxjs/Subject';
 import {AdvGrowlHoverHelper} from './adv-growl.hoverHelper';
+import {AdvGrowlMessageCache} from './adv-growl.messageCache';
 
 const DEFAULT_LIFETIME = 0
 const FREEZE_MESSAGES_DEFAULT = false
@@ -39,6 +40,7 @@ export class AdvGrowlComponent implements OnInit {
     public messages: Array<AdvPrimeMessage> = []
     messageEnter$ = new Subject<string>()
     hoverHelper: AdvGrowlHoverHelper;
+    private messageCache: AdvGrowlMessageCache
 
     constructor(private messageService: AdvGrowlService) {
     }
@@ -46,12 +48,13 @@ export class AdvGrowlComponent implements OnInit {
     ngOnInit(): void {
         const mouseLeave$ = Observable.fromEvent(this.growlMessage.nativeElement, 'mouseleave')
         this.hoverHelper = new AdvGrowlHoverHelper(this.messageEnter$, mouseLeave$)
+        this.messageCache = new AdvGrowlMessageCache(5)
         this.subscribeForMessages()
     }
 
     public subscribeForMessages() {
         this.messages = [];
-        this.messageService.getMessageStream()
+        this.messageCache.getMessages(this.messageService.getMessageStream())
             .do(message => {
                 this.messages.push(message);
                 this.onMessagesChanges.emit(this.messages);
@@ -59,7 +62,10 @@ export class AdvGrowlComponent implements OnInit {
             .mergeMap(message => this.getLifeTimeStream(message.id))
             .takeUntil(this.messageService.getCancelStream())
             .subscribe(
-                messageId => this.removeMessage(messageId),
+                messageId => {
+                    this.messageCache.deallocateMessageSpot()
+                    this.removeMessage(messageId)
+                },
                 err => {
                     throw err;
                 },
