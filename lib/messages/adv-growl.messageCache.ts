@@ -16,18 +16,15 @@ interface MessageWithSender {
     message: AdvPrimeMessage
 }
 
-interface MessageQueue {
-    length: number,
-    newMessage: MessageWithSender
-}
-
 export class AdvGrowlMessageCache {
 
     private messageCache: Array<AdvPrimeMessage> = []
     private cachedMessage$ = new Subject<MessageWithSender>()
     private schredder$ = new Subject<MessageWithSender>()
+    private allocatedMessageSpots: number
 
     constructor(private maxNumberOfMessages: number) {
+        this.allocatedMessageSpots = 0
     }
 
     getMessages(message$: Observable<AdvPrimeMessage>): Observable<AdvPrimeMessage> {
@@ -40,26 +37,27 @@ export class AdvGrowlMessageCache {
             this.cachedMessage$,
             this.schredder$
         )
-            .scan((messageQueue: MessageQueue, messageWithSender: MessageWithSender) => {
-                switch (messageWithSender.sender) {
-                    case MESSAGE_SENDER.USER:
-                        return {length: ++messageQueue.length, newMessage: messageWithSender}
-                    case MESSAGE_SENDER.SCHREDDER:
-                        return {length: --messageQueue.length, newMessage: messageWithSender}
-                    case MESSAGE_SENDER.CACHE:
-                        return {length: messageQueue.length, newMessage: messageWithSender}
+            .switchMap((messageWithSender: MessageWithSender) => {
+                    switch (messageWithSender.sender) {
+                        case MESSAGE_SENDER.USER:
+                            if (this.allocatedMessageSpots >= this.maxNumberOfMessages) {
+                                this.messageCache.push(messageWithSender.message)
+                                return Observable.never()
+                            } else {
+                                this.allocatedMessageSpots++
+                                return Observable.of(messageWithSender.message)
+                            }
+                        case MESSAGE_SENDER.CACHE:
+                            return Observable.of(messageWithSender.message)
+                        case MESSAGE_SENDER.SCHREDDER:
+                            return Observable.never()
+                    }
                 }
-            }, {length: 0, newMessage: {}})
-            .switchMap((queue: MessageQueue) => {
-                if (queue.length <= this.maxNumberOfMessages || queue.newMessage.sender === MESSAGE_SENDER.CACHE) {
-                    return Observable.of(queue.newMessage.message)
-                }
-                this.messageCache.push(queue.newMessage.message)
-                return Observable.empty()
-            })
+            )
     }
 
     deallocateMessageSpot(): void {
+        this.allocatedMessageSpots--
         if (this.isCacheEmpty()) {
             this.schredder$.next({sender: MESSAGE_SENDER.SCHREDDER, message: undefined})
         } else {
