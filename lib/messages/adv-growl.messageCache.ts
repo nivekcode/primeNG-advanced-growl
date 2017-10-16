@@ -48,6 +48,7 @@ export class AdvGrowlMessageCache {
                                 return Observable.of(messageWithSender.message)
                             }
                         case MESSAGE_SENDER.CACHE:
+                            this.allocatedMessageSpots++
                             return Observable.of(messageWithSender.message)
                         case MESSAGE_SENDER.SCHREDDER:
                             return Observable.never()
