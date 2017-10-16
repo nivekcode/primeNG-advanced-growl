@@ -37,24 +37,29 @@ export class AdvGrowlMessageCache {
             this.cachedMessage$,
             this.schredder$
         )
-            .switchMap((messageWithSender: MessageWithSender) => {
-                    switch (messageWithSender.sender) {
-                        case MESSAGE_SENDER.USER:
-                            if (this.allocatedMessageSpots >= this.maxNumberOfMessages) {
-                                this.messageCache.push(messageWithSender.message)
-                                return Observable.never()
-                            } else {
-                                this.allocatedMessageSpots++
-                                return Observable.of(messageWithSender.message)
-                            }
-                        case MESSAGE_SENDER.CACHE:
-                            this.allocatedMessageSpots++
-                            return Observable.of(messageWithSender.message)
-                        case MESSAGE_SENDER.SCHREDDER:
-                            return Observable.never()
-                    }
-                }
-            )
+            .switchMap(this.getMessage)
+    }
+
+    private getMessage = (messageWithSender: MessageWithSender) => {
+        switch (messageWithSender.sender) {
+            case MESSAGE_SENDER.USER:
+                return this.getUserMessage(messageWithSender)
+            case MESSAGE_SENDER.CACHE:
+                this.allocatedMessageSpots++
+                return Observable.of(messageWithSender.message)
+            case MESSAGE_SENDER.SCHREDDER:
+                return Observable.never()
+        }
+    }
+
+    private getUserMessage(messageWithSender: MessageWithSender): Observable<AdvPrimeMessage> {
+        if (this.allocatedMessageSpots >= this.maxNumberOfMessages) {
+            this.messageCache.push(messageWithSender.message)
+            return Observable.never()
+        } else {
+            this.allocatedMessageSpots++
+            return Observable.of(messageWithSender.message)
+        }
     }
 
     deallocateMessageSpot(): void {
@@ -69,5 +74,10 @@ export class AdvGrowlMessageCache {
 
     private isCacheEmpty(): boolean {
         return this.messageCache.length === 0
+    }
+
+    public clearCache(): void {
+        this.allocatedMessageSpots = 0
+        this.messageCache = []
     }
 }

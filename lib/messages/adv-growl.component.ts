@@ -69,7 +69,10 @@ export class AdvGrowlComponent implements OnInit {
                 err => {
                     throw err;
                 },
-                () => this.subscribeForMessages()
+                () => {
+                    this.messageCache.clearCache()
+                    this.subscribeForMessages()
+                }
             );
     }
 
