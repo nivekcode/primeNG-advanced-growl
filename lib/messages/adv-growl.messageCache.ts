@@ -1,3 +1,6 @@
+/**
+ * Created by kevinkreuzer on 16.10.17.
+ */
 import {AdvPrimeMessage} from './adv-growl.model';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';

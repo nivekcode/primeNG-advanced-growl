@@ -1,10 +1,17 @@
+/**
+ * Created by kevinkreuzer on 16.10.17.
+ */
 import {AdvGrowlMessageCache, MESSAGE_SENDER} from './adv-growl.messageCache';
 import {Observable} from 'rxjs/Observable';
 
 describe('AdvGrowl Message Cache', () => {
 
     const maxNumberOfMessages = 5
-    const sut = new AdvGrowlMessageCache(maxNumberOfMessages)
+    let sut
+
+    beforeEach(() => {
+        sut = new AdvGrowlMessageCache(maxNumberOfMessages)
+    })
 
     describe('Cache interactions', () => {
 
@@ -77,7 +84,7 @@ describe('AdvGrowl Message Cache', () => {
         })
     })
 
-    fdescribe('Get user messages', () => {
+    describe('Get user messages', () => {
 
         it('should cache messgaes and wait if there are no more spots available', () => {
             // given
@@ -92,6 +99,98 @@ describe('AdvGrowl Message Cache', () => {
             // then
             expect(sut.messageCache).toEqual([message])
             expect(Observable.never).toHaveBeenCalled()
+        })
+
+        it('should allocate a spot for a cached message', () => {
+            // given
+            const message = 'Awesome message' as any
+            const messageWithSender = {sender: MESSAGE_SENDER.USER, message: message}
+            sut.allocatedMessageSpots = maxNumberOfMessages - 1
+            // when
+            const usermessage$ = sut.getUserMessage(messageWithSender)
+            // then
+            expect(sut.allocatedMessageSpots).toBe(maxNumberOfMessages)
+            usermessage$.subscribe(userMessage => expect(userMessage).toBe(message))
+        })
+    })
+
+    describe('Get message', () => {
+
+        it('should call getUserMessage if the sender is the user', () => {
+            // given
+            const messageWithSender = {sender: MESSAGE_SENDER.USER, message: 'Awesome message' as any}
+            spyOn(sut, 'getUserMessage')
+            // when
+            sut.getMessage(messageWithSender)
+            // then
+            expect(sut.getUserMessage).toHaveBeenCalledWith(messageWithSender)
+        })
+
+        it('should allocate a spot and return a stream with the message if the sender is the cache', () => {
+            // given
+            const message = 'Awesome message' as any
+            const messageWithSender = {sender: MESSAGE_SENDER.CACHE, message: message}
+            const allocatedSpots = 3
+            sut.allocatedMessageSpots = allocatedSpots
+            // when
+            const message$ = sut.getMessage(messageWithSender)
+            // then
+            expect(sut.allocatedMessageSpots).toBe(allocatedSpots + 1)
+            message$.subscribe(messageFromCache => expect(messageFromCache).toBe(message))
+        })
+
+        it('should return a stream that never completes if the schredderer is the sender', () => {
+            // given
+            const messageWithSender = {sender: MESSAGE_SENDER.SCHREDDER}
+            spyOn(Observable, 'never')
+            // when
+            sut.getMessage(messageWithSender)
+            // then
+            expect(Observable.never).toHaveBeenCalled()
+        })
+    })
+
+    describe('Get messages', () => {
+
+        it('should return a message if the message Stream emitts a value', () => {
+            // given
+            const message = 'Awesome message'
+            const message$ = Observable.of(message as any)
+
+            spyOn(Observable.prototype, 'switchMap').and.returnValue(Observable.of(message))
+
+            // when
+            const messages$ = sut.getMessages(message$)
+            // then
+            messages$.subscribe(m => expect(m).toBe(message))
+        })
+
+        it('should call switchMap if the cached message Stream emitts a value', () => {
+            // given
+            const message = 'Awesome message'
+            const message$ = Observable.empty()
+
+            spyOn(Observable.prototype, 'switchMap').and.returnValue(Observable.never())
+
+            // when
+            sut.getMessages(message$)
+            sut.cachedMessage$.next(message as any)
+            // then
+            expect(Observable.prototype.switchMap).toHaveBeenCalled()
+        })
+
+        it('should call switchMap if the schredder message Stream emitts a value', () => {
+            // given
+            const message = 'Awesome message'
+            const message$ = Observable.empty()
+
+            spyOn(Observable.prototype, 'switchMap').and.returnValue(Observable.never())
+
+            // when
+            sut.getMessages(message$)
+            sut.schredder$.next(message as any)
+            // then
+            expect(Observable.prototype.switchMap).toHaveBeenCalled()
         })
     })
 })
