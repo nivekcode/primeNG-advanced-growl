@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/scan'
 import 'rxjs/add/observable/of'
 
-enum MESSAGE_SENDER {
+export enum MESSAGE_SENDER {
     USER,
     CACHE,
     SCHREDDER
@@ -13,21 +13,21 @@ enum MESSAGE_SENDER {
 
 interface MessageWithSender {
     sender: MESSAGE_SENDER,
-    message: AdvPrimeMessage
+    message?: AdvPrimeMessage
 }
 
 export class AdvGrowlMessageCache {
 
-    private messageCache: Array<AdvPrimeMessage> = []
-    private cachedMessage$ = new Subject<MessageWithSender>()
-    private schredder$ = new Subject<MessageWithSender>()
-    private allocatedMessageSpots: number
+    messageCache: Array<AdvPrimeMessage> = []
+    cachedMessage$ = new Subject<MessageWithSender>()
+    schredder$ = new Subject<MessageWithSender>()
+    allocatedMessageSpots: number
 
     constructor(private maxNumberOfMessages: number) {
         this.allocatedMessageSpots = 0
     }
 
-    getMessages(message$: Observable<AdvPrimeMessage>): Observable<AdvPrimeMessage> {
+    public getMessages(message$: Observable<AdvPrimeMessage>): Observable<AdvPrimeMessage> {
 
         return Observable.merge(
             message$.map((message: AdvPrimeMessage) => ({
@@ -40,7 +40,7 @@ export class AdvGrowlMessageCache {
             .switchMap(this.getMessage)
     }
 
-    private getMessage = (messageWithSender: MessageWithSender) => {
+    getMessage = (messageWithSender: MessageWithSender) => {
         switch (messageWithSender.sender) {
             case MESSAGE_SENDER.USER:
                 return this.getUserMessage(messageWithSender)
@@ -52,7 +52,7 @@ export class AdvGrowlMessageCache {
         }
     }
 
-    private getUserMessage(messageWithSender: MessageWithSender): Observable<AdvPrimeMessage> {
+    getUserMessage(messageWithSender: MessageWithSender): Observable<AdvPrimeMessage> {
         if (this.allocatedMessageSpots >= this.maxNumberOfMessages) {
             this.messageCache.push(messageWithSender.message)
             return Observable.never()
@@ -65,14 +65,14 @@ export class AdvGrowlMessageCache {
     deallocateMessageSpot(): void {
         this.allocatedMessageSpots--
         if (this.isCacheEmpty()) {
-            this.schredder$.next({sender: MESSAGE_SENDER.SCHREDDER, message: undefined})
+            this.schredder$.next({sender: MESSAGE_SENDER.SCHREDDER})
         } else {
             const message = this.messageCache.shift()
             this.cachedMessage$.next({sender: MESSAGE_SENDER.CACHE, message: message})
         }
     }
 
-    private isCacheEmpty(): boolean {
+    isCacheEmpty(): boolean {
         return this.messageCache.length === 0
     }
 
