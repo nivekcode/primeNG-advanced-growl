@@ -40,7 +40,7 @@ export class AdvGrowlComponent implements OnInit {
     public messages: Array<AdvPrimeMessage> = []
     messageEnter$ = new Subject<string>()
     hoverHelper: AdvGrowlHoverHelper;
-    private messageCache: AdvGrowlMessageCache
+    messageCache: AdvGrowlMessageCache
 
     constructor(private messageService: AdvGrowlService) {
     }

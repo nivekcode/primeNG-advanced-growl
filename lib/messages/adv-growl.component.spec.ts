@@ -74,8 +74,14 @@ describe('Message Component', () => {
                             observer.next(message);
                         });
                     });
-                    spyOn(messagesService, 'getMessageStream').and.returnValue(messages$);
-                    spyOn(messagesService, 'getCancelStream').and.returnValue(Observable.never());
+                    spyOn(messagesService, 'getMessageStream')
+                    spyOn(messagesService, 'getCancelStream').and.returnValue(Observable.never())
+                    component.messageCache = {
+                        getMessages: () => {
+                        }
+                    } as any
+                    spyOn(component.messageCache, 'getMessages').and.returnValue(messages$)
+
                     // when
                     component.subscribeForMessages();
                     // then
@@ -96,13 +102,22 @@ describe('Message Component', () => {
                         observer.next(message);
                     });
                 });
-                spyOn(messagesService, 'getMessageStream').and.returnValue(messages$);
+                spyOn(messagesService, 'getMessageStream')
                 spyOn(component, 'getLifeTimeStream').and.returnValue(Observable.of(1));
                 spyOn(component, 'removeMessage');
+                component.messageCache = {
+                    getMessages: () => {
+                    },
+                    deallocateMessageSpot: () => {
+                    }
+                } as any
+                spyOn(component.messageCache, 'getMessages').and.returnValue(messages$)
+                spyOn(component.messageCache, 'deallocateMessageSpot')
                 // when
                 component.subscribeForMessages();
                 // then
                 expect(component.removeMessage).toHaveBeenCalledTimes(3);
+                expect(component.messageCache.deallocateMessageSpot).toHaveBeenCalledTimes(3)
             })
         );
 
@@ -121,7 +136,7 @@ describe('Message Component', () => {
                         observer.next(message);
                     });
                 });
-                spyOn(messagesService, 'getMessageStream').and.returnValue(messages$);
+                spyOn(messagesService, 'getMessageStream')
                 spyOn(messagesService, 'getCancelStream').and.callFake(() => {
                     if (numberOfCalls === 0) {
                         numberOfCalls++;
@@ -132,10 +147,23 @@ describe('Message Component', () => {
                 spyOn(component, 'getLifeTimeStream').and.returnValue(Observable.of(1));
                 spyOn(Array.prototype, 'shift');
                 spyOn(component, 'subscribeForMessages').and.callThrough();
+
+                component.messageCache = {
+                    getMessages: () => messages$,
+                    clearCache: () => {
+                    },
+                    deallocateMessageSpot: () => {
+                    }
+                } as any
+
+                spyOn(component.messageCache, 'clearCache')
+                spyOn(component.messageCache, 'deallocateMessageSpot')
+
                 // when
                 component.subscribeForMessages();
                 // then
                 expect(component.subscribeForMessages).toHaveBeenCalledTimes(2);
+                expect(component.messageCache.clearCache).toHaveBeenCalled();
             }));
 
         it('should remove the message with the matching messageId', () => {
@@ -170,6 +198,11 @@ describe('Message Component', () => {
                 const errorMessage = 'Awful error';
                 const messages$ = Observable.throw(new Error(errorMessage));
                 spyOn(messagesService, 'getMessageStream').and.returnValue(messages$);
+                component.messageCache = {
+                    getMessages: () => {
+                    }
+                } as any
+                spyOn(component.messageCache, 'getMessages').and.returnValue(messages$)
                 // when then
                 expect(() => component.subscribeForMessages()).toThrowError(errorMessage);
             }));
