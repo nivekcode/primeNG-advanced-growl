@@ -43,7 +43,7 @@ export class AdvGrowlMessageCache {
             .switchMap(this.getMessage)
     }
 
-    getMessage = (messageWithSender: MessageWithSender) => {
+    getMessage = (messageWithSender: MessageWithSender): Observable<AdvPrimeMessage> => {
         switch (messageWithSender.sender) {
             case MESSAGE_SENDER.USER:
                 return this.getUserMessage(messageWithSender)

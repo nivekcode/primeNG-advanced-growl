@@ -15,6 +15,7 @@ import {AdvGrowlService} from './adv-growl.service';
 import {Subject} from 'rxjs/Subject';
 import {AdvGrowlHoverHelper} from './adv-growl.hoverHelper';
 import {AdvGrowlMessageCache} from './adv-growl.messageCache';
+import {Observer} from 'rxjs/Observer';
 
 const DEFAULT_LIFETIME = 0
 const FREEZE_MESSAGES_DEFAULT = false
@@ -41,6 +42,7 @@ export class AdvGrowlComponent implements OnInit {
     messageEnter$ = new Subject<string>()
     hoverHelper: AdvGrowlHoverHelper;
     messageCache: AdvGrowlMessageCache
+    private messageObserver: Observer<any>
 
     constructor(private messageService: AdvGrowlService) {
     }
@@ -49,7 +51,24 @@ export class AdvGrowlComponent implements OnInit {
         const mouseLeave$ = Observable.fromEvent(this.growlMessage.nativeElement, 'mouseleave')
         this.hoverHelper = new AdvGrowlHoverHelper(this.messageEnter$, mouseLeave$)
         this.messageCache = new AdvGrowlMessageCache(5)
+        this.messageObserver = this.createMessageObserver()
         this.subscribeForMessages()
+    }
+
+    private createMessageObserver(): Observer<any> {
+        return {
+            next: (messageId: string) => {
+                this.messageCache.deallocateMessageSpot()
+                this.removeMessage(messageId)
+            },
+            error: (error) => {
+                throw error;
+            },
+            complete: () => {
+                this.messageCache.clearCache()
+                this.subscribeForMessages()
+            }
+        }
     }
 
     public subscribeForMessages() {
@@ -61,19 +80,7 @@ export class AdvGrowlComponent implements OnInit {
             })
             .mergeMap(message => this.getLifeTimeStream(message.id))
             .takeUntil(this.messageService.getCancelStream())
-            .subscribe(
-                messageId => {
-                    this.messageCache.deallocateMessageSpot()
-                    this.removeMessage(messageId)
-                },
-                err => {
-                    throw err;
-                },
-                () => {
-                    this.messageCache.clearCache()
-                    this.subscribeForMessages()
-                }
-            );
+            .subscribe(this.messageObserver);
     }
 
     removeMessage(messageId: string) {
