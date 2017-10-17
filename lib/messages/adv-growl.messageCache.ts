@@ -25,12 +25,18 @@ export class AdvGrowlMessageCache {
     cachedMessage$ = new Subject<MessageWithSender>()
     schredder$ = new Subject<MessageWithSender>()
     allocatedMessageSpots: number
+    hasMessageSpots: boolean
 
-    constructor(private maxNumberOfMessages: number) {
+    constructor(private messageSpots: number) {
+        this.hasMessageSpots = messageSpots !== 0
         this.allocatedMessageSpots = 0
     }
 
     public getMessages(message$: Observable<AdvPrimeMessage>): Observable<AdvPrimeMessage> {
+
+        if (!this.hasMessageSpots) {
+            return message$
+        }
 
         return Observable.merge(
             message$.map((message: AdvPrimeMessage) => ({
@@ -56,7 +62,7 @@ export class AdvGrowlMessageCache {
     }
 
     getUserMessage(messageWithSender: MessageWithSender): Observable<AdvPrimeMessage> {
-        if (this.allocatedMessageSpots >= this.maxNumberOfMessages) {
+        if (this.allocatedMessageSpots >= this.messageSpots) {
             this.messageCache.push(messageWithSender.message)
             return Observable.never()
         } else {

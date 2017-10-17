@@ -20,6 +20,7 @@ import {Observer} from 'rxjs/Observer';
 const DEFAULT_LIFETIME = 0
 const FREEZE_MESSAGES_DEFAULT = false
 const PAUSE_ONLY_HOVERED_DEFAULT = false
+const DEFAULT_MESSAGE_SPOTS = 0
 
 @Component({
     selector: 'adv-growl',
@@ -31,6 +32,7 @@ export class AdvGrowlComponent implements OnInit {
     @Input() styleClass: any
     @Input('life') lifeTime = DEFAULT_LIFETIME
     @Input() freezeMessagesOnHover = FREEZE_MESSAGES_DEFAULT
+    @Input() messageSpots = DEFAULT_MESSAGE_SPOTS
     @Input() pauseOnlyHoveredMessage = PAUSE_ONLY_HOVERED_DEFAULT;
     @Output() onClose = new EventEmitter<AdvPrimeMessage>()
     @Output() onClick = new EventEmitter<AdvPrimeMessage>()
@@ -50,7 +52,7 @@ export class AdvGrowlComponent implements OnInit {
     ngOnInit(): void {
         const mouseLeave$ = Observable.fromEvent(this.growlMessage.nativeElement, 'mouseleave')
         this.hoverHelper = new AdvGrowlHoverHelper(this.messageEnter$, mouseLeave$)
-        this.messageCache = new AdvGrowlMessageCache(5)
+        this.messageCache = new AdvGrowlMessageCache(this.messageSpots)
         this.messageObserver = this.createMessageObserver()
         this.subscribeForMessages()
     }
@@ -78,6 +80,7 @@ export class AdvGrowlComponent implements OnInit {
                 this.messages.push(message);
                 this.onMessagesChanges.emit(this.messages);
             })
+            .do(e => console.log('MessageSpots', this.messageSpots))
             .mergeMap(message => this.getLifeTimeStream(message.id))
             .takeUntil(this.messageService.getCancelStream())
             .subscribe(this.messageObserver);

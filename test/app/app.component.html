@@ -13,6 +13,7 @@
 <div class="container-fluid">
 
     <adv-growl [life]="lifeTime"
+               [messageSpots]="messageSpots"
                [freezeMessagesOnHover]="freezeMessagesOnHover"
                [pauseOnlyHoveredMessage]="pauseOnlyHoveredMessage"
                (onClick)="logMessage($event)"
@@ -87,10 +88,23 @@
                 </button>
             </div>
         </div>
+        <div class="jumbotron">
+            <h3>4. Choose if you want to limit the number of message displayed</h3>
+            <small>(default: 0 (no limitations))</small>
+            <hr/>
+            <blockquote>
+                <small>This property gives you the possibility to limit the number of messages displayed on the screen
+                </small>
+            </blockquote>
+            <div class="form-group top-margin">
+                <label class="control-label" for="messageSpotsInput">Max messagespots</label>
+                <input [(ngModel)]="messageSpots" class="form-control" id="messageSpotsInput" type="number" value="0">
+            </div>
+        </div>
     </div>
     <div class="col-md-6">
         <div class="jumbotron">
-            <h3>3. Lets create some messages</h3>
+            <h3>5. Lets create some messages</h3>
             <hr/>
             <blockquote>
                 <p>Next let's create some messages.</p>
@@ -126,7 +140,7 @@
             </div>
         </div>
         <div class="jumbotron">
-            <h3>4. More Options - Extra functionalities</h3>
+            <h3>6. More Options - Extra functionalities</h3>
             <hr/>
             <div class="row top-margin">
                 <blockquote>
