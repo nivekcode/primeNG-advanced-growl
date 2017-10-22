@@ -26,13 +26,15 @@ export class AdvGrowlMessageCache {
     schredder$ = new Subject<MessageWithSender>()
     allocatedMessageSpots: number
     hasMessageSpots: boolean
+    messageSpots: number
 
-    constructor(private messageSpots: number) {
-        this.hasMessageSpots = messageSpots !== 0
-        this.allocatedMessageSpots = 0
+    constructor() {
     }
 
-    public getMessages(message$: Observable<AdvPrimeMessage>): Observable<AdvPrimeMessage> {
+    public getMessages(message$: Observable<AdvPrimeMessage>, messageSpots: number): Observable<AdvPrimeMessage> {
+        this.messageSpots = messageSpots
+        this.hasMessageSpots = messageSpots !== 0
+        this.allocatedMessageSpots = 0
 
         if (!this.hasMessageSpots) {
             return message$

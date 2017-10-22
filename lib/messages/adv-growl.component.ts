@@ -1,7 +1,18 @@
 /**
  * Created by kevinkreuzer on 08.07.17.
  */
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChange,
+    SimpleChanges,
+    ViewChild
+} from '@angular/core';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/mapTo';
@@ -26,7 +37,8 @@ const DEFAULT_MESSAGE_SPOTS = 0
     selector: 'adv-growl',
     templateUrl: './adv-growl.component.html'
 })
-export class AdvGrowlComponent implements OnInit {
+export class AdvGrowlComponent implements OnInit, OnChanges {
+
 
     @Input() style: any
     @Input() styleClass: any
@@ -42,6 +54,7 @@ export class AdvGrowlComponent implements OnInit {
 
     public messages: Array<AdvPrimeMessage> = []
     messageEnter$ = new Subject<string>()
+    messageSpotChange$ = new Subject()
     hoverHelper: AdvGrowlHoverHelper;
     messageCache: AdvGrowlMessageCache
     private messageObserver: Observer<any>
@@ -52,9 +65,27 @@ export class AdvGrowlComponent implements OnInit {
     ngOnInit(): void {
         const mouseLeave$ = Observable.fromEvent(this.growlMessage.nativeElement, 'mouseleave')
         this.hoverHelper = new AdvGrowlHoverHelper(this.messageEnter$, mouseLeave$)
-        this.messageCache = new AdvGrowlMessageCache(this.messageSpots)
+        this.messageCache = new AdvGrowlMessageCache()
         this.messageObserver = this.createMessageObserver()
         this.subscribeForMessages()
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        const messageSpotChange = changes.messageSpots
+        if (messageSpotChange != null && this.haveMessageSpotsChanged(messageSpotChange)) {
+            this.messageSpotChange$.next()
+        }
+    }
+
+    private haveMessageSpotsChanged(messageSpotChange: SimpleChange) {
+        const currentValue = messageSpotChange.currentValue
+        const previousValue = messageSpotChange.previousValue
+        const firstChange = messageSpotChange.firstChange
+        const hasValueChanged = currentValue !== previousValue
+        if (currentValue != null && !firstChange && hasValueChanged) {
+            return true
+        }
+        return false
     }
 
     private createMessageObserver(): Observer<any> {
@@ -75,14 +106,16 @@ export class AdvGrowlComponent implements OnInit {
 
     public subscribeForMessages() {
         this.messages = [];
-        this.messageCache.getMessages(this.messageService.getMessageStream())
+        this.messageCache.getMessages(this.messageService.getMessageStream(), this.messageSpots)
             .do(message => {
                 this.messages.push(message);
                 this.onMessagesChanges.emit(this.messages);
             })
-            .do(e => console.log('MessageSpots', this.messageSpots))
             .mergeMap(message => this.getLifeTimeStream(message.id))
-            .takeUntil(this.messageService.getCancelStream())
+            .takeUntil(Observable.merge(
+                this.messageService.getCancelStream(),
+                this.messageSpotChange$)
+            )
             .subscribe(this.messageObserver);
     }
 
