@@ -77,7 +77,7 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
         }
     }
 
-    private haveMessageSpotsChanged(messageSpotChange: SimpleChange) {
+    haveMessageSpotsChanged(messageSpotChange: SimpleChange) {
         const currentValue = messageSpotChange.currentValue
         const previousValue = messageSpotChange.previousValue
         const firstChange = messageSpotChange.firstChange
@@ -88,7 +88,7 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
         return false
     }
 
-    private createMessageObserver(): Observer<any> {
+    createMessageObserver(): Observer<any> {
         return {
             next: (messageId: string) => {
                 this.messageCache.deallocateMessageSpot()

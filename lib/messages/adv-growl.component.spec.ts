@@ -10,7 +10,7 @@ import 'rxjs/add/observable/never';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/throw';
 import {AdvPrimeMessage} from './adv-growl.model';
-import {EventEmitter} from '@angular/core';
+import {EventEmitter, SimpleChange} from '@angular/core';
 
 describe('Message Component', () => {
 
@@ -368,6 +368,126 @@ describe('Message Component', () => {
                 // then
                 component.messageEnter$.subscribe(enteredMesssageId => expect(enteredMesssageId).toBe(messageId))
             })
+        })
+    })
+
+    describe('Create message observer', () => {
+
+        it('should  create a messageObserver that deallocates messages spots and remove messages on next', () => {
+            // given
+            component.ngOnInit()
+            const messageId = 12345
+            spyOn(component.messageCache, 'deallocateMessageSpot')
+            spyOn(component, 'removeMessage')
+            // when
+            const messageObserver = component.createMessageObserver()
+            messageObserver.next(messageId)
+            // then
+            expect(component.messageCache.deallocateMessageSpot).toHaveBeenCalled()
+            expect(component.removeMessage).toHaveBeenCalledWith(messageId)
+        })
+
+        it('should  create a messageObserver that calls clear cache and resubscribes on complete', () => {
+            // given
+            component.ngOnInit()
+            spyOn(component.messageCache, 'clearCache')
+            spyOn(component, 'subscribeForMessages')
+            // when
+            const messageObserver = component.createMessageObserver()
+            messageObserver.complete()
+            // then
+            expect(component.messageCache.clearCache).toHaveBeenCalled()
+            expect(component.subscribeForMessages).toHaveBeenCalled()
+        })
+    })
+
+    describe('OnChange', () => {
+
+        describe('Have message spots changed', () => {
+
+            it('should return false if the currentValue is null', () => {
+                // given
+                const messageSpotChange = {
+                    currentValue: null,
+                    previousValue: 1,
+                    firstChange: false
+                } as SimpleChange
+                // when
+                const hasChanged = component.haveMessageSpotsChanged(messageSpotChange)
+                // then
+                expect(hasChanged).toBeFalsy()
+            })
+
+            it('should return false if the currentValue is undefined', () => {
+                // given
+                const messageSpotChange = {
+                    currentValue: undefined,
+                    previousValue: 1,
+                    firstChange: false
+                } as SimpleChange
+                // when
+                const hasChanged = component.haveMessageSpotsChanged(messageSpotChange)
+                // then
+                expect(hasChanged).toBeFalsy()
+            })
+
+            it('should return true if the currentValue is 0', () => {
+                // given
+                const messageSpotChange = {
+                    currentValue: 0,
+                    previousValue: 1,
+                    firstChange: false
+                } as SimpleChange
+                // when
+                const hasChanged = component.haveMessageSpotsChanged(messageSpotChange)
+                // then
+                expect(hasChanged).toBeTruthy()
+            })
+
+            it('should return false if it is the first change', () => {
+                // given
+                const messageSpotChange = {
+                    currentValue: 0,
+                    previousValue: 1,
+                    firstChange: true
+                } as SimpleChange
+                // when
+                const hasChanged = component.haveMessageSpotsChanged(messageSpotChange)
+                // then
+                expect(hasChanged).toBeFalsy()
+            })
+
+            it('should return false if it is not the first change but the value has not changed', () => {
+                // given
+                const messageSpotChange = {
+                    currentValue: 1,
+                    previousValue: 1,
+                    firstChange: true
+                } as SimpleChange
+                // when
+                const hasChanged = component.haveMessageSpotsChanged(messageSpotChange)
+                // then
+                expect(hasChanged).toBeFalsy()
+            })
+        })
+
+        it('should stream a messageSpot change when the messageSpot has changed', done => {
+            // given
+            const messageSpotChange = {
+                currentValue: 1,
+                previousValue: 0,
+                firstChange: false
+            } as SimpleChange
+
+            const changes = {
+                messageSpots: messageSpotChange
+            }
+            // then
+            component.messageSpotChange$.subscribe(() => {
+                done()
+            })
+            // when
+            component.ngOnChanges(changes)
         })
     })
 })
