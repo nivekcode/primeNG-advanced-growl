@@ -60,13 +60,13 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
     private messageObserver: Observer<any>
 
     constructor(private messageService: AdvGrowlService) {
+        this.messageObserver = this.createMessageObserver()
     }
 
     ngOnInit(): void {
         const mouseLeave$ = Observable.fromEvent(this.growlMessage.nativeElement, 'mouseleave')
         this.hoverHelper = new AdvGrowlHoverHelper(this.messageEnter$, mouseLeave$)
         this.messageCache = new AdvGrowlMessageCache()
-        this.messageObserver = this.createMessageObserver()
         this.subscribeForMessages()
     }
 

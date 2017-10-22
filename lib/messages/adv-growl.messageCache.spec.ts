@@ -10,7 +10,7 @@ describe('AdvGrowl Message Cache', () => {
     let sut
 
     beforeEach(() => {
-        sut = new AdvGrowlMessageCache(maxNumberOfMessages)
+        sut = new AdvGrowlMessageCache()
     })
 
     describe('Cache interactions', () => {
@@ -90,6 +90,7 @@ describe('AdvGrowl Message Cache', () => {
             // given
             const message = 'Awesome message' as any
             const messageWithSender = {sender: MESSAGE_SENDER.USER, message: message}
+            sut.messageSpots = maxNumberOfMessages
             sut.allocatedMessageSpots = maxNumberOfMessages
 
             spyOn(Observable, 'never')
@@ -160,7 +161,7 @@ describe('AdvGrowl Message Cache', () => {
             spyOn(Observable.prototype, 'switchMap').and.returnValue(Observable.of(message))
 
             // when
-            const messages$ = sut.getMessages(message$)
+            const messages$ = sut.getMessages(message$, maxNumberOfMessages)
             // then
             messages$.subscribe(m => expect(m).toBe(message))
         })
@@ -187,7 +188,7 @@ describe('AdvGrowl Message Cache', () => {
             spyOn(Observable.prototype, 'switchMap').and.returnValue(Observable.never())
 
             // when
-            sut.getMessages(message$)
+            sut.getMessages(message$, maxNumberOfMessages)
             sut.schredder$.next(message as any)
             // then
             expect(Observable.prototype.switchMap).toHaveBeenCalled()
