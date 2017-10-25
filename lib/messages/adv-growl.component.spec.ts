@@ -205,7 +205,23 @@ describe('Message Component', () => {
                 spyOn(component.messageCache, 'getMessages').and.returnValue(messages$)
                 // when then
                 expect(() => component.subscribeForMessages()).toThrowError(errorMessage);
-            }));
+            })
+        );
+
+        it('should clear the message cache and resubscribe for messages on spot changes', () => {
+            // given
+            component.messageCache = {
+                getMessages: () => Observable.of('Some message'),
+                clearCache: () => {
+                }
+            } as any
+            spyOn(component.messageCache, 'clearCache')
+            // when
+            component.subscribeForMessages()
+            component.messageSpotChange$.next()
+            // then
+            expect(component.messageCache.clearCache).toHaveBeenCalled()
+        })
     })
 
     describe('Get Life time streams', () => {
