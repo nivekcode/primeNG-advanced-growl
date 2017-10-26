@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 import {AdvGrowlService} from '../../lib/messages/adv-growl.service';
 import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
 
+const DEFAULT_MESSAGE_SPOTS = 0
+const DEFAULT_LIFETIME = 0
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -10,7 +13,8 @@ import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
 export class AppComponent {
 
     messages = []
-    lifeTime = 0
+    lifeTime = DEFAULT_LIFETIME
+    messageSpots = DEFAULT_MESSAGE_SPOTS
     freezeMessagesOnHover = false
     pauseOnlyHoveredMessage = false
     version = require('../../package.json').version

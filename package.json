@@ -1,6 +1,6 @@
 {
   "name": "primeng-advanced-growl",
-  "version": "2.4.1",
+  "version": "2.5.1",
   "description": "The AdvGrowlModule is a wrapper around the growl module from PrimeNG. This wrapper was created because PrimeNG is missing some features.",
   "keywords": [
     "PrimeNG, Angular, RxJS, Growl, Messages"
@@ -71,11 +71,10 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "primeng": "^4.2.1",
-    "protractor": "~5.1.2",
     "rxjs": "^5.1.0",
     "ts-node": "~3.3.0",
     "tslint": "~5.7.0",
-    "typescript": "=2.5.3",
+    "typescript": "=2.3.4",
     "zone.js": "0.8.18"
   }
 }
