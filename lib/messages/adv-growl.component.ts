@@ -1,7 +1,18 @@
 /**
  * Created by kevinkreuzer on 08.07.17.
  */
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChange,
+    SimpleChanges,
+    ViewChild
+} from '@angular/core';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/mapTo';
@@ -14,21 +25,26 @@ import {AdvPrimeMessage} from './adv-growl.model';
 import {AdvGrowlService} from './adv-growl.service';
 import {Subject} from 'rxjs/Subject';
 import {AdvGrowlHoverHelper} from './adv-growl.hoverHelper';
+import {AdvGrowlMessageCache} from './adv-growl.messageCache';
+import {Observer} from 'rxjs/Observer';
 
 const DEFAULT_LIFETIME = 0
 const FREEZE_MESSAGES_DEFAULT = false
 const PAUSE_ONLY_HOVERED_DEFAULT = false
+const DEFAULT_MESSAGE_SPOTS = 0
 
 @Component({
     selector: 'adv-growl',
     templateUrl: './adv-growl.component.html'
 })
-export class AdvGrowlComponent implements OnInit {
+export class AdvGrowlComponent implements OnInit, OnChanges {
+
 
     @Input() style: any
     @Input() styleClass: any
     @Input('life') lifeTime = DEFAULT_LIFETIME
     @Input() freezeMessagesOnHover = FREEZE_MESSAGES_DEFAULT
+    @Input() messageSpots = DEFAULT_MESSAGE_SPOTS
     @Input() pauseOnlyHoveredMessage = PAUSE_ONLY_HOVERED_DEFAULT;
     @Output() onClose = new EventEmitter<AdvPrimeMessage>()
     @Output() onClick = new EventEmitter<AdvPrimeMessage>()
@@ -38,33 +54,69 @@ export class AdvGrowlComponent implements OnInit {
 
     public messages: Array<AdvPrimeMessage> = []
     messageEnter$ = new Subject<string>()
+    messageSpotChange$ = new Subject()
     hoverHelper: AdvGrowlHoverHelper;
+    messageCache: AdvGrowlMessageCache
+    private messageObserver: Observer<any>
 
     constructor(private messageService: AdvGrowlService) {
+        this.messageObserver = this.createMessageObserver()
     }
 
     ngOnInit(): void {
         const mouseLeave$ = Observable.fromEvent(this.growlMessage.nativeElement, 'mouseleave')
         this.hoverHelper = new AdvGrowlHoverHelper(this.messageEnter$, mouseLeave$)
+        this.messageCache = new AdvGrowlMessageCache()
         this.subscribeForMessages()
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        const messageSpotChange = changes.messageSpots
+        if (messageSpotChange != null && this.haveMessageSpotsChanged(messageSpotChange)) {
+            this.messageSpotChange$.next()
+        }
+    }
+
+    haveMessageSpotsChanged(messageSpotChange: SimpleChange) {
+        const currentValue = messageSpotChange.currentValue
+        const previousValue = messageSpotChange.previousValue
+        const firstChange = messageSpotChange.firstChange
+        const hasValueChanged = currentValue !== previousValue
+        if (currentValue != null && !firstChange && hasValueChanged) {
+            return true
+        }
+        return false
+    }
+
+    createMessageObserver(): Observer<any> {
+        return {
+            next: (messageId: string) => {
+                this.messageCache.deallocateMessageSpot()
+                this.removeMessage(messageId)
+            },
+            error: (error) => {
+                throw error;
+            },
+            complete: () => {
+                this.messageCache.clearCache()
+                this.subscribeForMessages()
+            }
+        }
     }
 
     public subscribeForMessages() {
         this.messages = [];
-        this.messageService.getMessageStream()
+        this.messageCache.getMessages(this.messageService.getMessageStream(), this.messageSpots)
             .do(message => {
                 this.messages.push(message);
                 this.onMessagesChanges.emit(this.messages);
             })
             .mergeMap(message => this.getLifeTimeStream(message.id))
-            .takeUntil(this.messageService.getCancelStream())
-            .subscribe(
-                messageId => this.removeMessage(messageId),
-                err => {
-                    throw err;
-                },
-                () => this.subscribeForMessages()
-            );
+            .takeUntil(Observable.merge(
+                this.messageService.getCancelStream(),
+                this.messageSpotChange$)
+            )
+            .subscribe(this.messageObserver);
     }
 
     removeMessage(messageId: string) {
