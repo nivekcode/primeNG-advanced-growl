@@ -54,7 +54,7 @@
     "@angular/language-service": "^4.0.0",
     "@angular/platform-browser": "^4.3.0",
     "@angular/platform-browser-dynamic": "^4.3.0",
-    "@angular/router": "^4.3.0",
+    "@angular/router": "^5.0.0",
     "@types/jasmine": "~2.6.0",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~8.0.28",
