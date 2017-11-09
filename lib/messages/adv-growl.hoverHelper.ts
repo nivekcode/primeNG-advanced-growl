@@ -37,11 +37,11 @@ export class AdvGrowlHoverHelper {
         return this.messageHover$.switchMap((hoveredMessageId: string) => {
 
                 if (this.isMessageEntered(hoveredMessageId) && !pauseOnlyHovered) {
-                    return Observable.empty()
+                    return Observable.empty().materialize()
                 }
 
                 if (hoveredMessageId === messageId) {
-                    return Observable.empty()
+                    return Observable.empty().materialize()
                 }
                 return Observable.interval(STEP_TIME_UNIT)
                     .do(() => lifeTime -= STEP_TIME_UNIT)
