@@ -15,7 +15,7 @@ import 'rxjs/add/operator/do'
 import 'rxjs/add/operator/switchMap'
 
 import 'rxjs/add/observable/merge'
-import 'rxjs/add/observable/empty'
+import 'rxjs/add/observable/never'
 import 'rxjs/add/observable/interval'
 
 export const MOUSE_LEFT_ID = 'MOUSE_LEFT_ID';
