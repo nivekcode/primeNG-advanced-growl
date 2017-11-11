@@ -50,7 +50,7 @@ describe('AdvGrowlHoverHelper', () => {
             spyOn(Observable, 'interval').and.returnValue(Observable.create(function (observer) {
                 observer.next(MOUSE_LEFT_ID)
             }))
-            spyOn(Observable, 'empty').and.returnValue(Observable.create(function () {
+            spyOn(Observable, 'never').and.returnValue(Observable.create(function () {
             }))
 
             // when
@@ -61,7 +61,7 @@ describe('AdvGrowlHoverHelper', () => {
 
             // then
             expect(Observable.interval).toHaveBeenCalled()
-            expect(Observable.empty).toHaveBeenCalled()
+            expect(Observable.never).toHaveBeenCalled()
         })
 
         it('should return an empty observable if want to pause all messages and we enter a message', () => {
@@ -73,7 +73,7 @@ describe('AdvGrowlHoverHelper', () => {
             spyOn(Observable, 'interval').and.returnValue(Observable.create(function (observer) {
                 observer.next(MOUSE_LEFT_ID)
             }))
-            spyOn(Observable, 'empty').and.returnValue(Observable.create(function () {
+            spyOn(Observable, 'never').and.returnValue(Observable.create(function () {
             }))
 
             // when
@@ -84,7 +84,7 @@ describe('AdvGrowlHoverHelper', () => {
 
             // then
             expect(Observable.interval).toHaveBeenCalled()
-            expect(Observable.empty).toHaveBeenCalled()
+            expect(Observable.never).toHaveBeenCalled()
         })
     })
 
