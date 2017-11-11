@@ -3,6 +3,7 @@
  */
 import {AdvGrowlMessageCache, MESSAGE_SENDER} from './adv-growl.messageCache';
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/empty'
 
 describe('AdvGrowl Message Cache', () => {
 
