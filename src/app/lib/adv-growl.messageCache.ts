@@ -14,7 +14,7 @@ export enum MESSAGE_SENDER {
     SCHREDDER
 }
 
-interface MessageWithSender {
+export interface MessageWithSender {
     sender: MESSAGE_SENDER,
     message?: AdvPrimeMessage
 }
