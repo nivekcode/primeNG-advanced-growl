@@ -11,7 +11,6 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {Injectable} from '@angular/core';
 import {AdvPrimeMessage} from './adv-growl.model';
-import {UUID} from 'angular2-uuid';
 
 const MessageSeverities = {
     SUCCESS: 'success',
@@ -47,10 +46,14 @@ export class AdvGrowlService {
 
     private createMessage(severity: string, summary: string, detail: string, additionalProperties?: any): void {
         if (additionalProperties) {
-            this.message$.next({id: UUID.UUID(), severity, summary, detail, additionalProperties});
+            this.message$.next({id: this.getTimeStamp(), severity, summary, detail, additionalProperties});
         } else {
-            this.message$.next({id: UUID.UUID(), severity, summary, detail});
+            this.message$.next({id: this.getTimeStamp(), severity, summary, detail});
         }
+    }
+
+    private getTimeStamp(): string {
+        return new Date().getTime() + ''
     }
 
     public clearMessages(): void {

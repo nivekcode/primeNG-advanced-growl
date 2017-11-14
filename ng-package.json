@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+  "lib": {
+    "externals": {
+      "primeng/primeng": "primeng",
+      "rxjs/add/operator/mapTo": "Rx.Observable.prototype"
+    },
+    "entryFile": "public_api.ts"
+  }
+}

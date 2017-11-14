@@ -54,7 +54,7 @@ describe('Message Component', () => {
             // when
             component.ngOnInit()
             // then
-            expect(Observable.fromEvent).toHaveBeenCalledWith(component.growlMessage.nativeElement, 'mouseleave')
+            expect(Observable.fromEvent).toHaveBeenCalledWith(component.growlMessage.el.nativeElement, 'mouseleave')
         })
     })
 

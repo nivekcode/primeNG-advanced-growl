@@ -1,5 +1,4 @@
 import {TestBed} from '@angular/core/testing';
-import {UUID} from 'angular2-uuid';
 import {GrowlModule} from 'primeng/primeng';
 import {AdvGrowlService} from './adv-growl.service';
 
@@ -19,7 +18,7 @@ describe('Message Service', () => {
             const messageContent = 'Awesome Message';
             const messageSummary = 'Success';
             const id = 1;
-            spyOn(UUID, 'UUID').and.returnValue(id);
+            spyOn(sut, 'getTimeStamp').and.returnValue(id);
             const expectedMessage = {
                 id,
                 severity: 'success',
@@ -41,7 +40,7 @@ describe('Message Service', () => {
             const messageContent = 'Awful Error';
             const messageSummary = 'Error';
             const id = 1;
-            spyOn(UUID, 'UUID').and.returnValue(id);
+            spyOn(sut, 'getTimeStamp').and.returnValue(id);
             const expectedMessage = {
                 id,
                 severity: 'error',
@@ -63,7 +62,7 @@ describe('Message Service', () => {
             const messageContent = 'Super important information';
             const messageSummary = 'Information';
             const id = 1;
-            spyOn(UUID, 'UUID').and.returnValue(id);
+            spyOn(sut, 'getTimeStamp').and.returnValue(id);
             const expectedMessage = {
                 id,
                 severity: 'info',
@@ -85,7 +84,7 @@ describe('Message Service', () => {
             const messageContent = 'Super important warning';
             const messageSummary = 'Warning';
             const id = 1;
-            spyOn(UUID, 'UUID').and.returnValue(id);
+            spyOn(sut, 'getTimeStamp').and.returnValue(id);
             const expectedMessage = {
                 id,
                 severity: 'warn',
@@ -113,7 +112,7 @@ describe('Message Service', () => {
                 clickMessage: 'Awesome click'
             };
             const id = 1;
-            spyOn(UUID, 'UUID').and.returnValue(id);
+            spyOn(sut, 'getTimeStamp').and.returnValue(id);
             const expectedMessage = {
                 id,
                 severity: 'success',
@@ -139,7 +138,7 @@ describe('Message Service', () => {
                 clickMessage: 'Awesome click'
             };
             const id = 1;
-            spyOn(UUID, 'UUID').and.returnValue(id);
+            spyOn(sut, 'getTimeStamp').and.returnValue(id);
             const expectedMessage = {
                 id,
                 severity: 'error',
@@ -165,7 +164,7 @@ describe('Message Service', () => {
                 clickMessage: 'Awesome click'
             };
             const id = 1;
-            spyOn(UUID, 'UUID').and.returnValue(id);
+            spyOn(sut, 'getTimeStamp').and.returnValue(id);
             const expectedMessage = {
                 id,
                 severity: 'info',
@@ -191,7 +190,7 @@ describe('Message Service', () => {
                 clickMessage: 'Awesome click'
             };
             const id = 1;
-            spyOn(UUID, 'UUID').and.returnValue(id);
+            spyOn(sut, 'getTimeStamp').and.returnValue(id);
             const expectedMessage = {
                 id,
                 severity: 'warn',
