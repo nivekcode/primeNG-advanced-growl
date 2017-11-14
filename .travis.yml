@@ -20,7 +20,7 @@ install:
   - npm install
 script:
   - npm run lint
-  - npm run build
+  - npm run package
 after_success:
   - npm run test-coverage
   - npm run report-coverage
