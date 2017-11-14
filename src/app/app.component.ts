@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {AdvGrowlService} from '../../lib/messages/adv-growl.service';
-import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
+import {AdvGrowlService} from './lib/adv-growl.service';
+import {AdvPrimeMessage} from './lib/adv-growl.model';
 
 const DEFAULT_MESSAGE_SPOTS = 0
 const DEFAULT_LIFETIME = 0

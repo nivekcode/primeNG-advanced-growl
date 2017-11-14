@@ -5,7 +5,7 @@
   },
   "apps": [
     {
-      "root": "test",
+      "root": "src",
       "outDir": "dist",
       "assets": [
         "assets",
@@ -43,7 +43,7 @@
   ],
   "test": {
     "karma": {
-      "config": "./test/karma.conf.js"
+      "config": "./karma.conf.js"
     }
   },
   "defaults": {
