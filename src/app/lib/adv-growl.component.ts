@@ -50,7 +50,7 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
     @Output() onClick = new EventEmitter<AdvPrimeMessage>()
     @Output() onMessagesChanges = new EventEmitter<Array<AdvPrimeMessage>>()
 
-    @ViewChild('growlMessage', {read: ElementRef}) growlMessage
+    @ViewChild('growlMessage') growlMessage;
 
     public messages: Array<AdvPrimeMessage> = []
     messageEnter$ = new Subject<string>()
@@ -64,7 +64,7 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
     }
 
     ngOnInit(): void {
-        const mouseLeave$ = Observable.fromEvent(this.growlMessage.nativeElement, 'mouseleave')
+        const mouseLeave$ = Observable.fromEvent(this.growlMessage.el.nativeElement, 'mouseleave')
         this.hoverHelper = new AdvGrowlHoverHelper(this.messageEnter$, mouseLeave$)
         this.messageCache = new AdvGrowlMessageCache()
         this.subscribeForMessages()
