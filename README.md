@@ -76,6 +76,9 @@ import {AdvGrowlModule} from 'primeng-advanced-growl';
 ...
 ```
 
+### Angular 5
+Please notice that all current versions are not yet angular 5 compatible. However we are working on a stable angular 5 version.
+There are allready various release candidates that are angular 5 compatible. All versions from 3.0.0-rc.2 and greater are angular 5 compatible.
 
 ### AdvGrowlComponent
 The AdvGrowlModule exports a component named AdvGrowlComponent. You need to include this component
