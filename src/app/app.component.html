@@ -10,7 +10,7 @@
         <img src="../assets/images/github.png" class="nav-image">
     </a>
 </nav>
-<div class="container-fluid">
+<div class="container-fluid container-top-margin">
 
     <adv-growl [life]="lifeTime"
                [messageSpots]="messageSpots"
@@ -21,7 +21,8 @@
                (onMessagesChanges)="onMessages($event)">
     </adv-growl>
 
-    <div class="col-md-6">
+    <div class="row">
+    <div class="col-sm-6">
         <div class="jumbotron">
             <h3>1. Choose a lifetime</h3>
             <small>(default: 0)</small>
@@ -102,7 +103,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-sm-6">
         <div class="jumbotron">
             <h3>5. Lets create some messages</h3>
             <hr/>
@@ -114,13 +115,13 @@
             </blockquote>
             <div class="row top-margin">
                 <div class="col-md-6">
-                    <button class="full-width-button col-md-6 btn btn-success" (click)="createSuccessMessage()">
+                    <button class="full-width-button btn btn-success" (click)="createSuccessMessage()">
                         Create success message
                     </button>
                 </div>
 
                 <div class="col-md-6">
-                    <button class="full-width-button col-md-6 btn btn-info" (click)="createInfoMessage()">
+                    <button class="full-width-button btn btn-info" (click)="createInfoMessage()">
                         Create info message
                     </button>
 
@@ -128,12 +129,12 @@
             </div>
             <div class="row top-margin">
                 <div class="col-md-6">
-                    <button class="full-width-button col-md-6 btn btn-warning" (click)="createWarningMessage()">
+                    <button class="full-width-button btn btn-warning" (click)="createWarningMessage()">
                         Create warning message
                     </button>
                 </div>
                 <div class="col-md-6">
-                    <button class="full-width-button col-md-6 btn btn-danger" (click)="createErrorMessage()">
+                    <button class="full-width-button btn btn-danger" (click)="createErrorMessage()">
                         Create error message
                     </button>
                 </div>
@@ -183,5 +184,6 @@
                 </button>
             </div>
         </div>
+    </div>
     </div>
 </div>

@@ -6,6 +6,10 @@
     margin-top: 10px;
 }
 
+.container-top-margin {
+    margin-top: 20px;
+}
+
 .title {
     font-size: 30px !important;
 }
