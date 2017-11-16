@@ -12,7 +12,8 @@ describe('Message Service', () => {
     });
 
     describe('Creating simple messages', () => {
-        it('should create a successmessage and stream it into the message subject', done => {
+
+        fit('should create a successmessage and stream it into the message subject', done => {
             // given
             const sut = TestBed.get(AdvGrowlService);
             const messageContent = 'Awesome Message';
@@ -27,7 +28,8 @@ describe('Message Service', () => {
             };
             sut.getMessageStream()
                 .subscribe(message => {
-                    expect(message).toEqual(expectedMessage);
+                    expect(message).toEqual(expectedMessage)
+                    expect(true).toBeFalsy()
                     done();
                 });
             // when
