@@ -5,7 +5,7 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/kreuzerk/primeNG-advanced-growl.svg)](https://greenkeeper.io/)
 [![npm](https://img.shields.io/npm/dt/primeng-advanced-growl.svg)]()
 [![angular5](https://img.shields.io/badge/angular%205%20ready-true-green.svg)]()
-[![gitter]https://img.shields.io/gitter/room/primeNG-advanced-growl/nw.js.svg()]()
+[![gitter](https://img.shields.io/gitter/room/primeNG-advanced-growl/nw.js.svg)]()
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
