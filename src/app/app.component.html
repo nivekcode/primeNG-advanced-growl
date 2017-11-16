@@ -1,16 +1,20 @@
 <nav class="navbar navbar-inverse">
-    <a class="navbar-brand pull-left">
+    <div class="pull-left">
+    <a class="navbar-brand">
         <img class="logo" src="../assets/images/logo.png">
     </a>
-    <small class="version pull-left">Version {{version}}</small>
-    <a class="navbar-brand pull-right" target="_blank" href="https://www.npmjs.com/package/primeng-advanced-growl">
-        <img src="../assets/images/npm.png" class="nav-image" style="margin-top: 8px">
-    </a>
-    <a class="navbar-brand pull-right" target="_blank" href="https://github.com/kreuzerk/primeNG-advanced-growl">
-        <img src="../assets/images/github.png" class="nav-image">
-    </a>
+    <small class="version">Version {{version}}</small>
+    </div>
+    <div class="pull-right">
+        <a class="navbar-brand" target="_blank" href="https://www.npmjs.com/package/primeng-advanced-growl">
+            <img src="../assets/images/npm.png" class="nav-image" style="margin-top: 8px">
+        </a>
+        <a class="navbar-brand" target="_blank" href="https://github.com/kreuzerk/primeNG-advanced-growl">
+            <img src="../assets/images/github.png" class="nav-image">
+        </a>
+    </div>
 </nav>
-<div class="container-fluid">
+<div class="container-fluid container-top-margin">
 
     <adv-growl [life]="lifeTime"
                [messageSpots]="messageSpots"
@@ -21,166 +25,183 @@
                (onMessagesChanges)="onMessages($event)">
     </adv-growl>
 
-    <div class="col-md-6">
-        <div class="jumbotron">
-            <h3>1. Choose a lifetime</h3>
-            <small>(default: 0)</small>
-            <hr/>
-            <blockquote>
-                <p>Choose a number that represents the lifetime of each growl message.</p>
-                <small>If set to 3000 each message will be
-                    disappear after 3 seconds. If no life param is passed to the components the default life time of 0
-                    will
-                    be used. This means that the growl messages are sticky and do not disappear until you call
-                    clearMessages
-                    or click on the cancel x on a message
-                </small>
-            </blockquote>
-            <div class="form-group top-margin">
-                <label class="control-label" for="lifeTimeInput">Lifetime (in milliseconds)</label>
-                <input [(ngModel)]="lifeTime" class="form-control" id="lifeTimeInput" type="number" value="0">
-            </div>
-        </div>
-
-        <div class="jumbotron">
-            <h3>2. Choose if you want to freeze messages on hover</h3>
-            <small>(default: false)</small>
-            <hr/>
-            <blockquote>
-                <small>This flag is only useful if you also pass a life time. When you pass this property to the
-                    component all
-                    messages are freezed when you hover over a message. After you leave the messages all messages will
-                    disappear after the
-                    lifetime you specified.
-                </small>
-            </blockquote>
-            <div class="form-group top-margin">
-                <button class="btn btn-primary full-width-button" *ngIf="freezeMessagesOnHover"
-                        (click)="toggleFreeze()">
-                    FreezeMessages on hover: On
-                </button>
-                <button class="btn btn-danger full-width-button" *ngIf="!freezeMessagesOnHover"
-                        (click)="toggleFreeze()">
-                    FreezeMessages on hover: Off
-                </button>
-            </div>
-        </div>
-
-        <div class="jumbotron">
-            <h3>3. Choose if you want to freeze only the hoverd message</h3>
-            <small>(default: false)</small>
-            <hr/>
-            <blockquote>
-                <small>This flag indicates if only the hovered message should be paused. If set to true only the hoverd
-                    message will be paused. If set to false all messages will be paused on hover. Notice that this flag
-                    is only useful if you set a lifetime that is bigger than 0 and you set the freezeMessagesOnHover
-                    flag to true
-                </small>
-            </blockquote>
-            <div class="form-group top-margin">
-                <button class="btn btn-primary full-width-button" *ngIf="pauseOnlyHoveredMessage"
-                        (click)="togglePauseOnlyHovered()">
-                    FreezeMessages on hover: On
-                </button>
-                <button class="btn btn-danger full-width-button" *ngIf="!pauseOnlyHoveredMessage"
-                        (click)="togglePauseOnlyHovered()">
-                    FreezeMessages on hover: Off
-                </button>
-            </div>
-        </div>
-        <div class="jumbotron">
-            <h3>4. Choose if you want to limit the number of message displayed</h3>
-            <small>(default: 0 (no limitations))</small>
-            <hr/>
-            <blockquote>
-                <small>This property gives you the possibility to limit the number of messages displayed on screen. This feature is very useful in combination with the life property. With this combination all messages that can currently not be displayed due to missing message spots will be cached. Those cached messages will appear as soon as a spot is available. Notice that a dynamic change of this property during runtime removes all currently displayed messages from screen
-                </small>
-            </blockquote>
-            <div class="form-group top-margin">
-                <label class="control-label" for="messageSpotsInput">Max messagespots</label>
-                <input [(ngModel)]="messageSpots" class="form-control" id="messageSpotsInput" type="number" value="0">
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="jumbotron">
-            <h3>5. Lets create some messages</h3>
-            <hr/>
-            <blockquote>
-                <p>Next let's create some messages.</p>
-                <small>The AdvGrowlService provides the following methods to create messages.
-                    Each method expects the message content and a message title.
-                </small>
-            </blockquote>
-            <div class="row top-margin">
-                <div class="col-md-6">
-                    <button class="full-width-button col-md-6 btn btn-success" (click)="createSuccessMessage()">
-                        Create success message
-                    </button>
-                </div>
-
-                <div class="col-md-6">
-                    <button class="full-width-button col-md-6 btn btn-info" (click)="createInfoMessage()">
-                        Create info message
-                    </button>
-
-                </div>
-            </div>
-            <div class="row top-margin">
-                <div class="col-md-6">
-                    <button class="full-width-button col-md-6 btn btn-warning" (click)="createWarningMessage()">
-                        Create warning message
-                    </button>
-                </div>
-                <div class="col-md-6">
-                    <button class="full-width-button col-md-6 btn btn-danger" (click)="createErrorMessage()">
-                        Create error message
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="jumbotron">
-            <h3>6. More Options - Extra functionalities</h3>
-            <hr/>
-            <div class="row top-margin">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="jumbotron">
+                <h3>1. Choose a lifetime</h3>
+                <small>(default: 0)</small>
+                <hr/>
                 <blockquote>
-                    <p>Clear messages</p>
-                    <small>If you want to clear all messages on the screen you can use the clearMessages() method from
-                        the
-                        AdvGrowlService
+                    <p>Choose a number that represents the lifetime of each growl message.</p>
+                    <small>If set to 3000 each message will be
+                        disappear after 3 seconds. If no life param is passed to the components the default life time of
+                        0
+                        will
+                        be used. This means that the growl messages are sticky and do not disappear until you call
+                        clearMessages
+                        or click on the cancel x on a message
                     </small>
                 </blockquote>
-                <button class="full-width-button btn btn-info" (click)="clearMessages()">
-                    Clear messages
-                </button>
+                <div class="form-group top-margin">
+                    <label class="control-label" for="lifeTimeInput">Lifetime (in milliseconds)</label>
+                    <input [(ngModel)]="lifeTime" class="form-control" id="lifeTimeInput" type="number" value="0">
+                </div>
             </div>
-            <hr/>
-            <div class="row top-margin">
+
+            <div class="jumbotron">
+                <h3>3. Choose if you want to freeze only the hoverd message</h3>
+                <small>(default: false)</small>
+                <hr/>
                 <blockquote>
-                    <p>Pass additional informations</p>
-                    <small>
-                        If you want to pass some additional informations to your message you can do this by passing
-                        those as
-                        last optional parameter to the success, warning, info or error method. When you click on your
-                        message the event will then contain your additionalProperties.
+                    <small>This flag indicates if only the hovered message should be paused. If set to true only the
+                        hoverd
+                        message will be paused. If set to false all messages will be paused on hover. Notice that this
+                        flag
+                        is only useful if you set a lifetime that is bigger than 0 and you set the freezeMessagesOnHover
+                        flag to true
                     </small>
                 </blockquote>
-                <button class="full-width-button btn btn-success"
-                        (click)="createSuccessMessageWithAdditionalInfos()">
-                    Create success message with additional click infos
-                </button>
+                <div class="form-group top-margin">
+                    <button class="btn btn-primary full-width-button" *ngIf="pauseOnlyHoveredMessage"
+                            (click)="togglePauseOnlyHovered()">
+                        FreezeMessages on hover: On
+                    </button>
+                    <button class="btn btn-danger full-width-button" *ngIf="!pauseOnlyHoveredMessage"
+                            (click)="togglePauseOnlyHovered()">
+                        FreezeMessages on hover: Off
+                    </button>
+                </div>
             </div>
-            <hr/>
-            <div class="row top-margin">
+
+            <div class="jumbotron">
+                <h3>5. Lets create some messages</h3>
+                <hr/>
                 <blockquote>
-                    <p>Avoid the creation of same messages</p>
-                    <small>
-                        We can avoid the creation of multiple messages with the same summary or type.
+                    <p>Next let's create some messages.</p>
+                    <small>The AdvGrowlService provides the following methods to create messages.
+                        Each method expects the message content and a message title.
                     </small>
                 </blockquote>
-                <button class="btn btn-success full-width-button" (click)="createNonDuplicatedSuccessMessage()">
-                    Create success message if none on screen
-                </button>
+                <div class="row top-margin">
+                    <div class="col-md-6">
+                        <button class="full-width-button btn btn-success" (click)="createSuccessMessage()">
+                            Create success message
+                        </button>
+                    </div>
+
+                    <div class="col-md-6">
+                        <button class="full-width-button btn btn-info" (click)="createInfoMessage()">
+                            Create info message
+                        </button>
+
+                    </div>
+                </div>
+                <div class="row top-margin">
+                    <div class="col-md-6">
+                        <button class="full-width-button btn btn-warning" (click)="createWarningMessage()">
+                            Create warning message
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="full-width-button btn btn-danger" (click)="createErrorMessage()">
+                            Create error message
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-6">
+
+            <div class="jumbotron">
+                <h3>2. Choose if you want to freeze messages on hover</h3>
+                <small>(default: false)</small>
+                <hr/>
+                <blockquote>
+                    <small>This flag is only useful if you also pass a life time. When you pass this property to the
+                        component all
+                        messages are freezed when you hover over a message. After you leave the messages all messages
+                        will
+                        disappear after the
+                        lifetime you specified.
+                    </small>
+                </blockquote>
+                <div class="form-group top-margin">
+                    <button class="btn btn-primary full-width-button" *ngIf="freezeMessagesOnHover"
+                            (click)="toggleFreeze()">
+                        FreezeMessages on hover: On
+                    </button>
+                    <button class="btn btn-danger full-width-button" *ngIf="!freezeMessagesOnHover"
+                            (click)="toggleFreeze()">
+                        FreezeMessages on hover: Off
+                    </button>
+                </div>
+            </div>
+
+            <div class="jumbotron">
+                <h3>4. Choose if you want to limit the number of message displayed</h3>
+                <small>(default: 0 (no limitations))</small>
+                <hr/>
+                <blockquote>
+                    <small>This property gives you the possibility to limit the number of messages displayed on screen.
+                        This feature is very useful in combination with the life property. With this combination all
+                        messages that can currently not be displayed due to missing message spots will be cached. Those
+                        cached messages will appear as soon as a spot is available. Notice that a dynamic change of this
+                        property during runtime removes all currently displayed messages from screen
+                    </small>
+                </blockquote>
+                <div class="form-group top-margin">
+                    <label class="control-label" for="messageSpotsInput">Max messagespots</label>
+                    <input [(ngModel)]="messageSpots" class="form-control" id="messageSpotsInput" type="number"
+                           value="0">
+                </div>
+            </div>
+
+            <div class="jumbotron">
+                <h3>6. More Options - Extra functionalities</h3>
+                <hr/>
+                <div class="row top-margin">
+                    <blockquote>
+                        <p>Clear messages</p>
+                        <small>If you want to clear all messages on the screen you can use the clearMessages() method
+                            from
+                            the
+                            AdvGrowlService
+                        </small>
+                    </blockquote>
+                    <button class="full-width-button btn btn-info" (click)="clearMessages()">
+                        Clear messages
+                    </button>
+                </div>
+                <hr/>
+                <div class="row top-margin">
+                    <blockquote>
+                        <p>Pass additional informations</p>
+                        <small>
+                            If you want to pass some additional informations to your message you can do this by passing
+                            those as
+                            last optional parameter to the success, warning, info or error method. When you click on
+                            your
+                            message the event will then contain your additionalProperties.
+                        </small>
+                    </blockquote>
+                    <button class="full-width-button btn btn-success"
+                            (click)="createSuccessMessageWithAdditionalInfos()">
+                        Create success message with additional click infos
+                    </button>
+                </div>
+                <hr/>
+                <div class="row top-margin">
+                    <blockquote>
+                        <p>Avoid the creation of same messages</p>
+                        <small>
+                            We can avoid the creation of multiple messages with the same summary or type.
+                        </small>
+                    </blockquote>
+                    <button class="btn btn-success full-width-button" (click)="createNonDuplicatedSuccessMessage()">
+                        Create success message if none on screen
+                    </button>
+                </div>
             </div>
         </div>
     </div>
