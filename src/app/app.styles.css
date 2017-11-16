@@ -6,6 +6,10 @@
     margin-top: 10px;
 }
 
+.container-top-margin {
+    margin-top: 20px;
+}
+
 .title {
     font-size: 30px !important;
 }
@@ -35,4 +39,9 @@ nav {
 small {
     font-size: 15px;
     color: darkslategrey;
+}
+
+.jumbotron {
+    background-color: white;
+    opacity: 0.95;
 }
