@@ -4,6 +4,8 @@
 [![codecov](https://codecov.io/gh/kreuzerk/primeNG-advanced-growl/branch/master/graph/badge.svg)](https://codecov.io/gh/kreuzerk/primeNG-advanced-growl)
 [![Greenkeeper badge](https://badges.greenkeeper.io/kreuzerk/primeNG-advanced-growl.svg)](https://greenkeeper.io/)
 [![npm](https://img.shields.io/npm/dt/primeng-advanced-growl.svg)]()
+[![angular5](https://img.shields.io/badge/angular%205%20ready-true-green.svg)]()
+[![gitter]https://img.shields.io/gitter/room/primeNG-advanced-growl/nw.js.svg()]()
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -29,6 +31,10 @@
 # AdvGrowlModul
 The AdvGrowlModule is a wrapper around the growl module from PrimeNG. This wrapper was created
 because PrimeNG is missing some features.
+
+- If you have a feature request or noticed a bug please open an issue under: https://github.com/kreuzerk/primeNG-advanced-growl/issues
+- If you have questions about the module or want to discuss new ideas or improvements please use our chat at: https://gitter.im/primeNG-advanced-growl/Lobby
+- Contributions are welcome. Just fork the repo and create a Pull Request.
 
 ## Demo
 You can find a working demo of the growl module on the following link: https://primeng-advanced-growl.firebaseapp.com/
@@ -77,8 +83,7 @@ import {AdvGrowlModule} from 'primeng-advanced-growl';
 ```
 
 ### Angular 5
-Please notice that all current versions are not yet angular 5 compatible. However we are working on a stable angular 5 version.
-There are allready various release candidates that are angular 5 compatible. All versions from 3.0.0-rc.2 and greater are angular 5 compatible.
+Please notice that only versions 3.x are Angular 5 compatible.
 
 ### AdvGrowlComponent
 The AdvGrowlModule exports a component named AdvGrowlComponent. You need to include this component
