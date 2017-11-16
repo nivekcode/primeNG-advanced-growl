@@ -40,3 +40,8 @@ small {
     font-size: 15px;
     color: darkslategrey;
 }
+
+.jumbotron {
+    background-color: white;
+    opacity: 0.95;
+}
