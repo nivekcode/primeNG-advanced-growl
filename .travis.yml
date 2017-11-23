@@ -21,8 +21,8 @@ install:
 script:
   - npm run lint
   - npm run package
-after_success:
   - npm run test-coverage
+after_success:
   - npm run report-coverage
 before_deploy:
   - cd dist
