@@ -18,11 +18,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
     "test": "ng test",
     "test-coverage": "ng test --code-coverage",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
     "lint": "ng lint --type-check",
+    "build-demo": "ng build --op demo-dist",
+    "deploy-demo": "npm run build-demo && firebase deploy",
     "package": "ng-packagr -p ng-package.json"
   },
   "private": false,
