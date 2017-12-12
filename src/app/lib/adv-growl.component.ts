@@ -2,24 +2,19 @@
  * Created by kevinkreuzer on 08.07.17.
  */
 import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnInit,
-    Output,
-    SimpleChange,
-    SimpleChanges,
-    ViewChild
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChange,
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
-import 'rxjs/add/observable/timer';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/observable/never';
+import {never} from 'rxjs/observable/never';
+import {timer} from 'rxjs/observable/timer';
+import {mapTo, mergeMap, takeUntil, tap} from 'rxjs/operators';
 import {Observable} from 'rxjs/Observable';
 import {AdvPrimeMessage} from './adv-growl.model';
 import {AdvGrowlService} from './adv-growl.service';
@@ -27,6 +22,8 @@ import {Subject} from 'rxjs/Subject';
 import {AdvGrowlHoverHelper} from './adv-growl.hoverHelper';
 import {AdvGrowlMessageCache} from './adv-growl.messageCache';
 import {Observer} from 'rxjs/Observer';
+import {merge} from 'rxjs/observable/merge';
+import {fromEvent} from 'rxjs/observable/fromEvent';
 
 const DEFAULT_LIFETIME = 0
 const FREEZE_MESSAGES_DEFAULT = false
@@ -64,7 +61,7 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
     }
 
     ngOnInit(): void {
-        const mouseLeave$ = Observable.fromEvent(this.growlMessage.el.nativeElement, 'mouseleave')
+        const mouseLeave$ = fromEvent(this.growlMessage.el.nativeElement, 'mouseleave')
         this.hoverHelper = new AdvGrowlHoverHelper(this.messageEnter$, mouseLeave$)
         this.messageCache = new AdvGrowlMessageCache()
         this.subscribeForMessages()
@@ -107,15 +104,17 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
     public subscribeForMessages() {
         this.messages = [];
         this.messageCache.getMessages(this.messageService.getMessageStream(), this.messageSpots)
-            .do(message => {
+          .pipe(
+            tap(message => {
                 this.messages.push(message);
                 this.onMessagesChanges.emit(this.messages);
-            })
-            .mergeMap(message => this.getLifeTimeStream(message.id))
-            .takeUntil(Observable.merge(
+            }),
+            mergeMap(message => this.getLifeTimeStream(message.id)),
+            takeUntil(merge(
                 this.messageService.getCancelStream(),
                 this.messageSpotChange$)
             )
+          )
             .subscribe(this.messageObserver);
     }
 
@@ -139,7 +138,7 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
     }
 
     getInifiniteStream(): Observable<any> {
-        return Observable.never();
+        return never();
     }
 
     getFinitStream(messageId: string): Observable<string> {
@@ -149,11 +148,11 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
         } else {
             finitStream = this.getUnPausableMessageStream()
         }
-        return finitStream.mapTo(messageId)
+        return finitStream.pipe(mapTo(messageId))
     }
 
     getUnPausableMessageStream() {
-        return Observable.timer(this.lifeTime)
+        return timer(this.lifeTime)
     }
 
     public messageClosed($event) {

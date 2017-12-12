@@ -17,7 +17,7 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve -o",
     "test": "ng test",
     "test-coverage": "ng test --code-coverage",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
