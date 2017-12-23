@@ -38,15 +38,8 @@ export class AppComponent {
         this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success');
     }
 
-    public createSuccessMessage2(): void {
-        this.advMessagesService.createSuccessMessage('Awesome success message content with properties',  'test', 2000, {
-                test: 'additional properties'
-            }
-        );
-    }
-
     public createSuccessMessageWithAdditionalInfos(): void {
-        this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success', 2000, {
+        this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success', {
             clickMessage: 'Awesome click'
         });
     }
@@ -56,7 +49,7 @@ export class AppComponent {
     }
 
     public createErrorMessage(): void {
-        this.advMessagesService.createErrorMessage('Awful error message', 'Error summary', 0);
+        this.advMessagesService.createTimedErrorMessage('Awful error message', 'Error summary', 0);
     }
 
     public clearMessages(): void {

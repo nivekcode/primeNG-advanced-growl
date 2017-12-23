@@ -288,23 +288,28 @@ describe('Message Component', () => {
                 } as any
                 spyOn(component.hoverHelper, 'getPausableMessageStream').and.returnValue(Observable.of(1))
 
+                const asserter = {
+                    next: hoveredMessageId => expect(hoveredMessageId).toBe(messageId)
+                }
+
                 // when
                 const finitStream = component.getFinitStream(messageId, lifeTime)
                 // then
                 expect(component.hoverHelper.getPausableMessageStream).toHaveBeenCalledWith(messageId, lifeTime, pauseOnlyHovered)
-                expect(finitStream.subscribe(hoveredMessageId => expect(hoveredMessageId).toBe(messageId)))
+                expect(finitStream.subscribe(asserter));
             })
 
             it('should get an unpausable stream if freezeMessagesOnHover is set to false', () => {
                 // given
                 const messageId = '42'
                 const freezeMessagesOnHover = false
+                const lifeTime = 3000;
                 component.freezeMessagesOnHover = freezeMessagesOnHover
                 spyOn(component, 'getUnPausableMessageStream').and.returnValue(Observable.of(1))
                 // when
-                const finitStream = component.getFinitStream(messageId)
+                const finitStream = component.getFinitStream(messageId, lifeTime)
                 // then
-                expect(component.getUnPausableMessageStream).toHaveBeenCalled()
+                expect(component.getUnPausableMessageStream).toHaveBeenCalledWith(lifeTime)
                 expect(finitStream.subscribe(hoveredMessageId => expect(hoveredMessageId).toBe(messageId)))
             })
 
