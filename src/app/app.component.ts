@@ -31,25 +31,32 @@ export class AppComponent {
     }
 
     public createInfoMessage(): void {
-        this.advMessagesService.createInfoMessage('Awesome success message content', 'Awesome info');
+        this.advMessagesService.createInfoMessage('Awesome success message content', 'Awesome info', 3000);
     }
 
     public createSuccessMessage(): void {
         this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success');
     }
 
+    public createSuccessMessage2(): void {
+        this.advMessagesService.createSuccessMessage('Awesome success message content with properties',  'test', 2000, {
+                test: 'additional properties'
+            }
+        );
+    }
+
     public createSuccessMessageWithAdditionalInfos(): void {
-        this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success', {
+        this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success', 2000, {
             clickMessage: 'Awesome click'
         });
     }
 
     public createWarningMessage(): void {
-        this.advMessagesService.createWarningMessage('Important warning content', 'Important warning');
+        this.advMessagesService.createWarningMessage('Important warning content', 'Important warning', 6000);
     }
 
     public createErrorMessage(): void {
-        this.advMessagesService.createErrorMessage('Awful error message', 'Error summary');
+        this.advMessagesService.createErrorMessage('Awful error message', 'Error summary', 0);
     }
 
     public clearMessages(): void {
