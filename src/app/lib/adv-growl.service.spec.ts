@@ -24,7 +24,9 @@ describe('Message Service', () => {
                 id,
                 severity: 'success',
                 summary: messageSummary,
-                detail: messageContent
+                detail: messageContent,
+                lifeTime: undefined,
+                additionalProperties: undefined
             };
             sut.getMessageStream()
                 .subscribe(message => {
@@ -46,7 +48,9 @@ describe('Message Service', () => {
                 id,
                 severity: 'error',
                 summary: messageSummary,
-                detail: messageContent
+                detail: messageContent,
+                lifeTime: undefined,
+                additionalProperties: undefined
             };
             sut.getMessageStream()
                 .subscribe(message => {
@@ -68,7 +72,9 @@ describe('Message Service', () => {
                 id,
                 severity: 'info',
                 summary: messageSummary,
-                detail: messageContent
+                detail: messageContent,
+                lifeTime: undefined,
+                additionalProperties: undefined
             };
             sut.getMessageStream()
                 .subscribe(message => {
@@ -90,7 +96,9 @@ describe('Message Service', () => {
                 id,
                 severity: 'warn',
                 summary: messageSummary,
-                detail: messageContent
+                detail: messageContent,
+                lifeTime: undefined,
+                additionalProperties: undefined
             };
             sut.getMessageStream()
                 .subscribe(message => {
@@ -119,6 +127,7 @@ describe('Message Service', () => {
                 severity: 'success',
                 summary: messageSummary,
                 detail: messageContent,
+                lifeTime: undefined,
                 additionalProperties
             };
             sut.getMessageStream()
@@ -145,6 +154,7 @@ describe('Message Service', () => {
                 severity: 'error',
                 summary: messageSummary,
                 detail: messageContent,
+                lifeTime: undefined,
                 additionalProperties
             };
             sut.getMessageStream()
@@ -171,6 +181,7 @@ describe('Message Service', () => {
                 severity: 'info',
                 summary: messageSummary,
                 detail: messageContent,
+                lifeTime: undefined,
                 additionalProperties
             };
             sut.getMessageStream()
@@ -197,6 +208,7 @@ describe('Message Service', () => {
                 severity: 'warn',
                 summary: messageSummary,
                 detail: messageContent,
+                lifeTime: undefined,
                 additionalProperties
             };
             sut.getMessageStream()
