@@ -257,7 +257,7 @@ export class AppComponent {
 }
 ```
 
-#### Do not let error messages disappear
+#### Do not let error messages disappear automatically
 Letting messages disappear within the given time is a cool feature. But sometimes you do not want let messages disappear 
 automatically because you are then risking that the user misses the message. This is often the case with error messages.
 Primeng-advanced-growl allows you to use the "timed" methods to specify the message for each created message. 
