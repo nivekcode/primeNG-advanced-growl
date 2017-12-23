@@ -52,7 +52,7 @@ the 3 seconds from the first message have passed.
 ## What is the AdvGrowlModule offering?
 - The AdvGrowlModule provides you the sticky feature with a unique lifetime for each message. The specified
 lifetime is unique for each message. The growl message will only disappear after the given time has elapsed
-or you pressed the cancel button on the growl message.
+or you pressed the cancel button on the growl message. Primeng advanced growl also allows you to specify different lifetimes for each created message.
 - The PrimeNGAdvancedGrowl module provides you a messageservice.
 With the help of this service you have a central way to create growl messages.
 
@@ -147,12 +147,24 @@ export class SampleComponent{
 ```
 
 The AdvGrowlService provides the following methods to create messages. Each method expects
-the message content and a message title.
+the message content and a message title. If you wish you can also add additional properties. Additional properties
+are emitted when you click on a message. All of the methods below will use the lifetime you specified on the component via 
+the life input property. 
 
 - createSuccessMessage(messageContent: string, summary: string, additionalProperties?: any): void
 - createInfoMessage(messageContent: string, summary: string, additionalProperties?: any): void
 - createWarningMessage(messageContent: string, summary: string, additionalProperties?: any): void
 - createErrorMessage(messageContent: string, summary: string, additionalProperties?: any): void
+
+If you want to create messages that have another lifetime than the one you provided via the life input property you can
+use the Timed message service methods. Those methods are similar to the methods above but they accept an additional 
+lifeTime property. This lifetime will then be used. 
+
+- createTimedSuccessMessage(messageContent: string, summary: string, lifeTime: number, additionalProperties?: any): void
+- createTimedInfoMessage(messageContent: string, summary: string, lifeTime: number, additionalProperties?: any): void
+- createTimedWarningMessage(messageContent: string, summary: string, lifeTime: number, additionalProperties?: any): void
+- createTimedErrorMessage(messageContent: string, summary: string, lifeTime: number, additionalProperties?: any): void
+
 
 To clear all messages you can call the **clearMessages()** method from the AdvGrowlService.
 
@@ -241,6 +253,43 @@ export class AppComponent {
         } else {
             console.log('You clicked on message', message)
         }
+    }
+}
+```
+
+#### Do not let error messages disappear
+Letting messages disappear within the given time is a cool feature. But sometimes you do not want let messages disappear 
+automatically because you are then risking that the user misses the message. This is often the case with error messages.
+Primeng-advanced-growl allows you to use the "timed" methods to specify the message for each created message. 
+This gives you a lot of power. With this API you can easily create all messages with a lifeTime of 0. Rember that 0 is equal
+to sticky.
+```javascript
+import {AdvPrimeMessage} from '../../lib/messages/adv-growl.model';
+
+@Component({
+    selector: 'sample-app',
+    template: `<adv-growl [life]="2500"
+                (onMessagesChanges)="onMessages($event)"
+                (onClick)="logMessage($event)">
+               </adv-growl>
+               <button pButton type="button"
+                    (click)="createTimedErrorMessage()"
+                    class="ui-button-success"
+                    label="Create sticky error message">
+               </button>
+               `
+})
+export class AppComponent {
+
+    messages = [];
+
+    constructor(private advMessagesService: AdvGrowlService) {
+    }
+
+    public createTimedErrorMessage(): void {
+        this.advMessagesService.createTimedErrorMessage('Click me or I will stay forever', 'Watch out', 0, {
+          clickMessage: 'Awesome click'
+        });
     }
 }
 ```
