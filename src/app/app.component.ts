@@ -30,26 +30,42 @@ export class AppComponent {
         this.pauseOnlyHoveredMessage = !this.pauseOnlyHoveredMessage
     }
 
-    public createInfoMessage(): void {
-        this.advMessagesService.createInfoMessage('Awesome success message content', 'Awesome info');
+    public createSuccessMessage(): void {
+        this.advMessagesService.createSuccessMessage('Awesome success message', 'Awesome success');
     }
 
-    public createSuccessMessage(): void {
-        this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success');
+    public createInfoMessage(): void {
+        this.advMessagesService.createInfoMessage('Awesome info message', 'Awesome info', 3000);
+    }
+
+    public createWarningMessage(): void {
+        this.advMessagesService.createWarningMessage('Important warning message', 'Important warning', 6000);
+    }
+
+    public createErrorMessage(): void {
+        this.advMessagesService.createTimedErrorMessage('Awful error message', 'Error summary', 0);
+    }
+
+    public createTimedSuccessMessage(lifeTime: number) {
+        this.advMessagesService.createTimedSuccessMessage('Awesome timed success message', 'Timed success', lifeTime);
+    }
+
+    public createTimedInfoMessage(lifeTime: number) {
+        this.advMessagesService.createTimedInfoMessage('Awesome timed info message', 'Timed info', lifeTime);
+    }
+
+    public createTimedWarningMessage(lifeTime: number) {
+        this.advMessagesService.createTimedWarningMessage('Awesome timed warning message', 'Timed warning', lifeTime);
+    }
+
+    public createTimedErrorMessage(lifeTime: number) {
+        this.advMessagesService.createTimedErrorMessage('Awesome error message', 'Timed error', lifeTime);
     }
 
     public createSuccessMessageWithAdditionalInfos(): void {
         this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success', {
             clickMessage: 'Awesome click'
         });
-    }
-
-    public createWarningMessage(): void {
-        this.advMessagesService.createWarningMessage('Important warning content', 'Important warning');
-    }
-
-    public createErrorMessage(): void {
-        this.advMessagesService.createErrorMessage('Awful error message', 'Error summary');
     }
 
     public clearMessages(): void {
