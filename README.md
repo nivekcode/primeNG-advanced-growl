@@ -36,13 +36,11 @@ because PrimeNG is missing some features.
 - If you have questions about the module or want to discuss new ideas or improvements please use our chat at: https://gitter.im/primeNG-advanced-growl/Lobby
 - Contributions are welcome. Just fork the repo and create a Pull Request.
 
-## Demo
-You can find a working demo of the growl module on the following link: https://primeng-advanced-growl.firebaseapp.com/
+## Demo and Blogposts
+- You can find a working demo of the growl module on the following link: https://primeng-advanced-growl.firebaseapp.com/
+- A blogpost that explains how to make sure that your users do not miss error messages is availbale under:https://medium.com/@kevinkreuzer/primeng-advanced-growl-make-sure-your-users-see-the-errors-6988f722fb8f 
 
 ## What is missing on PrimeNG?
-- PrimeNG module does not offer a central service to
-create growl messages. The PrimeNG message modul strongly couples the template and the component.
-You need to include the growl component in each template.
 - PrimeNG growl offers us to define a sticky property to remove the messages. When we set the lifetime
 of the messages to 3 seconds all messages will be removed after the specified time. The problem comes
 when a message gets created 2 seconds after the first message. This message will not be removed after
@@ -50,11 +48,12 @@ the specified 3 seconds. This message will be removed 1 seconds after creation. 
 the 3 seconds from the first message have passed.
 
 ## What is the AdvGrowlModule offering?
-- The AdvGrowlModule provides you the sticky feature with a unique lifetime for each message. The specified
-lifetime is unique for each message. The growl message will only disappear after the given time has elapsed
-or you pressed the cancel button on the growl message. Primeng advanced growl also allows you to specify different lifetimes for each created message.
-- The PrimeNGAdvancedGrowl module provides you a messageservice.
-With the help of this service you have a central way to create growl messages.
+- It allows you to choose a default lifetime for each message. Each message receives this lifetime when it is created. This feature differs from the original primeng growl module because the lifetime is unique for each message. 
+- It allows you to choose if you want to freeze all messages on hover. If you enable this feature and hover over a message all messages will internally stop their timer and wait until you leave the messages again. Each message will restart its timer with the remaining time.
+- In addition to freezing all messages you also have the possibility to freeze only one message on hover.
+- You can limit the number of messages that will be displayed on screen. Notice that all other messages that can not be displayed are cached and will be displayed as soon as another spot is available.
+- You can optionally pas additional properties to each of your messages. You can then retrieve those properties by clicking on a message as an output event. 
+- The newest and one of the most powerful features was released in the 3.1.0-reindeer version. Additionally to the default lifetime you can now specify a new unique lifeTime for each message. This means you can say I want to create a info message with a lifetime of 2 seconds, a success message with a lifetime of 3 seconds and so on. This is also the feature we are going to use to make sure that our users do not miss error messages.
 
 ## How do you use PrimeNGAdvancedGrowl?
 ### installation
