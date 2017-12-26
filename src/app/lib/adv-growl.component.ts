@@ -156,6 +156,7 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
     }
 
     public messageClosed($event) {
+        this.messageCache.deallocateMessageSpot()
         this.emitMessage($event, this.onClose)
     }
 

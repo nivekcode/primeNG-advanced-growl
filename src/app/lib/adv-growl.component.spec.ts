@@ -363,12 +363,25 @@ describe('Message Component', () => {
 
             it('should call emit with the event and the onClose emitter when a message is closed', () => {
                 // given
+                component.ngOnInit()
                 const $event = {message: 'Sample Message'}
                 spyOn(component, 'emitMessage')
+                spyOn(component.messageCache, 'deallocateMessageSpot')
                 // when
                 component.messageClosed($event)
                 // then
                 expect(component.emitMessage).toHaveBeenCalledWith($event, component.onClose)
+            })
+
+            it('must deallocate a message spot when a message is closed', () => {
+                // given
+                component.ngOnInit()
+                const $event = {message: 'Sample Message'}
+                spyOn(component.messageCache, 'deallocateMessageSpot')
+                // when
+                component.messageClosed($event)
+                // then
+                expect(component.messageCache.deallocateMessageSpot).toHaveBeenCalled()
             })
         })
 
