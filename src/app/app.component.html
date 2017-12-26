@@ -74,12 +74,13 @@
             </div>
 
             <div class="jumbotron">
-                <h3>5. Lets create some messages</h3>
+                <h3>5. Lets create some messages with the default lifeTime</h3>
+                <h6>Those messages will use the lifeTime you specified on in step 1</h6>
                 <hr/>
                 <blockquote>
                     <p>Next let's create some messages.</p>
                     <small>The AdvGrowlService provides the following methods to create messages.
-                        Each method expects the message content and a message title.
+                        Each method expects the message content, a message title and optional additional properties.
                     </small>
                 </blockquote>
                 <div class="row top-margin">
@@ -106,6 +107,73 @@
                         <button class="full-width-button btn btn-danger" (click)="createErrorMessage()">
                             Create error message
                         </button>
+                    </div>
+                </div>
+            </div>
+            <div class="jumbotron">
+                <h3>7. Lets create some messages with a unique lifetime</h3>
+                <h6>Those messages will use the lifeTime you specify here</h6>
+                <hr/>
+                <blockquote>
+                    <small>The AdvGrowlService provides services that allow you to create messages with their unique
+                        life time.
+                        Each method expects the message content, a message title, a lifeTime and optional additional
+                        properties.
+                    </small>
+                </blockquote>
+                <div class="row top-margin">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input #successLifeTime class="form-control" type="number" value="1000">
+                            </div>
+                            <div class="col-md-8" style="padding-left: 0">
+                                <button class="btn btn-success"
+                                        (click)="createTimedSuccessMessage(successLifeTime.value)">
+                                    Create timed success message
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input #infoLifeTime class="form-control" type="number" value="1000">
+                            </div>
+                            <div class="col-md-8" style="padding-left: 0">
+                                <button class="btn btn-info" (click)="createTimedInfoMessage(infoLifeTime.value)">
+                                    Create timed info message
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row top-margin">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input #warningLifeTime class="form-control" type="number" value="1000">
+                            </div>
+                            <div class="col-md-8" style="padding-left: 0">
+                                <button class="btn btn-warning"
+                                        (click)="createTimedWarningMessage(warningLifeTime.value)">
+                                    Create timed warning message
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input #errorLifeTime class="form-control" type="number" value="1000">
+                            </div>
+                            <div class="col-md-8" style="padding-left: 0">
+                                <button class="btn btn-danger" (click)="createTimedErrorMessage(errorLifeTime.value)">
+                                    Create timed error message
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

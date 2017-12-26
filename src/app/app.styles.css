@@ -45,3 +45,12 @@ small {
     background-color: white;
     opacity: 0.95;
 }
+
+.lifetime-input {
+    max-width: 20%;
+    display: inline;
+}
+
+.lifetime-button {
+    width: auto;
+}
