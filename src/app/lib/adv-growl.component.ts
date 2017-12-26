@@ -3,7 +3,6 @@
  */
 import {
     Component,
-    ElementRef,
     EventEmitter,
     Input,
     OnChanges,
@@ -28,7 +27,7 @@ import {AdvGrowlHoverHelper} from './adv-growl.hoverHelper';
 import {AdvGrowlMessageCache} from './adv-growl.messageCache';
 import {Observer} from 'rxjs/Observer';
 
-const DEFAULT_LIFETIME = 0
+const NO_LIFETIME = 0
 const FREEZE_MESSAGES_DEFAULT = false
 const PAUSE_ONLY_HOVERED_DEFAULT = false
 const DEFAULT_MESSAGE_SPOTS = 0
@@ -42,7 +41,7 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
 
     @Input() style: any
     @Input() styleClass: any
-    @Input('life') lifeTime = DEFAULT_LIFETIME
+    @Input('life') lifeTime = NO_LIFETIME
     @Input() freezeMessagesOnHover = FREEZE_MESSAGES_DEFAULT
     @Input() messageSpots = DEFAULT_MESSAGE_SPOTS
     @Input() pauseOnlyHoveredMessage = PAUSE_ONLY_HOVERED_DEFAULT;
@@ -107,11 +106,11 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
     public subscribeForMessages() {
         this.messages = [];
         this.messageCache.getMessages(this.messageService.getMessageStream(), this.messageSpots)
-            .do(message => {
+            .do((message: AdvPrimeMessage) => {
                 this.messages.push(message);
                 this.onMessagesChanges.emit(this.messages);
             })
-            .mergeMap(message => this.getLifeTimeStream(message.id))
+            .mergeMap(message => this.getLifeTimeStream(message.id, message.lifeTime))
             .takeUntil(Observable.merge(
                 this.messageService.getCancelStream(),
                 this.messageSpotChange$)
@@ -127,33 +126,33 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
         }
     }
 
-    getLifeTimeStream(messageId: string): Observable<any> {
-        if (this.hasLifeTime()) {
-            return this.getFinitStream(messageId)
+    getLifeTimeStream(messageId: string, lifeTime = this.lifeTime): Observable<any> {
+        if (this.hasLifeTime(lifeTime)) {
+            return this.getFinitStream(messageId, lifeTime)
         }
         return this.getInifiniteStream();
     }
 
-    hasLifeTime(): boolean {
-        return this.lifeTime > DEFAULT_LIFETIME
+    hasLifeTime(lifeTime: number): boolean {
+        return lifeTime > NO_LIFETIME
     }
 
     getInifiniteStream(): Observable<any> {
         return Observable.never();
     }
 
-    getFinitStream(messageId: string): Observable<string> {
+    getFinitStream(messageId: string, lifeTime: number): Observable<string> {
         let finitStream: Observable<any>
         if (this.freezeMessagesOnHover) {
-            finitStream = this.hoverHelper.getPausableMessageStream(messageId, this.lifeTime, this.pauseOnlyHoveredMessage)
+            finitStream = this.hoverHelper.getPausableMessageStream(messageId, lifeTime, this.pauseOnlyHoveredMessage)
         } else {
-            finitStream = this.getUnPausableMessageStream()
+            finitStream = this.getUnPausableMessageStream(lifeTime)
         }
         return finitStream.mapTo(messageId)
     }
 
-    getUnPausableMessageStream() {
-        return Observable.timer(this.lifeTime)
+    getUnPausableMessageStream(lifeTime: number) {
+        return Observable.timer(lifeTime)
     }
 
     public messageClosed($event) {
