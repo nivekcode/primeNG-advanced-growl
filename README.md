@@ -12,11 +12,12 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [AdvGrowlModul](#advgrowlmodul)
-  - [Demo](#demo)
+  - [Demo and Blogposts](#demo-and-blogposts)
   - [What is missing on PrimeNG?](#what-is-missing-on-primeng)
   - [What is the AdvGrowlModule offering?](#what-is-the-advgrowlmodule-offering)
   - [How do you use PrimeNGAdvancedGrowl?](#how-do-you-use-primengadvancedgrowl)
     - [installation](#installation)
+    - [Angular 5](#angular-5)
     - [AdvGrowlComponent](#advgrowlcomponent)
       - [Input](#input)
       - [Output](#output)
@@ -25,6 +26,7 @@
     - [Examples](#examples)
       - [Avoid creating success messages with same Summary](#avoid-creating-success-messages-with-same-summary)
       - [Passing additional properties to the message](#passing-additional-properties-to-the-message)
+      - [Do not let error messages disappear automatically](#do-not-let-error-messages-disappear-automatically)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -38,7 +40,7 @@ because PrimeNG is missing some features.
 
 ## Demo and Blogposts
 - You can find a working demo of the growl module on the following link: https://primeng-advanced-growl.firebaseapp.com/
-- A blogpost that explains how to make sure that your users do not miss error messages is availbale under:https://medium.com/@kevinkreuzer/primeng-advanced-growl-make-sure-your-users-see-the-errors-6988f722fb8f 
+- A blogpost that explains how to make sure that your users do not miss error messages is availbale under: <https://medium.com/@kevinkreuzer/primeng-advanced-growl-make-sure-your-users-see-the-errors-6988f722fb8f>
 
 ## What is missing on PrimeNG?
 - PrimeNG growl offers us to define a sticky property to remove the messages. When we set the lifetime
