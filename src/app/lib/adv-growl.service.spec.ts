@@ -1,5 +1,5 @@
 import {TestBed} from '@angular/core/testing';
-import {GrowlModule} from 'primeng/primeng';
+import {GrowlModule} from 'primeng/growl';
 import {AdvGrowlService} from './adv-growl.service';
 
 describe('Message Service', () => {
