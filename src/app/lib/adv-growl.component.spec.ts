@@ -2,7 +2,8 @@
  * Created by kevinkreuzer on 08.07.17.
  */
 import {TestBed, inject, ComponentFixture} from '@angular/core/testing';
-import {GrowlModule, Message} from 'primeng/primeng';
+import {Message} from 'primeng/api';
+import {GrowlModule} from 'primeng/growl';
 import {AdvGrowlComponent} from './adv-growl.component';
 import {AdvGrowlService} from './adv-growl.service';
 import {Observable} from 'rxjs/Observable';
