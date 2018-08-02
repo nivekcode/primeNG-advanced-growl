@@ -1,0 +1,20 @@
+{
+  "extends": "../../tslint.json",
+  "rules": {
+    "directive-selector": [
+      true,
+      "attribute",
+      "pag",
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      "adv",
+      "kebab-case"
+    ],
+    "semicolon": false,
+    "no-input-rename": false,
+    "no-output-on-prefix": false
+  }
+}
