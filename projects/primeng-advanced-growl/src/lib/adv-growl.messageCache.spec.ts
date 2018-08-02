@@ -2,7 +2,7 @@
  * Created by kevinkreuzer on 16.10.17.
  */
 import {AdvGrowlMessageCache, MESSAGE_SENDER} from './adv-growl.messageCache';
-import {empty, of} from 'rxjs';
+import {EMPTY, of} from 'rxjs';
 
 describe('AdvGrowl Message Cache', () => {
 
@@ -165,7 +165,7 @@ describe('AdvGrowl Message Cache', () => {
         it('should init the allocated message spots to 0 if the cached message Stream emitts a value', () => {
             // given
             const message = 'Awesome message'
-            const message$ = empty()
+            const message$ = EMPTY
             // expect
             expect(sut.allocatedMessageSpots).not.toBeDefined();
             // when
