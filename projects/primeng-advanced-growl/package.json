@@ -1,0 +1,11 @@
+{
+  "name": "primeng-advanced-growl",
+  "version": "4.0.0",
+  "peerDependencies": {
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "primeicons": "^1.0.0-beta.10",
+    "primeng": "^6.0.2",
+    "rxjs": "^6.0.0"
+  }
+}

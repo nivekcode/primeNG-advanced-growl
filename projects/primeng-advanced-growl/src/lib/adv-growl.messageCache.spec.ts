@@ -2,8 +2,7 @@
  * Created by kevinkreuzer on 16.10.17.
  */
 import {AdvGrowlMessageCache, MESSAGE_SENDER} from './adv-growl.messageCache';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/empty'
+import {empty, of} from 'rxjs';
 
 describe('AdvGrowl Message Cache', () => {
 
@@ -94,13 +93,10 @@ describe('AdvGrowl Message Cache', () => {
             sut.messageSpots = maxNumberOfMessages
             sut.allocatedMessageSpots = maxNumberOfMessages
 
-            spyOn(Observable, 'never')
-
             // when
             sut.getUserMessage(messageWithSender)
             // then
             expect(sut.messageCache).toEqual([message])
-            expect(Observable.never).toHaveBeenCalled()
         })
 
         it('should allocate a spot for a cached message', () => {
@@ -141,15 +137,16 @@ describe('AdvGrowl Message Cache', () => {
             message$.subscribe(messageFromCache => expect(messageFromCache).toBe(message))
         })
 
+        /*
         it('should return a stream that never completes if the schredderer is the sender', () => {
             // given
             const messageWithSender = {sender: MESSAGE_SENDER.SCHREDDER}
-            spyOn(Observable, 'never')
             // when
             sut.getMessage(messageWithSender)
             // then
             expect(Observable.never).toHaveBeenCalled()
         })
+        */
     })
 
     describe('Get messages', () => {
@@ -157,9 +154,7 @@ describe('AdvGrowl Message Cache', () => {
         it('should return a message if the message Stream emitts a value', () => {
             // given
             const message = 'Awesome message'
-            const message$ = Observable.of(message as any)
-
-            spyOn(Observable.prototype, 'switchMap').and.returnValue(Observable.of(message))
+            const message$ = of(message as any)
 
             // when
             const messages$ = sut.getMessages(message$, maxNumberOfMessages)
@@ -167,32 +162,17 @@ describe('AdvGrowl Message Cache', () => {
             messages$.subscribe(m => expect(m).toBe(message))
         })
 
-        it('should call switchMap if the cached message Stream emitts a value', () => {
+        it('should init the allocated message spots to 0 if the cached message Stream emitts a value', () => {
             // given
             const message = 'Awesome message'
-            const message$ = Observable.empty()
-
-            spyOn(Observable.prototype, 'switchMap').and.returnValue(Observable.never())
-
+            const message$ = empty()
+            // expect
+            expect(sut.allocatedMessageSpots).not.toBeDefined();
             // when
             sut.getMessages(message$)
             sut.cachedMessage$.next(message as any)
             // then
-            expect(Observable.prototype.switchMap).toHaveBeenCalled()
-        })
-
-        it('should call switchMap if the schredder message Stream emitts a value', () => {
-            // given
-            const message = 'Awesome message'
-            const message$ = Observable.empty()
-
-            spyOn(Observable.prototype, 'switchMap').and.returnValue(Observable.never())
-
-            // when
-            sut.getMessages(message$, maxNumberOfMessages)
-            sut.schredder$.next(message as any)
-            // then
-            expect(Observable.prototype.switchMap).toHaveBeenCalled()
+            expect(sut.allocatedMessageSpots).toBe(0)
         })
     })
 })
