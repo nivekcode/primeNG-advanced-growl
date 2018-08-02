@@ -2,7 +2,7 @@
  * Created by kevinkreuzer on 16.10.17.
  */
 import {AdvPrimeMessage} from './adv-growl.model';
-import {merge, never, Observable, of, Subject} from 'rxjs';
+import {merge, Observable, of, NEVER, Subject} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
 
@@ -57,14 +57,14 @@ export class AdvGrowlMessageCache {
                 this.allocatedMessageSpots++
                 return of(messageWithSender.message)
             case MESSAGE_SENDER.SCHREDDER:
-                return never()
+                return NEVER
         }
     }
 
     getUserMessage(messageWithSender: MessageWithSender): Observable<AdvPrimeMessage> {
         if (this.allocatedMessageSpots >= this.messageSpots) {
             this.messageCache.push(messageWithSender.message)
-            return never()
+            return NEVER
         } else {
             this.allocatedMessageSpots++
             return of(messageWithSender.message)

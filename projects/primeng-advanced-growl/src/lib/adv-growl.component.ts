@@ -17,7 +17,7 @@ import {AdvPrimeMessage} from './adv-growl.model';
 import {AdvGrowlService} from './adv-growl.service';
 import {AdvGrowlHoverHelper} from './adv-growl.hoverHelper';
 import {AdvGrowlMessageCache} from './adv-growl.messageCache';
-import {fromEvent, merge, never, Observable, Observer, Subject, timer} from 'rxjs';
+import {fromEvent, merge, Observable, Observer, Subject, timer, NEVER} from 'rxjs';
 
 const DEFAULT_LIFETIME = 0;
 const FREEZE_MESSAGES_DEFAULT = false;
@@ -132,7 +132,7 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
   }
 
   getInifiniteStream(): Observable<any> {
-    return never();
+    return NEVER;
   }
 
   getFinitStream(messageId: string): Observable<string> {

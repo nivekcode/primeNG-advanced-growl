@@ -7,7 +7,7 @@ import {AdvGrowlComponent} from './adv-growl.component';
 import {AdvGrowlService} from './adv-growl.service';
 import {AdvPrimeMessage} from './adv-growl.model';
 import {EventEmitter, SimpleChange} from '@angular/core';
-import {never, Observable, of} from 'rxjs';
+import {Observable, of, NEVER} from 'rxjs';
 
 describe('Message Component', () => {
 
@@ -63,7 +63,7 @@ describe('Message Component', () => {
             });
           });
           spyOn(messagesService, 'getMessageStream');
-          spyOn(messagesService, 'getCancelStream').and.returnValue(never());
+          spyOn(messagesService, 'getCancelStream').and.returnValue(NEVER);
           component.messageCache = {
             getMessages: () => {
             }
@@ -130,7 +130,7 @@ describe('Message Component', () => {
             numberOfCalls++;
             return of(1);
           }
-          return never();
+          return NEVER;
         });
         spyOn(component, 'getLifeTimeStream').and.returnValue(of(1));
         spyOn(Array.prototype, 'shift');
@@ -276,7 +276,7 @@ describe('Message Component', () => {
         component.pauseOnlyHoveredMessage = pauseOnlyHovered;
 
         component.hoverHelper = {
-          getPausableMessageStream: (param1, param2) => of(1)
+          getPausableMessageStream: () => of(1)
         } as any;
         spyOn(component.hoverHelper, 'getPausableMessageStream').and.returnValue(of(1));
 

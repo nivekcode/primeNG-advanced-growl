@@ -1,7 +1,7 @@
 /**
  * Created by kevinkreuzer on 08.07.17.
  */
-import {interval, merge, never, Observable} from 'rxjs';
+import {interval, merge, NEVER, Observable} from 'rxjs';
 import {dematerialize, last, mapTo, materialize, startWith, switchMap, takeWhile, tap} from 'rxjs/operators';
 
 export const MOUSE_LEFT_ID = 'MOUSE_LEFT_ID';
@@ -22,11 +22,11 @@ export class AdvGrowlHoverHelper {
         return this.messageHover$.pipe(switchMap((hoveredMessageId: string) => {
 
                 if (this.isMessageEntered(hoveredMessageId) && !pauseOnlyHovered) {
-                    return never().pipe(materialize())
+                    return NEVER.pipe(materialize())
                 }
 
                 if (hoveredMessageId === messageId) {
-                    return never().pipe(materialize())
+                    return NEVER.pipe(materialize())
                 }
                 return interval(STEP_TIME_UNIT).pipe(
                     tap(() => lifeTime -= STEP_TIME_UNIT),

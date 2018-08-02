@@ -10,9 +10,11 @@
     "component-selector": [
       true,
       "element",
-      "pag",
+      "adv",
       "kebab-case"
     ],
-    "semicolon": false
+    "semicolon": false,
+    "no-input-rename": false,
+    "no-output-on-prefix": false
   }
 }
