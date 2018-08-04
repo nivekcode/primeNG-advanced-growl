@@ -1,6 +1,6 @@
 import {AdvGrowlHoverHelper, MOUSE_LEFT_ID} from './adv-growl.hoverHelper';
 import {Subject} from 'rxjs/Subject';
-import {Observable} from 'rxjs/Observable';
+import {Observable, interval as observableInterval, never as observableNever} from 'rxjs';
 
 describe('AdvGrowlHoverHelper', () => {
 
@@ -47,10 +47,10 @@ describe('AdvGrowlHoverHelper', () => {
             const hoveredMessageId = '42'
             const lifeTime = 2000
             const pauseOnlyHovered = true
-            spyOn(Observable, 'interval').and.returnValue(Observable.create(function (observer) {
+            spyOn(Observable as any, 'interval').and.returnValue(Observable.create(function (observer) {
                 observer.next(MOUSE_LEFT_ID)
             }))
-            spyOn(Observable, 'never').and.returnValue(Observable.create(function () {
+            spyOn(Observable as any, 'never').and.returnValue(Observable.create(function () {
             }))
 
             // when
@@ -60,8 +60,8 @@ describe('AdvGrowlHoverHelper', () => {
             mouseenter$.next(hoveredMessageId)
 
             // then
-            expect(Observable.interval).toHaveBeenCalled()
-            expect(Observable.never).toHaveBeenCalled()
+            expect(observableInterval).toHaveBeenCalled()
+            expect(observableNever).toHaveBeenCalled()
         })
 
         it('should return an empty observable if want to pause all messages and we enter a message', () => {
@@ -70,10 +70,10 @@ describe('AdvGrowlHoverHelper', () => {
             const hoveredMessageId = '42'
             const lifeTime = 2000
             const pauseOnlyHovered = false
-            spyOn(Observable, 'interval').and.returnValue(Observable.create(function (observer) {
+            spyOn(Observable as any, 'interval').and.returnValue(Observable.create(function (observer) {
                 observer.next(MOUSE_LEFT_ID)
             }))
-            spyOn(Observable, 'never').and.returnValue(Observable.create(function () {
+            spyOn(Observable as any, 'never').and.returnValue(Observable.create(function () {
             }))
 
             // when
@@ -83,8 +83,8 @@ describe('AdvGrowlHoverHelper', () => {
             mouseenter$.next(hoveredMessageId)
 
             // then
-            expect(Observable.interval).toHaveBeenCalled()
-            expect(Observable.never).toHaveBeenCalled()
+            expect(observableInterval).toHaveBeenCalled()
+            expect(observableNever).toHaveBeenCalled()
         })
     })
 

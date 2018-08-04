@@ -7,8 +7,7 @@
  * @version: 2.0.0
  * @since 28.04.2017, 2017.
  */
-import {Observable} from 'rxjs/Observable';
-import {Subject} from 'rxjs/Subject';
+import {Observable, Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {AdvPrimeMessage} from './adv-growl.model';
 

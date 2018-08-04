@@ -41,7 +41,7 @@
     "font-awesome": "^4.7.0",
     "primeng": "^6.0.2",
     "rxjs": "^6.2.2",
-    "rxjs-compat": "^6.0.0-rc.0"
+    "rxjs-compat": "^6.2.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.7.0",
@@ -72,7 +72,7 @@
     "ng-packagr": "1.6.0",
     "ts-node": "~5.0.0",
     "tslint": "~5.9.0",
-    "typescript": "~2.9.2",
+    "typescript": "^2.9.2",
     "zone.js": "0.8.26"
   }
 }

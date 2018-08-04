@@ -1,3 +1,5 @@
+
+import {never as observableNever, throwError as observableThrowError, of as observableOf} from 'rxjs';
 /**
  * Created by kevinkreuzer on 08.07.17.
  */
@@ -6,10 +8,10 @@ import {Message} from 'primeng/api';
 import {GrowlModule} from 'primeng/growl';
 import {AdvGrowlComponent} from './adv-growl.component';
 import {AdvGrowlService} from './adv-growl.service';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/never';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/throw';
+import {Observable, fromEvent as observableEvent, timer as observableTimer} from 'rxjs';
+
+
+
 import {AdvPrimeMessage} from './adv-growl.model';
 import {EventEmitter, SimpleChange} from '@angular/core';
 
@@ -51,11 +53,12 @@ describe('Message Component', () => {
 
         it('should create a mousleave stream that emits when a mouseleave event occures', () => {
             // given
-            spyOn(Observable, 'fromEvent').and.returnValues(Observable.never(), Observable.of(1))
+            spyOn(Observable as any, 'fromEvent').and.returnValues(observableNever(), observableOf(1))
             // when
             component.ngOnInit()
             // then
-            expect(Observable.fromEvent).toHaveBeenCalledWith(component.growlMessage.el.nativeElement, 'mouseleave')
+  //          expect(Observable.fromEvent).toHaveBeenCalledWith(component.growlMessage.el.nativeElement, 'mouseleave')
+            expect(observableEvent).toHaveBeenCalledWith(component.growlMessage.el.nativeElement, 'mouseleave')
         })
     })
 
@@ -76,7 +79,7 @@ describe('Message Component', () => {
                         });
                     });
                     spyOn(messagesService, 'getMessageStream')
-                    spyOn(messagesService, 'getCancelStream').and.returnValue(Observable.never())
+                    spyOn(messagesService, 'getCancelStream').and.returnValue(observableNever())
                     component.messageCache = {
                         getMessages: () => {
                         }
@@ -104,7 +107,7 @@ describe('Message Component', () => {
                     });
                 });
                 spyOn(messagesService, 'getMessageStream')
-                spyOn(component, 'getLifeTimeStream').and.returnValue(Observable.of(1));
+                spyOn(component, 'getLifeTimeStream').and.returnValue(observableOf(1));
                 spyOn(component, 'removeMessage');
                 component.messageCache = {
                     getMessages: () => {
@@ -141,11 +144,11 @@ describe('Message Component', () => {
                 spyOn(messagesService, 'getCancelStream').and.callFake(() => {
                     if (numberOfCalls === 0) {
                         numberOfCalls++;
-                        return Observable.of(1);
+                        return observableOf(1);
                     }
-                    return Observable.never();
+                    return observableNever();
                 });
-                spyOn(component, 'getLifeTimeStream').and.returnValue(Observable.of(1));
+                spyOn(component, 'getLifeTimeStream').and.returnValue(observableOf(1));
                 spyOn(Array.prototype, 'shift');
                 spyOn(component, 'subscribeForMessages').and.callThrough();
 
@@ -197,7 +200,7 @@ describe('Message Component', () => {
             inject([AdvGrowlService], (messagesService: AdvGrowlService) => {
                 // given
                 const errorMessage = 'Awful error';
-                const messages$ = Observable.throw(new Error(errorMessage));
+                const messages$ = observableThrowError(new Error(errorMessage));
                 spyOn(messagesService, 'getMessageStream').and.returnValue(messages$);
                 component.messageCache = {
                     getMessages: () => {
@@ -212,7 +215,7 @@ describe('Message Component', () => {
         it('should clear the message cache and resubscribe for messages on spot changes', () => {
             // given
             component.messageCache = {
-                getMessages: () => Observable.of('Some message'),
+                getMessages: () => observableOf('Some message'),
                 clearCache: () => {
                 }
             } as any
@@ -285,9 +288,9 @@ describe('Message Component', () => {
                 component.pauseOnlyHoveredMessage = pauseOnlyHovered
 
                 component.hoverHelper = {
-                    getPausableMessageStream: (param1, param2) => Observable.of(1)
+                    getPausableMessageStream: (param1, param2) => observableOf(1)
                 } as any
-                spyOn(component.hoverHelper, 'getPausableMessageStream').and.returnValue(Observable.of(1))
+                spyOn(component.hoverHelper, 'getPausableMessageStream').and.returnValue(observableOf(1))
 
                 const asserter = {
                     next: hoveredMessageId => expect(hoveredMessageId).toBe(messageId)
@@ -306,7 +309,7 @@ describe('Message Component', () => {
                 const freezeMessagesOnHover = false
                 const lifeTime = 3000;
                 component.freezeMessagesOnHover = freezeMessagesOnHover
-                spyOn(component, 'getUnPausableMessageStream').and.returnValue(Observable.of(1))
+                spyOn(component, 'getUnPausableMessageStream').and.returnValue(observableOf(1))
                 // when
                 const finitStream = component.getFinitStream(messageId, lifeTime)
                 // then
@@ -317,11 +320,11 @@ describe('Message Component', () => {
             it('should return a timed observable when we call getUnpausable message stream', () => {
                 // given
                 const lifeTime = 3000
-                spyOn(Observable, 'timer')
+                spyOn(Observable as any, 'timer')
                 // when
                 component.getUnPausableMessageStream(lifeTime)
                 // then
-                expect(Observable.timer).toHaveBeenCalledWith(lifeTime)
+                expect(observableTimer).toHaveBeenCalledWith(lifeTime)
             })
         })
     })
