@@ -5,8 +5,7 @@ import {never as observableNever, of as observableOf, merge as observableMerge} 
  */
 import {AdvPrimeMessage} from './adv-growl.model';
 import {Observable, Subject} from 'rxjs';
-import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/scan'
+import {map, switchMap} from 'rxjs/operators';
 
 
 export enum MESSAGE_SENDER {
@@ -42,14 +41,14 @@ export class AdvGrowlMessageCache {
         }
 
         return observableMerge(
-            message$.map((message: AdvPrimeMessage) => ({
+            message$.pipe(map((message: AdvPrimeMessage) => ({
                 sender: MESSAGE_SENDER.USER,
                 message: message
-            })),
+            }))),
             this.cachedMessage$,
             this.schredder$
         )
-            .switchMap(this.getMessage)
+            .pipe(switchMap(this.getMessage))
     }
 
     getMessage = (messageWithSender: MessageWithSender): Observable<AdvPrimeMessage> => {

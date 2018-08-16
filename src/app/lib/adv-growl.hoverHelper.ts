@@ -4,19 +4,7 @@ import {interval as observableInterval, never as observableNever, merge as obser
  * Created by kevinkreuzer on 08.07.17.
  */
 import {Observable} from 'rxjs'
-
-import 'rxjs/add/operator/merge'
-import 'rxjs/add/operator/take'
-import 'rxjs/add/operator/materialize'
-import 'rxjs/add/operator/dematerialize'
-import 'rxjs/add/operator/startWith'
-import 'rxjs/add/operator/takeWhile'
-import 'rxjs/add/operator/last'
-import 'rxjs/add/operator/mapTo'
-import 'rxjs/add/operator/do'
-import 'rxjs/add/operator/switchMap'
-
-
+import {materialize, dematerialize, startWith, takeWhile, last, tap, mapTo, switchMap} from 'rxjs/operators';
 
 
 
@@ -29,31 +17,30 @@ export class AdvGrowlHoverHelper {
 
     constructor(mouseenter$: Observable<string>, mouseleave$: Observable<any>) {
         this.messageHover$ = observableMerge(
-            mouseenter$, mouseleave$.mapTo(MOUSE_LEFT_ID)
-        )
-            .startWith(MOUSE_LEFT_ID)
+            mouseenter$, mouseleave$.pipe(mapTo(MOUSE_LEFT_ID),
+            startWith(MOUSE_LEFT_ID)))
     }
 
     public getPausableMessageStream(messageId: string, lifeTime: number, pauseOnlyHovered: boolean) {
 
-        return this.messageHover$.switchMap((hoveredMessageId: string) => {
+        return this.messageHover$.pipe(switchMap((hoveredMessageId: string) => {
 
                 if (this.isMessageEntered(hoveredMessageId) && !pauseOnlyHovered) {
-                    return observableNever().materialize()
+                    return observableNever().pipe(materialize())
                 }
 
                 if (hoveredMessageId === messageId) {
-                    return observableNever().materialize()
+                    return observableNever().pipe(materialize())
                 }
                 return observableInterval(STEP_TIME_UNIT)
-                    .do(() => lifeTime -= STEP_TIME_UNIT)
-                    .mapTo(messageId)
-                    .takeWhile(() => lifeTime !== 0)
-                    .materialize()
-            }
+                    .pipe(tap(() => lifeTime -= STEP_TIME_UNIT),
+                    mapTo(messageId),
+                    takeWhile(() => lifeTime !== 0),
+                    materialize())
+            })
         )
-            .dematerialize()
-            .last()
+            .pipe(dematerialize(),
+            last())
     }
 
     isMessageEntered(hoveredMessageId: string): boolean {

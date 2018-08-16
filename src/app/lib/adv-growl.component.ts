@@ -15,11 +15,8 @@ import {
     ViewChild
 } from '@angular/core';
 
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/takeUntil';
 
+import {tap, mapTo, mergeMap, takeUntil} from 'rxjs/operators';
 
 
 import {Observable, Subject, Observer} from 'rxjs';
@@ -107,16 +104,16 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
     public subscribeForMessages() {
         this.messages = [];
         this.messageCache.getMessages(this.messageService.getMessageStream(), this.messageSpots)
-            .do((message: AdvPrimeMessage) => {
+            .pipe(tap((message: AdvPrimeMessage) => {
                 this.messages.push(message);
                 this.onMessagesChanges.emit(this.messages);
-            })
-            .mergeMap(message => this.getLifeTimeStream(message.id, message.lifeTime))
-            .takeUntil(observableMerge(
+            }),
+            mergeMap(message => this.getLifeTimeStream(message.id, message.lifeTime)),
+            takeUntil(observableMerge(
                 this.messageService.getCancelStream(),
                 this.messageSpotChange$)
-            )
-            .subscribe(this.messageObserver);
+            )).
+            subscribe(this.messageObserver);
     }
 
     removeMessage(messageId: string) {
@@ -149,7 +146,7 @@ export class AdvGrowlComponent implements OnInit, OnChanges {
         } else {
             finitStream = this.getUnPausableMessageStream(lifeTime)
         }
-        return finitStream.mapTo(messageId)
+        return finitStream.pipe(mapTo(messageId))
     }
 
     getUnPausableMessageStream(lifeTime: number) {

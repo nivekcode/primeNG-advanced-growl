@@ -1,5 +1,5 @@
 import {AdvGrowlHoverHelper, MOUSE_LEFT_ID} from './adv-growl.hoverHelper';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {Observable, interval as observableInterval, never as observableNever} from 'rxjs';
 
 describe('AdvGrowlHoverHelper', () => {
