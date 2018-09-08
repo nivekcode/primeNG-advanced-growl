@@ -27,28 +27,26 @@ export class AdvGrowlService {
     constructor() {
     }
 
-    public createSuccessMessage(messageContent: string, summary: string, additionalProperties?: any): void {
-        this.createMessage(MessageSeverities.SUCCESS, summary, messageContent, additionalProperties);
+    public createSuccessMessage(messageContent: string, summary: string, additionalProperties?: any): AdvPrimeMessage {
+        return this.createMessage(MessageSeverities.SUCCESS, summary, messageContent, additionalProperties);
     }
 
-    public createInfoMessage(messageContent: string, summary: string, additionalProperties?: any): void {
-        this.createMessage(MessageSeverities.INFO, summary, messageContent, additionalProperties);
+    public createInfoMessage(messageContent: string, summary: string, additionalProperties?: any): AdvPrimeMessage {
+        return this.createMessage(MessageSeverities.INFO, summary, messageContent, additionalProperties);
     }
 
-    public createWarningMessage(messageContent: string, summary: string, additionalProperties?: any): void {
-        this.createMessage(MessageSeverities.WARN, summary, messageContent, additionalProperties);
+    public createWarningMessage(messageContent: string, summary: string, additionalProperties?: any): AdvPrimeMessage {
+        return this.createMessage(MessageSeverities.WARN, summary, messageContent, additionalProperties);
     }
 
-    public createErrorMessage(messageContent: string, summary: string, additionalProperties?: any): void {
-        this.createMessage(MessageSeverities.ERROR, summary, messageContent, additionalProperties);
+    public createErrorMessage(messageContent: string, summary: string, additionalProperties?: any): AdvPrimeMessage {
+        return this.createMessage(MessageSeverities.ERROR, summary, messageContent, additionalProperties);
     }
 
-    private createMessage(severity: string, summary: string, detail: string, additionalProperties?: any): void {
-        if (additionalProperties) {
-            this.message$.next({id: this.getTimeStamp(), severity, summary, detail, additionalProperties});
-        } else {
-            this.message$.next({id: this.getTimeStamp(), severity, summary, detail});
-        }
+    private createMessage(severity: string, summary: string, detail: string, additionalProperties?: any): AdvPrimeMessage {
+        const advPrimeMessage = {id: this.getTimeStamp(), severity, summary, detail, additionalProperties};
+        this.message$.next(advPrimeMessage);
+        return advPrimeMessage;
     }
 
     private getTimeStamp(): string {
