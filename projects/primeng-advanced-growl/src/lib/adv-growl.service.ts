@@ -44,10 +44,18 @@ export class AdvGrowlService {
     }
 
     private createMessage(severity: string, summary: string, detail: string, additionalProperties?: any): AdvPrimeMessage {
-        const advPrimeMessage = {id: this.getTimeStamp(), severity, summary, detail, additionalProperties};
+        const advPrimeMessage = this.createAdvPrimeMessage(severity, summary, detail, additionalProperties);
         this.message$.next(advPrimeMessage);
         return advPrimeMessage;
     }
+
+    private createAdvPrimeMessage(severity: string, summary: string, detail: string, additionalProperties?: any): AdvPrimeMessage {
+        if (additionalProperties) {
+            return {id: this.getTimeStamp(), severity, summary, detail, additionalProperties};
+        }
+        return {id: this.getTimeStamp(), severity, summary, detail};
+    }
+
 
     private getTimeStamp(): string {
         return new Date().getTime() + ''

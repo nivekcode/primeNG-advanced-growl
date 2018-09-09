@@ -219,4 +219,34 @@ describe('Message Service', () => {
             sut.clearMessages();
         });
     })
-});
+
+    describe('Retrieve AdvPrime instances', () => {
+
+        const methodsToBeTested = [
+            'createSuccessMessage',
+            'createInfoMessage',
+            'createWarningMessage',
+            'createErrorMessage'
+        ];
+
+        methodsToBeTested.forEach((methodToBeTested: string) => {
+
+            it(`must return the AdvPrimeMessage when we call ${methodToBeTested}`, () => {
+                // given
+                const sut = TestBed.get(AdvGrowlService);
+                const messageContent = 'awesome message';
+                const summary = 'awesome message';
+
+                // when
+                const advPrimeMessage = sut[methodToBeTested](messageContent, summary)
+                // then
+                expect(advPrimeMessage.detail).toBe(messageContent);
+                expect(advPrimeMessage.summary).toBe(summary);
+            })
+        })
+    })
+})
+
+
+
+
