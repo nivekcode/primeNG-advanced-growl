@@ -23,13 +23,13 @@ export class AdvGrowlService {
 
     private message$: Subject<AdvPrimeMessage> = new Subject<AdvPrimeMessage>();
     private cancel$: Subject<any> = new Subject<any>();
-    private readonly USE_DEFAULT_LIFETIME = undefined;
+    private readonly NO_LIFETIME_SPECIFIED = undefined;
 
     constructor() {
     }
 
     public createSuccessMessage(messageContent: string, summary: string, additionalProperties?: any): AdvPrimeMessage {
-        return this.createMessage(MessageSeverities.SUCCESS, summary, messageContent, this.USE_DEFAULT_LIFETIME, additionalProperties);
+        return this.createMessage(MessageSeverities.SUCCESS, summary, messageContent, this.NO_LIFETIME_SPECIFIED, additionalProperties);
     }
 
     public createTimedSuccessMessage(
@@ -38,7 +38,7 @@ export class AdvGrowlService {
     }
 
     public createInfoMessage(messageContent: string, summary: string, additionalProperties?: any): AdvPrimeMessage {
-        return this.createMessage(MessageSeverities.INFO, summary, messageContent, additionalProperties);
+        return this.createMessage(MessageSeverities.INFO, summary, messageContent, this.NO_LIFETIME_SPECIFIED, additionalProperties);
     }
 
     public createTimedInfoMessage(messageContent: string, summary: string, lifeTime: number, additionalProperties?: any): AdvPrimeMessage {
@@ -46,7 +46,7 @@ export class AdvGrowlService {
     }
 
     public createWarningMessage(messageContent: string, summary: string, additionalProperties?: any): AdvPrimeMessage {
-        return this.createMessage(MessageSeverities.WARN, summary, messageContent, additionalProperties);
+        return this.createMessage(MessageSeverities.WARN, summary, messageContent, this.NO_LIFETIME_SPECIFIED, additionalProperties);
     }
 
     public createTimedWarningMessage(
@@ -55,7 +55,7 @@ export class AdvGrowlService {
     }
 
     public createErrorMessage(messageContent: string, summary: string, additionalProperties?: any): AdvPrimeMessage {
-        return this.createMessage(MessageSeverities.ERROR, summary, messageContent, additionalProperties);
+        return this.createMessage(MessageSeverities.ERROR, summary, messageContent, this.NO_LIFETIME_SPECIFIED, additionalProperties);
     }
 
     public createTimedErrorMessage(messageContent: string, summary: string, lifeTime: number, additionalProperties?: any): AdvPrimeMessage {
