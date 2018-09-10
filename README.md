@@ -152,10 +152,10 @@ the message content and a message title. If you wish you can also add additional
 are emitted when you click on a message. All of the methods below will use the lifetime you specified on the component via 
 the life input property. 
 
-- createSuccessMessage(messageContent: string, summary: string, additionalProperties?: any): void
-- createInfoMessage(messageContent: string, summary: string, additionalProperties?: any): void
-- createWarningMessage(messageContent: string, summary: string, additionalProperties?: any): void
-- createErrorMessage(messageContent: string, summary: string, additionalProperties?: any): void
+- createSuccessMessage(messageContent: string, summary: string, additionalProperties?: any): AdvPrimeMessage
+- createInfoMessage(messageContent: string, summary: string, additionalProperties?: any): AdvPrimeMessage
+- createWarningMessage(messageContent: string, summary: string, additionalProperties?: any): AdvPrimeMessage
+- createErrorMessage(messageContent: string, summary: string, additionalProperties?: any): AdvPrimeMessage
 
 If you want to create messages that have another lifetime than the one you provided via the life input property you can
 use the Timed message service methods. Those methods are similar to the methods above but they accept an additional 
