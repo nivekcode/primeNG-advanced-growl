@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.version = '4.0.0';
+    this.version = '4.1.2';
   }
 
   public toggleFreeze() {
@@ -44,6 +44,22 @@ export class AppComponent implements OnInit {
   public createSuccessMessage(): void {
     this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success');
   }
+
+    public createTimedSuccessMessage(lifeTime: number) {
+        this.advMessagesService.createTimedSuccessMessage('Awesome timed success message', 'Timed success', lifeTime);
+    }
+
+    public createTimedInfoMessage(lifeTime: number) {
+        this.advMessagesService.createTimedInfoMessage('Awesome timed info message', 'Timed info', lifeTime);
+    }
+
+    public createTimedWarningMessage(lifeTime: number) {
+        this.advMessagesService.createTimedWarningMessage('Awesome timed warning message', 'Timed warning', lifeTime);
+    }
+
+    public createTimedErrorMessage(lifeTime: number) {
+        this.advMessagesService.createTimedErrorMessage('Awesome error message', 'Timed error', lifeTime);
+    }
 
   public createSuccessMessageWithAdditionalInfos(): void {
     this.advMessagesService.createSuccessMessage('Awesome success message content', 'Awesome success', {

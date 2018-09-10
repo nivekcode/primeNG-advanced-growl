@@ -2,7 +2,8 @@
  * Created by kevinkreuzer on 08.07.17.
  */
 import {TestBed, inject, ComponentFixture} from '@angular/core/testing';
-import {GrowlModule, Message} from 'primeng/primeng';
+import {Message} from 'primeng/api';
+import {GrowlModule} from 'primeng/growl';
 import {AdvGrowlComponent} from './adv-growl.component';
 import {AdvGrowlService} from './adv-growl.service';
 import {AdvPrimeMessage} from './adv-growl.model';
@@ -219,99 +220,105 @@ describe('Message Component', () => {
 
     describe('Life time detection', () => {
 
-      it('should have a lifeTime if the lifeTime property is bigger than the DEFAULT_LIFETIME', () => {
-        // given
-        component.lifeTime = 2000;
-        // when
-        const hasLifeTime = component.hasLifeTime();
-        // then
-        expect(hasLifeTime).toBeTruthy();
-      });
+            it('should have a lifeTime if the lifeTime property is bigger than the DEFAULT_LIFETIME', () => {
+                // given
+                const lifeTime = 2000
+                // when
+                const hasLifeTime = component.hasLifeTime(lifeTime)
+                // then
+                expect(hasLifeTime).toBeTruthy()
+            })
 
-      it('should not have a lifeTime if the lifeTime property is small or equal to the DEFAULT_LIFETIME', () => {
-        // given
-        component.lifeTime = 0;
-        // when
-        const hasLifeTime = component.hasLifeTime();
-        // then
-        expect(hasLifeTime).toBeFalsy();
-      });
-    });
+            it('should not have a lifeTime if the lifeTime property is small or equal to the DEFAULT_LIFETIME', () => {
+                // given
+                const lifeTime = 0
+                // when
+                const hasLifeTime = component.hasLifeTime(lifeTime)
+                // then
+                expect(hasLifeTime).toBeFalsy()
+            })
+        })
 
-    describe('Get LifeTime Stream', () => {
+        describe('Get LifeTime Stream', () => {
 
-      it('should get an finit stream if the message has a lifetime', () => {
-        // given
-        const messageId = '42';
-        spyOn(component, 'hasLifeTime').and.returnValue(true);
-        spyOn(component, 'getFinitStream');
-        // when
-        component.getLifeTimeStream(messageId);
-        // then
-        expect(component.getFinitStream).toHaveBeenCalled();
-      });
+            it('should get an finit stream if the message has a lifetime', () => {
+                // given
+                const messageId = '42'
+                spyOn(component, 'hasLifeTime').and.returnValue(true)
+                spyOn(component, 'getFinitStream')
+                // when
+                component.getLifeTimeStream(messageId)
+                // then
+                expect(component.getFinitStream).toHaveBeenCalled()
+            })
 
-      it('should get an infinit stream if the message has no lifetime', () => {
-        // given
-        const messageId = '42';
-        spyOn(component, 'hasLifeTime').and.returnValue(false);
-        spyOn(component, 'getInifiniteStream');
-        // when
-        component.getLifeTimeStream(messageId);
-        // then
-        expect(component.getInifiniteStream).toHaveBeenCalled();
-      });
-    });
+            it('should get an infinit stream if the message has no lifetime', () => {
+                // given
+                const messageId = '42'
+                spyOn(component, 'hasLifeTime').and.returnValue(false)
+                spyOn(component, 'getInifiniteStream')
+                // when
+                component.getLifeTimeStream(messageId)
+                // then
+                expect(component.getInifiniteStream).toHaveBeenCalled()
+            })
+        })
 
-    describe('Get finit stream', () => {
+        describe('Get finit stream', () => {
 
-      it('should get a pausable stream if freezeMessagesOnHover is set to true', () => {
-        // given
-        const messageId = '42';
-        const freezeMessagesOnHover = true;
-        const lifeTime = 2000;
-        const pauseOnlyHovered = false;
-        component.freezeMessagesOnHover = freezeMessagesOnHover;
-        component.lifeTime = lifeTime;
-        component.pauseOnlyHoveredMessage = pauseOnlyHovered;
+            it('should get a pausable stream if freezeMessagesOnHover is set to true', () => {
+                // given
+                const messageId = '42'
+                const freezeMessagesOnHover = true
+                const lifeTime = 2000
+                const pauseOnlyHovered = false
+                component.freezeMessagesOnHover = freezeMessagesOnHover
+                component.pauseOnlyHoveredMessage = pauseOnlyHovered
 
-        component.hoverHelper = {
-          getPausableMessageStream: () => of(1)
-        } as any;
-        spyOn(component.hoverHelper, 'getPausableMessageStream').and.returnValue(of(1));
+                component.hoverHelper = {
+                    getPausableMessageStream: (param1, param2) => of(1)
+                } as any
+                spyOn(component.hoverHelper, 'getPausableMessageStream').and.returnValue(of(1))
 
-        // when
-        const finitStream = component.getFinitStream(messageId);
-        // then
-        expect(component.hoverHelper.getPausableMessageStream).toHaveBeenCalledWith(messageId, lifeTime, pauseOnlyHovered);
-        expect(finitStream.subscribe(hoveredMessageId => expect(hoveredMessageId).toBe(messageId)));
-      });
+                const asserter = {
+                    next: hoveredMessageId => expect(hoveredMessageId).toBe(messageId)
+                }
 
-      it('should get an unpausable stream if freezeMessagesOnHover is set to false', () => {
-        // given
-        const messageId = '42';
-        const freezeMessagesOnHover = false;
-        component.freezeMessagesOnHover = freezeMessagesOnHover;
-        spyOn(component, 'getUnPausableMessageStream').and.returnValue(of(1));
-        // when
-        const finitStream = component.getFinitStream(messageId);
-        // then
-        expect(component.getUnPausableMessageStream).toHaveBeenCalled();
-        expect(finitStream.subscribe(hoveredMessageId => expect(hoveredMessageId).toBe(messageId)));
-      });
+                // when
+                const finitStream = component.getFinitStream(messageId, lifeTime)
+                // then
+                expect(component.hoverHelper.getPausableMessageStream).toHaveBeenCalledWith(messageId, lifeTime, pauseOnlyHovered)
+                expect(finitStream.subscribe(asserter));
+            })
 
-      it('should return a timed observable when we call getUnpausable message stream', done => {
-        // given
-        const lifeTime = 0;
-        component.lifeTime = lifeTime;
-        // when
-        component.getUnPausableMessageStream()
-          .subscribe(() => done(),
-            error => fail(error)
-          );
-      });
-    });
-  });
+            it('should get an unpausable stream if freezeMessagesOnHover is set to false', () => {
+                // given
+                const messageId = '42'
+                const freezeMessagesOnHover = false
+                const lifeTime = 3000;
+                component.freezeMessagesOnHover = freezeMessagesOnHover
+                spyOn(component, 'getUnPausableMessageStream').and.returnValue(of(1))
+                // when
+                const finitStream = component.getFinitStream(messageId, lifeTime)
+                // then
+                expect(component.getUnPausableMessageStream).toHaveBeenCalledWith(lifeTime)
+                expect(finitStream.subscribe(hoveredMessageId => expect(hoveredMessageId).toBe(messageId)))
+            })
+
+            // TODO Migrate test
+            /*
+            it('should return a timed observable when we call getUnpausable message stream', () => {
+                // given
+                const lifeTime = 3000
+                spyOn(Observable, 'timer')
+                // when
+                component.getUnPausableMessageStream(lifeTime)
+                // then
+                expect(Observable.timer).toHaveBeenCalledWith(lifeTime)
+            })
+            */
+        })
+    })
 
   describe('Emitting Events', () => {
 
@@ -349,10 +356,22 @@ describe('Message Component', () => {
         expect(component.emitMessage).toHaveBeenCalledWith($event, component.onClick);
       });
 
+        it('must deallocate a message spot when a message is closed', () => {
+            // given
+            component.ngOnInit()
+            const $event = {message: 'Sample Message'}
+            spyOn(component.messageCache, 'deallocateMessageSpot')
+            // when
+            component.messageClosed($event)
+            // then
+            expect(component.messageCache.deallocateMessageSpot).toHaveBeenCalled()
+        })
+
       it('should call emit with the event and the onClose emitter when a message is closed', () => {
         // given
         const $event = {message: 'Sample Message'};
         spyOn(component, 'emitMessage');
+        component.ngOnInit()
         // when
         component.messageClosed($event);
         // then

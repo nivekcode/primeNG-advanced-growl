@@ -7,12 +7,12 @@ I'm really glad you're reading this, because this means that you are interested 
 1. After you have forked and cloned the repo run a npm install
 2. Navigate to the root folder (the folder where the package.json is located)
 3. type npm run start - this command opens the test page on localhost:4200
-4. type npm run test to run the tests
+4. type npm run test-lib to run the tests
 
 ## Folder structure
 The app has two main folders:
-1. **lib:** this folder contains the actual library code. This is also the folder that will then be delivered via npm to the consumer of the library. Notice that this folder also contains the unit tests for the library.
-2. **test:** this folder contains a test page where we test our own library. It uses the library like a consumer would. Notice that this page will not be delivered via npm but it will be deployed on primeng-advanced-growl.firebaseapp.com with each release.
+1. **projects/primeng-advanced-growl:** this folder contains the actual library code. This is also the folder that will then be delivered via npm to the consumer of the library. Notice that this folder also contains the unit tests for the library.
+2. **src:** this folder contains a test page where we test our own library. It uses the library like a consumer would. Notice that this page will not be delivered via npm but it will be deployed on primeng-advanced-growl.firebaseapp.com with each release.
 
 ## How to make a clean pull request
 
