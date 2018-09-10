@@ -3,7 +3,7 @@ sudo: required
 language: node_js
 
 node_js:
-  - "6"
+  - "8"
 os:
   - linux
 addons:
@@ -20,8 +20,8 @@ install:
   - npm install
 script:
   - npm run lint
-  - npm run package
-  - npm run test-coverage
+  - npm run build-lib
+  - npm run test-lib-coverage
 after_success:
   - npm run report-coverage
 before_deploy:

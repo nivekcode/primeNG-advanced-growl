@@ -6,6 +6,6 @@ export interface AdvPrimeMessage {
     severity: string;
     summary: string;
     detail: string;
-    lifeTime ?: number;
+    lifeTime?: number;
     additionalProperties?: any;
 }
